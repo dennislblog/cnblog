@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>学习 on My Site Title</title>
+    <link>https://dennislblog.github.io/tags/%E5%AD%A6%E4%B9%A0/</link>
+    <description>Recent content in 学习 on My Site Title</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 19 May 2020 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://dennislblog.github.io/tags/%E5%AD%A6%E4%B9%A0/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>动手深度学习</title>
+      <link>https://dennislblog.github.io/2014/04/_cook-book/</link>
+      <pubDate>Wed, 02 Apr 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://dennislblog.github.io/2014/04/_cook-book/</guid>
+      <description>预备知识 Tensor on GPU 用torch.cuda.get_device_name(0)查看主GPU信息，用torch.cuda.is_available</description>
+    </item>
+    
+  </channel>
+</rss>
