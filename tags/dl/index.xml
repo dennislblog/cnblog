@@ -12,21 +12,12 @@
     
     
     <item>
-      <title>Introduction to Deep Learning</title>
+      <title>Dive Into Deep Learning</title>
       <link>https://dennislblog.github.io/cnblog/2020/05/deep-learning-intro/</link>
       <pubDate>Wed, 20 May 2020 00:00:00 +0000</pubDate>
       
       <guid>https://dennislblog.github.io/cnblog/2020/05/deep-learning-intro/</guid>
-      <description>基础配置 CUDA/GPU运算 1 torch.cuda.get_device_name(0) //&amp;#39;GeForce GTX 1060&amp;#39; 2 torch.cuda.is_available() //判断 GPU 支持 固定随机种子 1 torch.manual_seed(0) 2 torch.cuda.manual_seed_all(0) 3 torch.backends.cudnn.deterministic = True //去除随机性？ 清除GPU存储 1 torch.cuda.empty_cache() //有时Ctrl + C中</description>
-    </item>
-    
-    <item>
-      <title>Dive Into Deep Learning</title>
-      <link>https://dennislblog.github.io/cnblog/2014/04/pytorch-cook-book/</link>
-      <pubDate>Wed, 02 Apr 2014 00:00:00 +0000</pubDate>
-      
-      <guid>https://dennislblog.github.io/cnblog/2014/04/pytorch-cook-book/</guid>
-      <description>预备知识 Tensor on GPU 用torch.cuda.get_device_name(0)查看主GPU信息，用torch.cuda.is_available</description>
+      <description>&lt;p&gt;notes of book &lt;a href=&#34;https://d2l.ai/&#34;&gt;Dive Into Deep Learning&lt;/a&gt; based on Github repo &lt;a href=&#34;https://github.com/ShusenTang/Dive-into-DL-PyTorch&#34;&gt;d2l-pytorch&lt;/a&gt;&lt;/p&gt;</description>
     </item>
     
   </channel>

@@ -17,7 +17,7 @@
       <pubDate>Thu, 21 May 2020 00:00:00 +0000</pubDate>
       
       <guid>https://dennislblog.github.io/cnblog/2020/05/python-learn/</guid>
-      <description>Function Example Explanation divmod divmod(5.5,2) =&amp;gt; (2.0, 1.5) min min(&#39;1234&#39;) =&amp;gt; &amp;lsquo;1&amp;rsquo; min(-1,-2,key = abs) =&amp;gt; -1 传入一个可迭代对象 pow pow(2,3) =&amp;gt; 2**3 pow(2,3,5) =&amp;gt; pow(2,3)%5 sum sum((1,2,3,4),-10) =&amp;gt; 0 传入可迭代，元素类型必须是数值型 bool bool([]) =&amp;gt; False 数值0，空序列等为Fals</description>
+      <description>&lt;p&gt;tips on how to better use Python&lt;/p&gt;</description>
     </item>
     
   </channel>

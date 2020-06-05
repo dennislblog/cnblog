@@ -39,15 +39,6 @@
     </item>
     
     <item>
-      <title>Adversarial RL</title>
-      <link>https://dennislblog.github.io/cnblog/tags/adversarial-rl/</link>
-      <pubDate>Sun, 31 May 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://dennislblog.github.io/cnblog/tags/adversarial-rl/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>Market Making</title>
       <link>https://dennislblog.github.io/cnblog/tags/market-making/</link>
       <pubDate>Sun, 31 May 2020 00:00:00 +0000</pubDate>
@@ -57,20 +48,20 @@
     </item>
     
     <item>
-      <title>强化学习</title>
-      <link>https://dennislblog.github.io/cnblog/tags/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/</link>
-      <pubDate>Thu, 28 May 2020 00:00:00 +0000</pubDate>
+      <title>Review</title>
+      <link>https://dennislblog.github.io/cnblog/tags/review/</link>
+      <pubDate>Sun, 31 May 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://dennislblog.github.io/cnblog/tags/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/</guid>
+      <guid>https://dennislblog.github.io/cnblog/tags/review/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>论文阅读</title>
-      <link>https://dennislblog.github.io/cnblog/tags/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/</link>
-      <pubDate>Thu, 28 May 2020 00:00:00 +0000</pubDate>
+      <title>RL</title>
+      <link>https://dennislblog.github.io/cnblog/tags/rl/</link>
+      <pubDate>Sun, 31 May 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://dennislblog.github.io/cnblog/tags/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/</guid>
+      <guid>https://dennislblog.github.io/cnblog/tags/rl/</guid>
       <description></description>
     </item>
     
@@ -80,15 +71,6 @@
       <pubDate>Tue, 26 May 2020 00:00:00 +0000</pubDate>
       
       <guid>https://dennislblog.github.io/cnblog/tags/repo/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>RL</title>
-      <link>https://dennislblog.github.io/cnblog/tags/rl/</link>
-      <pubDate>Tue, 26 May 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://dennislblog.github.io/cnblog/tags/rl/</guid>
       <description></description>
     </item>
     

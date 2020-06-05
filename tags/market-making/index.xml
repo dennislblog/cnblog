@@ -17,7 +17,7 @@
       <pubDate>Sun, 31 May 2020 00:00:00 +0000</pubDate>
       
       <guid>https://dennislblog.github.io/cnblog/2020/05/robust-market-making-via-adversarial-reinforcement-learning/</guid>
-      <description>Summary 产生了自发的风险规避行为? 怎么证明的? MM表现(怎么定义?)更好 通过比较在fixed env setting 和 strategic adversarial env setting 上MM的表现 Robust to 模型不确定性 什么是做市商</description>
+      <description>&lt;p&gt;summaries on &lt;a href=&#34;https://arxiv.org/abs/2003.01820&#34;&gt;market making via adversarial reinforcement learning&lt;/a&gt;(Spooner and Savani, 2020)&lt;/p&gt;</description>
     </item>
     
   </channel>

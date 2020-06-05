@@ -6,10 +6,28 @@
     <description>Recent content in RL on My Site Title</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 26 May 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 31 May 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://dennislblog.github.io/cnblog/tags/rl/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>MM with Adversarial RL</title>
+      <link>https://dennislblog.github.io/cnblog/2020/05/robust-market-making-via-adversarial-reinforcement-learning/</link>
+      <pubDate>Sun, 31 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://dennislblog.github.io/cnblog/2020/05/robust-market-making-via-adversarial-reinforcement-learning/</guid>
+      <description>&lt;p&gt;summaries on &lt;a href=&#34;https://arxiv.org/abs/2003.01820&#34;&gt;market making via adversarial reinforcement learning&lt;/a&gt;(Spooner and Savani, 2020)&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>PPO Algorithm</title>
+      <link>https://dennislblog.github.io/cnblog/2020/05/proximal-policy-optimization-algorithms/</link>
+      <pubDate>Thu, 28 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://dennislblog.github.io/cnblog/2020/05/proximal-policy-optimization-algorithms/</guid>
+      <description>&lt;p&gt;summaries on &lt;a href=&#34;https://arxiv.org/abs/1707.06347&#34;&gt;proximal policy optimization&lt;/a&gt;(Schulman, et al., 2017)&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>Reinforcement Learning Repositories</title>
@@ -17,7 +35,7 @@
       <pubDate>Tue, 26 May 2020 00:00:00 +0000</pubDate>
       
       <guid>https://dennislblog.github.io/cnblog/2020/05/reinforce-learn/</guid>
-      <description>Some Interesting Imitation Learning Repo pedronahum NoiseInjection: provide examples of how noise injection may be used to improve off-policy imitation learning by mitigating covariate shift. KuoHaoZeng Behaviour Cloning: adopt the idea of uncertainty regularization [1] to learn a swing-up policy via behaviour cloning without interacting with the simulator. Tsu-Jui Fu pytorch_bco A PyTorch implementation of Behavioral Cloning from Observation (BCO) MRYingLEE Trading_by_Imitation_Learning collect 16 stocks history datasets, use CNN or</description>
+      <description>&lt;p&gt;some interesting repositories to learn&lt;/p&gt;</description>
     </item>
     
   </channel>

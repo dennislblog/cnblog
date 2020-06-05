@@ -17,7 +17,7 @@
       <pubDate>Tue, 26 May 2020 00:00:00 +0000</pubDate>
       
       <guid>https://dennislblog.github.io/cnblog/2020/05/reinforce-learn/</guid>
-      <description>Some Interesting Imitation Learning Repo pedronahum NoiseInjection: provide examples of how noise injection may be used to improve off-policy imitation learning by mitigating covariate shift. KuoHaoZeng Behaviour Cloning: adopt the idea of uncertainty regularization [1] to learn a swing-up policy via behaviour cloning without interacting with the simulator. Tsu-Jui Fu pytorch_bco A PyTorch implementation of Behavioral Cloning from Observation (BCO) MRYingLEE Trading_by_Imitation_Learning collect 16 stocks history datasets, use CNN or</description>
+      <description>&lt;p&gt;some interesting repositories to learn&lt;/p&gt;</description>
     </item>
     
   </channel>
