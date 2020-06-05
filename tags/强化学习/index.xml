@@ -20,14 +20,5 @@
       <description>连续控制问题, 来自Katerina Fragkiadaki课件&amp;lt;Natural Policy Gradients, TRPO, PPO&amp;gt; Policy Gradient 我一直有一个疑问, 怎么优化函数, 使得函数的输出</description>
     </item>
     
-    <item>
-      <title>强化学习笔记</title>
-      <link>https://dennislblog.github.io/cnblog/2020/05/_reinforce-learn/</link>
-      <pubDate>Tue, 26 May 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://dennislblog.github.io/cnblog/2020/05/_reinforce-learn/</guid>
-      <description>Some Interesting Imitation Learning Repo pedronahum NoiseInjection: provide examples of how noise injection may be used to improve off-policy imitation learning by mitigating covariate shift. KuoHaoZeng Behaviour Cloning: adopt the idea of uncertainty regularization [1] to learn a swing-up policy via behaviour cloning without interacting with the simulator. Tsu-Jui Fu pytorch_bco A PyTorch implementation of Behavioral Cloning from Observation (BCO) MRYingLEE Trading_by_Imitation_Learning collect 16 stocks history datasets, use CNN or</description>
-    </item>
-    
   </channel>
 </rss>

@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
   <meta name="generator" content="Hugo 0.69.0" />
-  <link rel="canonical" href="https://dennislblog.github.io/cnblog/tags/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/">
+  <link rel="canonical" href="https://dennislblog.github.io/cnblog/2014/04/pytorch-cook-book/">
 
   
 
@@ -32,7 +32,7 @@
 
   
   
-  <title>强化学习 | My Site Title</title>
+  <title>Dive Into Deep Learning | My Site Title</title>
   
 
 <script type="text/javascript" async
@@ -190,7 +190,7 @@
       
       
       
-      <a href="/cnblog/post/" >
+      <a href="/cnblog/post/" aria-current="page">
         <svg class="bookmark-icon" aria-hidden="true" focusable="false" viewBox="0 0 40 50">
           <use xlink:href="#bookmark"></use>
         </svg>
@@ -203,7 +203,7 @@
       
       
       
-      <a href="/cnblog/tags/" aria-current="page">
+      <a href="/cnblog/tags/" >
         <svg class="bookmark-icon" aria-hidden="true" focusable="false" viewBox="0 0 40 50">
           <use xlink:href="#bookmark"></use>
         </svg>
@@ -229,22 +229,133 @@
         <div>
           
   <main id="main">
-    <h1>强化学习</h1>
-    <ul class="patterns-list">
+    <h1>
+      <svg class="bookmark-icon" aria-hidden="true" viewBox="0 0 40 50" focusable="false">
+        <use xlink:href="#bookmark"></use>
+      </svg>
+      Dive Into Deep Learning
+    </h1>
+
+    <div class="date">
+      
+      
+      <strong aria-hidden="true">Publish date: </strong>Wednesday, April 2, 2014
+      
+        
+      
+    </div>
+
     
-      <li>
-        <h2>
-          <a href="https://dennislblog.github.io/cnblog/2020/05/proximal-policy-optimization-algorithms/">
-            <svg class="bookmark" aria-hidden="true" viewBox="0 0 40 50" focusable="false">
-              <use xlink:href="#bookmark"></use>
-            </svg>
-            PPO Algorithm
-          </a>
-        </h2>
-      </li>        
+      <div class="tags">
+        <strong aria-hidden="true">Tags: </strong>
+        <ul aria-label="tags">
+          
+            <li>
+              <svg class="tag-icon" aria-hidden="true" viewBox="0 0 177.16535 177.16535" focusable="false">
+                <use xlink:href="#tag"></use>
+              </svg>
+              
+              <a href="https://dennislblog.github.io/cnblog/tags/pytorch/">PyTorch</a>
+            </li>
+          
+            <li>
+              <svg class="tag-icon" aria-hidden="true" viewBox="0 0 177.16535 177.16535" focusable="false">
+                <use xlink:href="#tag"></use>
+              </svg>
+              
+              <a href="https://dennislblog.github.io/cnblog/tags/dl/">DL</a>
+            </li>
+          
+        </ul>
+      </div>
     
-    </ul>
+    <h1 id="预备知识">预备知识</h1>
+<h2 id="tensor-on-gpu">Tensor on GPU</h2>
+<p>用<code>torch.cuda.get_device_name(0)</code>查看主GPU信息，用<code>torch.cuda.is_available()</code>查看是否装了CUDA; 用<code>to()</code>可以将Tensor在CPU和GPU之间相互转移</p>
+<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span>    <span style="color:#007020;font-weight:bold">if</span> torch.cuda.is_available():
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span>        device <span style="color:#666">=</span> torch.device(<span style="color:#4070a0">&#34;cuda&#34;</span>)          
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span>        y <span style="color:#666">=</span> torch.ones_like(x, device<span style="color:#666">=</span>device)  
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span>        x <span style="color:#666">=</span> x.<span style="color:#007020;font-weight:bold">to</span>(device)                       <span style="color:#666">#</span> <span style="">等价于</span> .<span style="color:#007020;font-weight:bold">to</span>(<span style="color:#4070a0">&#34;cuda&#34;</span>)
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span>        z <span style="color:#666">=</span> x <span style="color:#666">+</span> y
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span>        print(z)
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span>        print(z.<span style="color:#007020;font-weight:bold">to</span>(<span style="color:#4070a0">&#34;cpu&#34;</span>, torch.double))       <span style="color:#666">#</span> <span style="color:#007020;font-weight:bold">to</span>()<span style="">还可以同时更改数据类型</span>
+</code></pre></div>
+	
+
+<a href="#" id="back-to-top" class="back-to-top" style="display: inline;">Back to Top</a>
+
+<script>
+  var link = document.getElementById("back-to-top");
+  var amountScrolled = 1000;
+
+  window.addEventListener('scroll', function(e) {
+      if ( window.pageYOffset > amountScrolled ) {
+          link.classList.add('show');
+      } else {
+          link.className = 'back-to-top';
+      }
+  });
+
+<!-- Scrolls to Top -->
+  link.addEventListener('click', function(e) {
+      e.preventDefault();
+
+      var distance = 0 - window.pageYOffset;
+      var increments = distance/(500/16);
+      function animateScroll() {
+          window.scrollBy(0, increments);
+          if (window.pageYOffset <= document.body.offsetTop) {
+              clearInterval(runAnimation);
+          }
+      };
+      
+      var runAnimation = setInterval(animateScroll, 16);
+  });
+</script>
+
+<style>
+  .back-to-top {
+    background: #111;
+    color: #fefefe;
+    opacity: 0;
+    transition: opacity .6s ease-in-out;
+    z-index: 999;
+    position: fixed;
+    right: 30px;
+    bottom: 30px;
+    width: auto;
+    height: auto;
+    box-sizing: border-box;
+    border-radius: 0.4em;
+    word-wrap: normal !important;
+  }
+
+  a.back-to-top {
+    font-weight: bold;
+    letter-spacing: 0px;
+    font-size: 0.75rem;
+    font-family: inherit;
+    text-transform: uppercase;
+    text-align: center;
+    padding: 0.65em 0.55em;
+  }
+
+  .back-to-top:hover, .back-to-top:focus, .back-to-top:visited {
+    color: #fefefe;
+    border-bottom: none;
+  }
+
+  .back-to-top.show {
+    opacity: 1;
+  }
+</style>
+
+
   </main>
+  <div id="disqus-container">
+  
+</div>
+
 
           <footer role="contentinfo">
   <div>

@@ -39,12 +39,57 @@
     </item>
     
     <item>
+      <title>Reinforcement Learning Repositories</title>
+      <link>https://dennislblog.github.io/cnblog/2020/05/reinforce-learn/</link>
+      <pubDate>Tue, 26 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://dennislblog.github.io/cnblog/2020/05/reinforce-learn/</guid>
+      <description>Some Interesting Imitation Learning Repo pedronahum NoiseInjection: provide examples of how noise injection may be used to improve off-policy imitation learning by mitigating covariate shift. KuoHaoZeng Behaviour Cloning: adopt the idea of uncertainty regularization [1] to learn a swing-up policy via behaviour cloning without interacting with the simulator. Tsu-Jui Fu pytorch_bco A PyTorch implementation of Behavioral Cloning from Observation (BCO) MRYingLEE Trading_by_Imitation_Learning collect 16 stocks history datasets, use CNN or</description>
+    </item>
+    
+    <item>
+      <title>Python Cheatbook</title>
+      <link>https://dennislblog.github.io/cnblog/2020/05/python-learn/</link>
+      <pubDate>Thu, 21 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://dennislblog.github.io/cnblog/2020/05/python-learn/</guid>
+      <description>Function Example Explanation divmod divmod(5.5,2) =&amp;gt; (2.0, 1.5) min min(&#39;1234&#39;) =&amp;gt; &amp;lsquo;1&amp;rsquo; min(-1,-2,key = abs) =&amp;gt; -1 传入一个可迭代对象 pow pow(2,3) =&amp;gt; 2**3 pow(2,3,5) =&amp;gt; pow(2,3)%5 sum sum((1,2,3,4),-10) =&amp;gt; 0 传入可迭代，元素类型必须是数值型 bool bool([]) =&amp;gt; False 数值0，空序列等为Fals</description>
+    </item>
+    
+    <item>
+      <title>Introduction to Deep Learning</title>
+      <link>https://dennislblog.github.io/cnblog/2020/05/deep-learning-intro/</link>
+      <pubDate>Wed, 20 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://dennislblog.github.io/cnblog/2020/05/deep-learning-intro/</guid>
+      <description>基础配置 CUDA/GPU运算 1 torch.cuda.get_device_name(0) //&amp;#39;GeForce GTX 1060&amp;#39; 2 torch.cuda.is_available() //判断 GPU 支持 固定随机种子 1 torch.manual_seed(0) 2 torch.cuda.manual_seed_all(0) 3 torch.backends.cudnn.deterministic = True //去除随机性？ 清除GPU存储 1 torch.cuda.empty_cache() //有时Ctrl + C中</description>
+    </item>
+    
+    <item>
+      <title>Learning Tensorboard</title>
+      <link>https://dennislblog.github.io/cnblog/2020/05/tensorboard-learn/</link>
+      <pubDate>Wed, 20 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://dennislblog.github.io/cnblog/2020/05/tensorboard-learn/</guid>
+      <description>调用方法 1 import torch 2 from torch.autograd import Variable 3 from torch.utils.tensorboard import SummaryWriter 4 5 writer = SummaryWriter(comment=&amp;#34;-test&amp;#34;) 6 with writer: //保证writer调用完关掉 7 writer.method() 8 writer.export_scalars_to_json(&amp;#34;./test.json&amp;#34;) //把scalar信息保存到文件 add_scalar() 在一个图表中记录一</description>
+    </item>
+    
+    <item>
       <title>Cupper Shortcodes</title>
       <link>https://dennislblog.github.io/cnblog/2019/02/cupper-shortcodes/</link>
       <pubDate>Tue, 12 Feb 2019 23:39:06 -0600</pubDate>
       
       <guid>https://dennislblog.github.io/cnblog/2019/02/cupper-shortcodes/</guid>
       <description>blockquote {{&amp;lt; blockquote author=&amp;quot;Carl Jung&amp;quot; &amp;gt;}} Even a happy life cannot be without a measure of darkness, and the word happy would lose its meaning if it were not balanced by sadness. It is far better to take things as they come along with patience and equanimity. {{&amp;lt; /blockquote &amp;gt;}} Even a happy life cannot be without a measure of darkness, and the word happy would lose its meaning if it were not balanced by sadness.</description>
+    </item>
+    
+    <item>
+      <title>Dive Into Deep Learning</title>
+      <link>https://dennislblog.github.io/cnblog/2014/04/pytorch-cook-book/</link>
+      <pubDate>Wed, 02 Apr 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://dennislblog.github.io/cnblog/2014/04/pytorch-cook-book/</guid>
+      <description>预备知识 Tensor on GPU 用torch.cuda.get_device_name(0)查看主GPU信息，用torch.cuda.is_available</description>
     </item>
     
   </channel>
