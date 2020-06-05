@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Adversarial RL on My Site Title</title>
-    <link>https://dennislblog.github.io/tags/adversarial-rl/</link>
+    <link>https://dennislblog.github.io/cnblog/tags/adversarial-rl/</link>
     <description>Recent content in Adversarial RL on My Site Title</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sun, 31 May 2020 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://dennislblog.github.io/tags/adversarial-rl/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://dennislblog.github.io/cnblog/tags/adversarial-rl/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>MM with Adversarial RL</title>
-      <link>https://dennislblog.github.io/2020/05/robust-market-making-via-adversarial-reinforcement-learning/</link>
+      <link>https://dennislblog.github.io/cnblog/2020/05/robust-market-making-via-adversarial-reinforcement-learning/</link>
       <pubDate>Sun, 31 May 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://dennislblog.github.io/2020/05/robust-market-making-via-adversarial-reinforcement-learning/</guid>
+      <guid>https://dennislblog.github.io/cnblog/2020/05/robust-market-making-via-adversarial-reinforcement-learning/</guid>
       <description>Summary 产生了自发的风险规避行为? 怎么证明的? MM表现(怎么定义?)更好 通过比较在fixed env setting 和 strategic adversarial env setting 上MM的表现 Robust to 模型不确定性 什么是做市商</description>
     </item>
     

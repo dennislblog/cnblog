@@ -2,147 +2,147 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on My Site Title</title>
-    <link>https://dennislblog.github.io/tags/</link>
+    <link>https://dennislblog.github.io/cnblog/tags/</link>
     <description>Recent content in Tags on My Site Title</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Mon, 01 Jun 2020 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://dennislblog.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://dennislblog.github.io/cnblog/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Fiance</title>
-      <link>https://dennislblog.github.io/tags/fiance/</link>
+      <link>https://dennislblog.github.io/cnblog/tags/fiance/</link>
       <pubDate>Mon, 01 Jun 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://dennislblog.github.io/tags/fiance/</guid>
+      <guid>https://dennislblog.github.io/cnblog/tags/fiance/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Problem</title>
-      <link>https://dennislblog.github.io/tags/problem/</link>
+      <link>https://dennislblog.github.io/cnblog/tags/problem/</link>
       <pubDate>Mon, 01 Jun 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://dennislblog.github.io/tags/problem/</guid>
+      <guid>https://dennislblog.github.io/cnblog/tags/problem/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Thesis</title>
-      <link>https://dennislblog.github.io/tags/thesis/</link>
+      <link>https://dennislblog.github.io/cnblog/tags/thesis/</link>
       <pubDate>Mon, 01 Jun 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://dennislblog.github.io/tags/thesis/</guid>
+      <guid>https://dennislblog.github.io/cnblog/tags/thesis/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Adversarial RL</title>
-      <link>https://dennislblog.github.io/tags/adversarial-rl/</link>
+      <link>https://dennislblog.github.io/cnblog/tags/adversarial-rl/</link>
       <pubDate>Sun, 31 May 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://dennislblog.github.io/tags/adversarial-rl/</guid>
+      <guid>https://dennislblog.github.io/cnblog/tags/adversarial-rl/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Market Making</title>
-      <link>https://dennislblog.github.io/tags/market-making/</link>
+      <link>https://dennislblog.github.io/cnblog/tags/market-making/</link>
       <pubDate>Sun, 31 May 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://dennislblog.github.io/tags/market-making/</guid>
+      <guid>https://dennislblog.github.io/cnblog/tags/market-making/</guid>
       <description></description>
     </item>
     
     <item>
       <title>强化学习</title>
-      <link>https://dennislblog.github.io/tags/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/</link>
+      <link>https://dennislblog.github.io/cnblog/tags/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/</link>
       <pubDate>Thu, 28 May 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://dennislblog.github.io/tags/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/</guid>
+      <guid>https://dennislblog.github.io/cnblog/tags/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/</guid>
       <description></description>
     </item>
     
     <item>
       <title>论文阅读</title>
-      <link>https://dennislblog.github.io/tags/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/</link>
+      <link>https://dennislblog.github.io/cnblog/tags/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/</link>
       <pubDate>Thu, 28 May 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://dennislblog.github.io/tags/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/</guid>
+      <guid>https://dennislblog.github.io/cnblog/tags/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Python</title>
-      <link>https://dennislblog.github.io/tags/python/</link>
+      <link>https://dennislblog.github.io/cnblog/tags/python/</link>
       <pubDate>Thu, 21 May 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://dennislblog.github.io/tags/python/</guid>
+      <guid>https://dennislblog.github.io/cnblog/tags/python/</guid>
       <description></description>
     </item>
     
     <item>
       <title>PyTorch</title>
-      <link>https://dennislblog.github.io/tags/pytorch/</link>
+      <link>https://dennislblog.github.io/cnblog/tags/pytorch/</link>
       <pubDate>Wed, 20 May 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://dennislblog.github.io/tags/pytorch/</guid>
+      <guid>https://dennislblog.github.io/cnblog/tags/pytorch/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Tensorboard</title>
-      <link>https://dennislblog.github.io/tags/tensorboard/</link>
+      <link>https://dennislblog.github.io/cnblog/tags/tensorboard/</link>
       <pubDate>Wed, 20 May 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://dennislblog.github.io/tags/tensorboard/</guid>
+      <guid>https://dennislblog.github.io/cnblog/tags/tensorboard/</guid>
       <description></description>
     </item>
     
     <item>
       <title>VC</title>
-      <link>https://dennislblog.github.io/tags/vc/</link>
+      <link>https://dennislblog.github.io/cnblog/tags/vc/</link>
       <pubDate>Tue, 19 May 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://dennislblog.github.io/tags/vc/</guid>
+      <guid>https://dennislblog.github.io/cnblog/tags/vc/</guid>
       <description></description>
     </item>
     
     <item>
       <title>学习</title>
-      <link>https://dennislblog.github.io/tags/%E5%AD%A6%E4%B9%A0/</link>
+      <link>https://dennislblog.github.io/cnblog/tags/%E5%AD%A6%E4%B9%A0/</link>
       <pubDate>Tue, 19 May 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://dennislblog.github.io/tags/%E5%AD%A6%E4%B9%A0/</guid>
+      <guid>https://dennislblog.github.io/cnblog/tags/%E5%AD%A6%E4%B9%A0/</guid>
       <description></description>
     </item>
     
     <item>
       <title>学习理论</title>
-      <link>https://dennislblog.github.io/tags/%E5%AD%A6%E4%B9%A0%E7%90%86%E8%AE%BA/</link>
+      <link>https://dennislblog.github.io/cnblog/tags/%E5%AD%A6%E4%B9%A0%E7%90%86%E8%AE%BA/</link>
       <pubDate>Tue, 19 May 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://dennislblog.github.io/tags/%E5%AD%A6%E4%B9%A0%E7%90%86%E8%AE%BA/</guid>
+      <guid>https://dennislblog.github.io/cnblog/tags/%E5%AD%A6%E4%B9%A0%E7%90%86%E8%AE%BA/</guid>
       <description></description>
     </item>
     
     <item>
       <title>hugo</title>
-      <link>https://dennislblog.github.io/tags/hugo/</link>
+      <link>https://dennislblog.github.io/cnblog/tags/hugo/</link>
       <pubDate>Tue, 12 Feb 2019 23:39:06 -0600</pubDate>
       
-      <guid>https://dennislblog.github.io/tags/hugo/</guid>
+      <guid>https://dennislblog.github.io/cnblog/tags/hugo/</guid>
       <description></description>
     </item>
     
     <item>
       <title>shortcodes</title>
-      <link>https://dennislblog.github.io/tags/shortcodes/</link>
+      <link>https://dennislblog.github.io/cnblog/tags/shortcodes/</link>
       <pubDate>Tue, 12 Feb 2019 23:39:06 -0600</pubDate>
       
-      <guid>https://dennislblog.github.io/tags/shortcodes/</guid>
+      <guid>https://dennislblog.github.io/cnblog/tags/shortcodes/</guid>
       <description></description>
     </item>
     

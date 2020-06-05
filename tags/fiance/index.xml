@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Fiance on My Site Title</title>
-    <link>https://dennislblog.github.io/tags/fiance/</link>
+    <link>https://dennislblog.github.io/cnblog/tags/fiance/</link>
     <description>Recent content in Fiance on My Site Title</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Mon, 01 Jun 2020 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://dennislblog.github.io/tags/fiance/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://dennislblog.github.io/cnblog/tags/fiance/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Market Game Analysis</title>
-      <link>https://dennislblog.github.io/2020/06/thesis-intro/</link>
+      <link>https://dennislblog.github.io/cnblog/2020/06/thesis-intro/</link>
       <pubDate>Mon, 01 Jun 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://dennislblog.github.io/2020/06/thesis-intro/</guid>
+      <guid>https://dennislblog.github.io/cnblog/2020/06/thesis-intro/</guid>
       <description>Reference [1] Avellaneda, M., &amp;amp; Stoikov, S. (2008). High-frequency trading in a limit order book. Quantitative Finance, 8(3), 217-224.</description>
     </item>
     

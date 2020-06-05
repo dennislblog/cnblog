@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tensorboard on My Site Title</title>
-    <link>https://dennislblog.github.io/tags/tensorboard/</link>
+    <link>https://dennislblog.github.io/cnblog/tags/tensorboard/</link>
     <description>Recent content in Tensorboard on My Site Title</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Wed, 20 May 2020 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://dennislblog.github.io/tags/tensorboard/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://dennislblog.github.io/cnblog/tags/tensorboard/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Tensorboard</title>
-      <link>https://dennislblog.github.io/2020/05/_tensorboard/</link>
+      <link>https://dennislblog.github.io/cnblog/2020/05/_tensorboard/</link>
       <pubDate>Wed, 20 May 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://dennislblog.github.io/2020/05/_tensorboard/</guid>
+      <guid>https://dennislblog.github.io/cnblog/2020/05/_tensorboard/</guid>
       <description>调用方法 1 import torch 2 from torch.autograd import Variable 3 from torch.utils.tensorboard import SummaryWriter 4 5 writer = SummaryWriter(comment=&amp;#34;-test&amp;#34;) 6 with writer: //保证writer调用完关掉 7 writer.method() 8 writer.export_scalars_to_json(&amp;#34;./test.json&amp;#34;) //把scalar信息保存到文件 add_scalar() 在一个图表中记录一</description>
     </item>
     
