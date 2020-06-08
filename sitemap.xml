@@ -3,6 +3,46 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://dennislblog.github.io/cnblog/tags/cloud/</loc>
+    <lastmod>2020-06-07T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://dennislblog.github.io/cnblog/tags/dl/</loc>
+    <lastmod>2020-06-07T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://dennislblog.github.io/cnblog/post/</loc>
+    <lastmod>2020-06-07T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://dennislblog.github.io/cnblog/2020/06/rl-tutorial/</loc>
+    <lastmod>2020-06-07T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://dennislblog.github.io/cnblog/2020/06/gcp-tutorial/</loc>
+    <lastmod>2020-06-07T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://dennislblog.github.io/cnblog/tags/rl/</loc>
+    <lastmod>2020-06-07T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://dennislblog.github.io/cnblog/tags/</loc>
+    <lastmod>2020-06-07T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://dennislblog.github.io/cnblog/tags/tutorial/</loc>
+    <lastmod>2020-06-07T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://dennislblog.github.io/cnblog/tags/fiance/</loc>
     <lastmod>2020-06-01T00:00:00+00:00</lastmod>
   </url>
@@ -13,17 +53,7 @@
   </url>
   
   <url>
-    <loc>https://dennislblog.github.io/cnblog/post/</loc>
-    <lastmod>2020-06-01T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://dennislblog.github.io/cnblog/tags/problem/</loc>
-    <lastmod>2020-06-01T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://dennislblog.github.io/cnblog/tags/</loc>
     <lastmod>2020-06-01T00:00:00+00:00</lastmod>
   </url>
   
@@ -44,11 +74,6 @@
   
   <url>
     <loc>https://dennislblog.github.io/cnblog/tags/review/</loc>
-    <lastmod>2020-05-31T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://dennislblog.github.io/cnblog/tags/rl/</loc>
     <lastmod>2020-05-31T00:00:00+00:00</lastmod>
   </url>
   
@@ -84,11 +109,6 @@
   
   <url>
     <loc>https://dennislblog.github.io/cnblog/2020/05/deep-learning-intro/</loc>
-    <lastmod>2020-05-20T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://dennislblog.github.io/cnblog/tags/dl/</loc>
     <lastmod>2020-05-20T00:00:00+00:00</lastmod>
   </url>
   

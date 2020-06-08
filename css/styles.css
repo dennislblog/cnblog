@@ -16,18 +16,8 @@
   padding: 0;
   box-sizing: border-box;
 }
-html {
-  font-size: calc(0.8em + 0.33vw);
-  font-family: Arial, Helvetica Neue, sans-serif;
-  line-height: 1.5;
-  color: #111;
-  background-color: #fefefe;
-}
 template {
   display: none !important;
-}
-* + * {
-  margin-top: 1.25rem;
 }
 br,
 dt,
@@ -351,13 +341,15 @@ caption {
   overflow-x: hidden;
 }
 .intro-and-nav {
-  font-size: 0.8rem;
+  font-size: 1rem;
+  font-weight: 500;
   width: 15rem;
   height: 100vh;
   position: fixed;
   top: 0;
   left: 0;
   border-right: 2px solid;
+  background-color: #24282b !important;
 }
 .intro-and-nav > div {
   padding: 2.25rem;
@@ -388,7 +380,7 @@ caption {
   margin-left: 15rem;
 }
 .main-and-footer > div {
-  max-width: 50rem;
+  max-width: 60rem;
   margin: 0 auto;
   padding: 1.25rem;
 }
@@ -401,26 +393,23 @@ caption {
 /* Patterns navigation */
 .patterns {
   overflow: auto;
-  margin-top: 1.5rem;
-}
-.patterns * {
-  margin-top: 0;
+  
 }
 .patterns h3 {
   font-size: 1rem;
 }
 .patterns h3 + ul {
-  margin-top: 0.75rem;
+  margin-top: 1.25rem;
 }
 .patterns li {
   line-height: 1.125;
   list-style: none;
 }
 .patterns li + li {
-  margin-top: 0.75rem;
+  margin-top: 1rem;
 }
 .patterns ul ul {
-  margin-left: 0.75rem;
+  margin-left: 1rem;
 }
 .pattern a {
   border: 0;
@@ -527,6 +516,7 @@ caption {
 }
 .note > div {
   margin-left: 0.75rem;
+  margin-top: 0.75rem;
 }
 .note > div > img:first-child {
   height: 1.5rem;
@@ -1075,9 +1065,7 @@ h1 svg {
   color: #fefefe;
 }
 
-.MathJax_Display { 
-  background-color: transparent; 
-}
+
 
 /* Tables of contents */
 /*.table-of-contents {
@@ -1109,17 +1097,3 @@ h1 svg {
   text-decoration: none;
 }*/
 
-/*footnote format*/
-a.footnote-ref{
-  font-family: 'Adelle Cyrillic', 'Times New Roman', serif;
-  font-size: .8em;
-  border: 1px solid #d0d0d0;
-  border-radius: 0.6rem;
-  padding: 0 4px;
-  background: #f7f7f7;
-  color: red;
-}
-
-.toc-h3{
-  padding-left: 0.75rem;
-}

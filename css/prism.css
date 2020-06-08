@@ -259,3 +259,87 @@ a.post-read-more:hover::after{
 	border-bottom: 0 !important;
 	border: none !important;
 }
+
+img.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 70%;
+  margin: 0 auto;
+}
+
+/*footnote format*/
+a.footnote-ref{
+  font-family: 'Adelle Cyrillic', 'Times New Roman', serif;
+  font-size: .8em;
+  border: 1px solid #d0d0d0;
+  border-radius: 0.6rem;
+  padding: 0 4px;
+  background: #f7f7f7;
+  color: red;
+}
+
+.footnotes p{
+	margin-bottom: 0.5rem;
+}
+
+.toc-h3{
+  padding-left: 0.75rem;
+}
+
+.MathJax_Display { 
+  background-color: transparent; 
+  margin: 0.3em 0em !important;
+}
+
+
+html,
+body {
+  height: 100%;
+  background-color: #fefefe;
+  color: #111;
+}
+body {
+  color: #555;
+  font-family: 'Lato', "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-size: 1em;
+  line-height: 2;
+}
+@media (max-width: 991px) {
+  body {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Lato', "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-weight: bold;
+  line-height: 1.5;
+  margin: 20px 0 15px;
+}
+h1 {
+  font-size: 1.5em;
+}
+h2 {
+  font-size: 1.375em;
+}
+h3 {
+  font-size: 1.25em;
+}
+h4 {
+  font-size: 1.125em;
+}
+h5 {
+  font-size: 1em;
+}
+h6 {
+  font-size: 0.875em;
+}
+p {
+  margin: 0 0 20px 0;
+}

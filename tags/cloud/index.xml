@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>DL on My Site Title</title>
-    <link>https://dennislblog.github.io/cnblog/tags/dl/</link>
-    <description>Recent content in DL on My Site Title</description>
+    <title>Cloud on My Site Title</title>
+    <link>https://dennislblog.github.io/cnblog/tags/cloud/</link>
+    <description>Recent content in Cloud on My Site Title</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sun, 07 Jun 2020 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://dennislblog.github.io/cnblog/tags/dl/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://dennislblog.github.io/cnblog/tags/cloud/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -18,15 +18,6 @@
       
       <guid>https://dennislblog.github.io/cnblog/2020/06/gcp-tutorial/</guid>
       <description>&lt;p&gt;notes from Google Cloud Blog &lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;&lt;sup id=&#34;fnref:2&#34;&gt;&lt;a href=&#34;#fn:2&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;2&lt;/a&gt;&lt;/sup&gt; on how to use GCP for reinforcement learning tasks&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>Dive Into Deep Learning</title>
-      <link>https://dennislblog.github.io/cnblog/2020/05/deep-learning-intro/</link>
-      <pubDate>Wed, 20 May 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://dennislblog.github.io/cnblog/2020/05/deep-learning-intro/</guid>
-      <description>&lt;p&gt;notes of book &lt;a href=&#34;https://d2l.ai/&#34;&gt;Dive Into Deep Learning&lt;/a&gt; based on Github repo &lt;a href=&#34;https://github.com/ShusenTang/Dive-into-DL-PyTorch&#34;&gt;d2l-pytorch&lt;/a&gt;&lt;/p&gt;</description>
     </item>
     
   </channel>
