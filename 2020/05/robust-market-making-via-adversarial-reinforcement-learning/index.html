@@ -19,6 +19,8 @@
   <meta name="theme-color" content="#ffffff">
 
   <link rel="stylesheet" href="https://dennislblog.github.io/cnblog/css/prism.css" media="none" onload="this.media='all';">
+  <link rel="stylesheet" href="https://dennislblog.github.io/cnblog/css/syntax.css" media="none" onload="this.media='all';">
+
 
   
   
@@ -520,9 +522,14 @@ $$\begin{align*}X_{n+1} &amp;= X_n + p_n^-\Delta N_n^- - p_n^+\Delta N_n^+ \cr \
 <h2 id="result">Result</h2>
 <h3 id="mm策略">MM策略</h3>
 <p>如下图所示，基本符合预期，因为对<code>inventory</code>有一个即时惩罚，策略比较保守，在开始和结束的时候，<code>inventory</code>对策略的影响要大一些
+
+
+
+
+
 <figure role="group">
     <a href=" https://i.postimg.cc/pTzBRb6H/image.png" class="img-link">
-        <img src="https://i.postimg.cc/pTzBRb6H/image.png" width="60%" title="策略MM">
+        <img src="https://i.postimg.cc/pTzBRb6H/image.png" width=60% title="策略MM">
     </a>
     <figcaption>
         risk-averse Gaussian Policy by NAC-S($\lambda$) with risk-averse reward $\Delta \Pi - 0.01 H^2$
@@ -530,9 +537,14 @@ $$\begin{align*}X_{n+1} &amp;= X_n + p_n^-\Delta N_n^- - p_n^+\Delta N_n^+ \cr \
 </figure></p>
 <h3 id="adversarial-1"><code>Adversarial</code></h3>
 <p>如下图，是一个<code>binary</code>策略，只要做市商库存为负的($H &lt; 0$)，就涨价以此来降低做市商的<code>utility</code> $\Pi = X + HZ$
+
+
+
+
+
 <figure role="group">
     <a href=" https://i.postimg.cc/prvxchTz/image.png" class="img-link">
-        <img src="https://i.postimg.cc/prvxchTz/image.png" width="60%" title="策略AA">
+        <img src="https://i.postimg.cc/prvxchTz/image.png" width=60% title="策略AA">
     </a>
     <figcaption>
         value drift by adversarial in the risk-neutral reward setting $\Delta \Pi$

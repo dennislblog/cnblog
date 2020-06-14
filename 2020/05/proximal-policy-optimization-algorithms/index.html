@@ -19,6 +19,8 @@
   <meta name="theme-color" content="#ffffff">
 
   <link rel="stylesheet" href="https://dennislblog.github.io/cnblog/css/prism.css" media="none" onload="this.media='all';">
+  <link rel="stylesheet" href="https://dennislblog.github.io/cnblog/css/syntax.css" media="none" onload="this.media='all';">
+
 
   
   
@@ -322,9 +324,14 @@
       </div>
     
     <p>summaries on <a href="https://arxiv.org/abs/1707.06347">proximal policy optimization</a>(Schulman, et al., 2017)</p>
-<p><figure role="group">
+<p>
+
+
+
+
+<figure role="group">
     <a href=" https://i.postimg.cc/Pq7BspYD/image.png" class="img-link">
-        <img src="https://i.postimg.cc/Pq7BspYD/image.png" width="60%" title="Stochastic policies">
+        <img src="https://i.postimg.cc/Pq7BspYD/image.png" width=60% title="Stochastic policies">
     </a>
     <figcaption>
         连续控制问题, 来自Katerina Fragkiadaki课件&lt;Natural Policy Gradients, TRPO, PPO&gt;
@@ -399,19 +406,11 @@ $$\nabla_\theta\mathbb{E}_{(s,a)\sim\tau}[f(s,a)]\equiv \mathbb{E}_{(s,a)\sim\ta
 </li>
 </ul>
 </blockquote>
-<p><figure role="group">
-    <a href=" https://www.52coding.com.cn/images/trpo.svg" class="img-link">
-        <img src="https://www.52coding.com.cn/images/trpo.svg" width="60%" title="TRPO算法">
-    </a>
-    <figcaption>
-        算法: TRPO = NPG +Linesearch+monotonic improvement theorem!
-    </figcaption>
-</figure></p>
 <div class="expandable-section">
   
     <h3>
   
-    <button aria-expanded="false" data-expands="js-expandable-d95aa45bd17650ee0bb14f9f0ea9b250">
+    <button aria-expanded="false" data-expands="js-expandable-4112765b7cd1dca8aee1e053de1e8090">
       <span class="expandable-label">详细算法证明</span>
       <svg aria-hidden="true" focusable="false" viewBox="0 0 70.866142 70.866141">
         <g transform="translate(0 -981.5)">
@@ -423,7 +422,7 @@ $$\nabla_\theta\mathbb{E}_{(s,a)\sim\tau}[f(s,a)]\equiv \mathbb{E}_{(s,a)\sim\ta
   
     </h3>
   
-  <div id="js-expandable-d95aa45bd17650ee0bb14f9f0ea9b250" hidden>
+  <div id="js-expandable-4112765b7cd1dca8aee1e053de1e8090" hidden>
     <p>首先定义$\rho_\pi(s)$为<code>discounted visitation frequency</code>
 $$\rho_\pi(s) = \Pr(s_0=s)+\gamma \Pr(s_1=s) + \gamma^2 \Pr(s_2=s)+&hellip;$$
 我们希望更新后的策略，能够获得更大的<code>advantage value</code> $A_\pi(s, a) = Q_\pi(s, a) - V_\pi(s)$，即 (下面式子怎么证明的，为什么<code>advantage value</code>包含<code>old policy</code>)
@@ -439,7 +438,7 @@ $$\begin{align}L_\pi(\pi&rsquo;)&amp;=\sum_s\color{red}{\rho_\pi(s)}\sum_a\pi&rs
 \end{align}$$
 其中$a\sim \pi, s \sim d^\pi(s) = (1-\gamma)\sum_{t=0}^\infty \gamma^t \Pr(s_t=s|\pi)$, <code>the discounted state visitation frequency</code> 经过一系列推导，得到新策略目标的下界，即在新策略下，那些在老策略下奖励高的<code>(s,a)</code>访问概率更大，同时限制新旧策略的差距
 $$\eta(\pi&rsquo;)≥L_\pi(\pi&rsquo;)-C\cdot D_{KL}^\max(\pi, \pi&rsquo;), \text{ where } C=\frac{4\epsilon\gamma}{(1-\gamma)^2}$$
-<img src="https://i.postimg.cc/pd4gn8wT/image.png" alt="" title="通过优化下界不断逼近最优"></p>
+<img src="https://i.postimg.cc/pd4gn8wT/image.png" alt="通过优化下界不断逼近最优" class="center"></p>
 <p>TRPO算法做了如下几点改变 (deep network 计算需要)</p>
 <ol>
 <li>首先是$D_{KL}^\max(\pi, \pi&rsquo;)$ relax成了期望距离 $\bar{D}_{KL}(\pi&rsquo; || \pi)=\mathbb{E}_{s\sim\pi}[D_{KL}(\pi&rsquo;(\cdot|s)||\pi(\cdot|s))]$</li>
@@ -458,7 +457,7 @@ $$\theta_{k+1}=\theta_k+\sqrt{\frac{2\delta}{g^TH^{-1}g}}H^{-1}g$$
 $$\theta_{k+1}=\theta_k+\alpha^j\sqrt{\frac{2\delta}{g^TH^{-1}g}}H^{-1}g$$
 其中$\alpha \in (0,1)$是<code>backtracking coefficient</code><sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup>。另外为了避免存储$H^{-1}$，采用<code>conjugate gradient</code>来计算$g^TH^{-1}g$<sup id="fnref:3"><a href="#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup>，更新步骤为
 $$\theta_{k+1}=\theta_k+\alpha^j\sqrt{\frac{2\delta}{\hat{x}^TH\hat{x}}}\hat{x} \quad \text{ where } \hat{x}\approx H^{-1}g$$
-<img src="https://i.postimg.cc/vB4vKng6/image.png" alt="TRPO算法总结" title="TRPO算法步骤"></p>
+<img src="https://www.52coding.com.cn/images/trpo.svg" alt="算法: TRPO = NPG +Linesearch+monotonic improvement theorem!" class="center"></p>
 <section class="footnotes" role="doc-endnotes">
 <hr>
 <ol>

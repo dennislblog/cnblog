@@ -19,6 +19,8 @@
   <meta name="theme-color" content="#ffffff">
 
   <link rel="stylesheet" href="https://dennislblog.github.io/cnblog/css/prism.css" media="none" onload="this.media='all';">
+  <link rel="stylesheet" href="https://dennislblog.github.io/cnblog/css/syntax.css" media="none" onload="this.media='all';">
+
 
   
   
@@ -444,83 +446,192 @@
     
     <p>tutorial on how to use tensorboard to keep track of learning process</p>
 <h2 id="调用方法">调用方法</h2>
-<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span>    <span style="color:#007020;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">torch</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span>    <span style="color:#007020;font-weight:bold">from</span> <span style="color:#0e84b5;font-weight:bold">torch.autograd</span> <span style="color:#007020;font-weight:bold">import</span> Variable
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span>    <span style="color:#007020;font-weight:bold">from</span> <span style="color:#0e84b5;font-weight:bold">torch.utils.tensorboard</span> <span style="color:#007020;font-weight:bold">import</span> SummaryWriter
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span>    writer <span style="color:#666">=</span> SummaryWriter(comment<span style="color:#666">=</span><span style="color:#4070a0">&#34;-test&#34;</span>)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span>    <span style="color:#007020;font-weight:bold">with</span> writer:                                      <span style="color:#666">//</span><span style="">保证</span>writer调用完关掉
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span>        writer<span style="color:#666">.</span>method() 
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8</span>        writer<span style="color:#666">.</span>export_scalars_to_json(<span style="color:#4070a0">&#34;./test.json&#34;</span>)  <span style="color:#666">//</span><span style="">把</span>scalar信息保存到文件
-</code></pre></div><h2 id="add_scalar">add_scalar()</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python">    <span class="kn">import</span> <span class="nn">torch</span>
+    <span class="kn">from</span> <span class="nn">torch.autograd</span> <span class="kn">import</span> <span class="n">Variable</span>
+    <span class="kn">from</span> <span class="nn">torch.utils.tensorboard</span> <span class="kn">import</span> <span class="n">SummaryWriter</span>
+
+    <span class="n">writer</span> <span class="o">=</span> <span class="n">SummaryWriter</span><span class="p">(</span><span class="n">comment</span><span class="o">=</span><span class="s2">&#34;-test&#34;</span><span class="p">)</span>
+    <span class="k">with</span> <span class="n">writer</span><span class="p">:</span>                                      <span class="o">//</span><span class="err">保证</span><span class="n">writer调用完关掉</span>
+        <span class="n">writer</span><span class="o">.</span><span class="n">method</span><span class="p">()</span> 
+        <span class="n">writer</span><span class="o">.</span><span class="n">export_scalars_to_json</span><span class="p">(</span><span class="s2">&#34;./test.json&#34;</span><span class="p">)</span>  <span class="o">//</span><span class="err">把</span><span class="n">scalar信息保存到文件</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="add_scalar">add_scalar()</h2>
 <p>在一个图表中记录一个标量的变化，常用于 Loss 和 Accuracy 曲线的记录。</p>
-<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span>    <span style="color:#4070a0">&#34;&#34;&#34;Arguments
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span style="color:#4070a0">        tag(string)- 该图的标签，即每张图的名字
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span style="color:#4070a0">        scalar_value(float or string)- 曲线图的 y 坐标
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span style="color:#4070a0">        global_step(int)- 曲线图的 x 坐标
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span style="color:#4070a0">    &#34;&#34;&#34;</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span>    <span style="color:#007020;font-weight:bold">for</span> n_iter <span style="color:#007020;font-weight:bold">in</span> <span style="color:#007020">range</span>(<span style="color:#40a070">100</span>):  <span style="color:#666">//</span><span style="">不一定每个时间点都记录，可以每</span><span style="color:#40a070">1000</span><span style="">个</span>step记录一下
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span>        y <span style="color:#666">=</span> torch<span style="color:#666">.</span>rand(<span style="color:#40a070">1</span>)  
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8</span>        writer<span style="color:#666">.</span>add_scalar(<span style="color:#4070a0">&#39;data/scalar&#39;</span>, y[<span style="color:#40a070">0</span>], n_iter)  
-</code></pre></div><h2 id="add_scalars">add_scalars()</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python">    <span class="s2">&#34;&#34;&#34;Arguments
+</span><span class="s2">        tag(string)- 该图的标签，即每张图的名字
+</span><span class="s2">        scalar_value(float or string)- 曲线图的 y 坐标
+</span><span class="s2">        global_step(int)- 曲线图的 x 坐标
+</span><span class="s2">    &#34;&#34;&#34;</span>
+    <span class="k">for</span> <span class="n">n_iter</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">):</span>  <span class="o">//</span><span class="err">不一定每个时间点都记录，可以每</span><span class="mi">1000</span><span class="err">个</span><span class="n">step记录一下</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>  
+        <span class="n">writer</span><span class="o">.</span><span class="n">add_scalar</span><span class="p">(</span><span class="s1">&#39;data/scalar&#39;</span><span class="p">,</span> <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">n_iter</span><span class="p">)</span>  
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="add_scalars">add_scalars()</h2>
 <p>在一个图表中记录多个标量的变化，常用于对比，如 Train Loss 和 Valid Loss 的比较等</p>
-<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span>    <span style="color:#4070a0">&#34;&#34;&#34;Arguments
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span style="color:#4070a0">        main_tag(string)- 该图的标签
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span style="color:#4070a0">        tag_scalar_dict(dict)- key 是变量的 tag，value是变量的值
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span style="color:#4070a0">        global_step(int)- 曲线图的 x 坐标
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span style="color:#4070a0">    &#34;&#34;&#34;</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span>    <span style="color:#007020;font-weight:bold">for</span> i <span style="color:#007020;font-weight:bold">in</span> <span style="color:#007020">range</span>(<span style="color:#40a070">100</span>):  <span style="color:#666">//</span><span style="">不一定每个时间点都记录，可以每</span><span style="color:#40a070">1000</span><span style="">个</span>step记录一下
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span>        y1, y2, y3 <span style="color:#666">=</span> i <span style="color:#666">*</span> np<span style="color:#666">.</span>sin(i), i <span style="color:#666">*</span> np<span style="color:#666">.</span>cos(i), i <span style="color:#666">*</span> np<span style="color:#666">.</span>arctan(i)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8</span>        writer<span style="color:#666">.</span>add_scalars(<span style="color:#4070a0">&#39;data/scalar&#39;</span>, {<span style="color:#4070a0">&#39;sinx&#39;</span>: y1, <span style="color:#4070a0">&#39;cosx&#39;</span>: y2, <span style="color:#4070a0">&#39;arctanx&#39;</span>: y3}, i)
-</code></pre></div><h2 id="add_histogram">add_histogram()</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python">    <span class="s2">&#34;&#34;&#34;Arguments
+</span><span class="s2">        main_tag(string)- 该图的标签
+</span><span class="s2">        tag_scalar_dict(dict)- key 是变量的 tag，value是变量的值
+</span><span class="s2">        global_step(int)- 曲线图的 x 坐标
+</span><span class="s2">    &#34;&#34;&#34;</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">):</span>  <span class="o">//</span><span class="err">不一定每个时间点都记录，可以每</span><span class="mi">1000</span><span class="err">个</span><span class="n">step记录一下</span>
+        <span class="n">y1</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">y3</span> <span class="o">=</span> <span class="n">i</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="n">i</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="n">i</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="n">writer</span><span class="o">.</span><span class="n">add_scalars</span><span class="p">(</span><span class="s1">&#39;data/scalar&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;sinx&#39;</span><span class="p">:</span> <span class="n">y1</span><span class="p">,</span> <span class="s1">&#39;cosx&#39;</span><span class="p">:</span> <span class="n">y2</span><span class="p">,</span> <span class="s1">&#39;arctanx&#39;</span><span class="p">:</span> <span class="n">y3</span><span class="p">},</span> <span class="n">i</span><span class="p">)</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="add_histogram">add_histogram()</h2>
 <p>用于监测权值及梯度的分布变化情况，便于诊断网络更新方向是否正确，非常占用内存</p>
-<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span>    <span style="color:#4070a0">&#34;&#34;&#34;Arguments
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span style="color:#4070a0">        tag(string)- 该图的标签
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span style="color:#4070a0">        values(torch.Tensor, numpy.array or string)- 用于绘制直方图的值
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span style="color:#4070a0">        global_step(int)- 曲线图的 y 坐标, 从上往下看
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span style="color:#4070a0">    &#34;&#34;&#34;</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span>    <span style="color:#007020;font-weight:bold">for</span> name, param <span style="color:#007020;font-weight:bold">in</span> model<span style="color:#666">.</span>named_parameters():  
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span>        writer<span style="color:#666">.</span>add_histogram(name, param<span style="color:#666">.</span>clone()<span style="color:#666">.</span>cpu()<span style="color:#666">.</span>data<span style="color:#666">.</span>numpy(), i_step)  
-</code></pre></div><h2 id="add_image">add_image()</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python">    <span class="s2">&#34;&#34;&#34;Arguments
+</span><span class="s2">        tag(string)- 该图的标签
+</span><span class="s2">        values(torch.Tensor, numpy.array or string)- 用于绘制直方图的值
+</span><span class="s2">        global_step(int)- 曲线图的 y 坐标, 从上往下看
+</span><span class="s2">    &#34;&#34;&#34;</span>
+    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">named_parameters</span><span class="p">():</span>  
+        <span class="n">writer</span><span class="o">.</span><span class="n">add_histogram</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">param</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">i_step</span><span class="p">)</span>  
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="add_image">add_image()</h2>
 <p>绘制图片，可用于检查模型的输入，监测 feature map 的变化，或是观察 weight</p>
-<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span>    <span style="color:#4070a0">&#34;&#34;&#34;Arguments
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span style="color:#4070a0">        tag(string)- 该图的标签
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span style="color:#4070a0">        img_tensor(torch.Tensor,numpy.array, or string/blobname)- 需要可视化的图片数据，
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span style="color:#4070a0">                shape = [C,H,W] channel x height x width
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span style="color:#4070a0">        global_step(int)- x坐标
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span style="color:#4070a0">    
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span style="color:#4070a0">    ps: 通常用`torchvision.utils.make_grid()`把一个batch的图片放到一个图片里展现 
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span style="color:#4070a0">    (可以设置`nrow`每行图片数, `padding`每两个图片之间间距, `scale_each`等)
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span style="color:#4070a0">    &#34;&#34;&#34;</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span>    img <span style="color:#666">=</span> torch<span style="color:#666">.</span>rand(<span style="color:#40a070">32</span>, <span style="color:#40a070">3</span>, <span style="color:#40a070">64</span>, <span style="color:#40a070">64</span>)  <span style="color:#666">//</span> (B x C x H x W)  <span style="color:#40a070">32</span><span style="">个</span>batch, <span style="color:#40a070">3</span><span style="">个</span>channel
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span>    <span style="color:#007020;font-weight:bold">if</span> i_step <span style="color:#666">%</span> <span style="color:#40a070">10</span> <span style="color:#666">==</span> <span style="color:#40a070">0</span>:             <span style="color:#666">//</span> <span style="">每</span><span style="color:#40a070">10</span><span style="">个</span>step画一张图
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span>        x <span style="color:#666">=</span> torchvision<span style="color:#666">.</span>utils<span style="color:#666">.</span>make_grid(img, normalize<span style="color:#666">=</span>True, scale_each<span style="color:#666">=</span>True)  
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span>        <span style="color:#666">//</span> x<span style="color:#666">.</span>size<span style="color:#666">=</span> (<span style="color:#40a070">3</span>, <span style="color:#40a070">266</span>, <span style="color:#40a070">530</span>) (C<span style="color:#666">*</span>H<span style="color:#666">*</span>W) <span style="">每一张图片都被</span>scale过<span style="">，然后</span>normalize
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span>        writer<span style="color:#666">.</span>add_image(<span style="color:#4070a0">&#39;Image&#39;</span>, x, i_step)  
-</code></pre></div><h2 id="add_graph">add_graph()</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python">    <span class="s2">&#34;&#34;&#34;Arguments
+</span><span class="s2">        tag(string)- 该图的标签
+</span><span class="s2">        img_tensor(torch.Tensor,numpy.array, or string/blobname)- 需要可视化的图片数据，
+</span><span class="s2">                shape = [C,H,W] channel x height x width
+</span><span class="s2">        global_step(int)- x坐标
+</span><span class="s2">    
+</span><span class="s2">    ps: 通常用`torchvision.utils.make_grid()`把一个batch的图片放到一个图片里展现 
+</span><span class="s2">    (可以设置`nrow`每行图片数, `padding`每两个图片之间间距, `scale_each`等)
+</span><span class="s2">    &#34;&#34;&#34;</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">64</span><span class="p">)</span>  <span class="o">//</span> <span class="p">(</span><span class="n">B</span> <span class="n">x</span> <span class="n">C</span> <span class="n">x</span> <span class="n">H</span> <span class="n">x</span> <span class="n">W</span><span class="p">)</span>  <span class="mi">32</span><span class="err">个</span><span class="n">batch</span><span class="p">,</span> <span class="mi">3</span><span class="err">个</span><span class="n">channel</span>
+    <span class="k">if</span> <span class="n">i_step</span> <span class="o">%</span> <span class="mi">10</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>             <span class="o">//</span> <span class="err">每</span><span class="mi">10</span><span class="err">个</span><span class="n">step画一张图</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">torchvision</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">make_grid</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">scale_each</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>  
+        <span class="o">//</span> <span class="n">x</span><span class="o">.</span><span class="n">size</span><span class="o">=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">266</span><span class="p">,</span> <span class="mi">530</span><span class="p">)</span> <span class="p">(</span><span class="n">C</span><span class="o">*</span><span class="n">H</span><span class="o">*</span><span class="n">W</span><span class="p">)</span> <span class="err">每一张图片都被</span><span class="n">scale过</span><span class="err">，然后</span><span class="n">normalize</span>
+        <span class="n">writer</span><span class="o">.</span><span class="n">add_image</span><span class="p">(</span><span class="s1">&#39;Image&#39;</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">i_step</span><span class="p">)</span>  
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="add_graph">add_graph()</h2>
 <p>绘制网络结构拓扑图</p>
-<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span>    <span style="color:#4070a0">&#34;&#34;&#34;Arguments
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span style="color:#4070a0">        model(torch.nn.Module)- 模型实例
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span style="color:#4070a0">        input_to_model(torch.autograd.Variable)- 模型的输入数据，可以随机，只要shape符合就可
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span style="color:#4070a0">    &#34;&#34;&#34;</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span>    <span style="color:#007020">input</span> <span style="color:#666">=</span> torch<span style="color:#666">.</span>rand(<span style="color:#40a070">6</span>, <span style="color:#40a070">3</span>, <span style="color:#40a070">224</span>, <span style="color:#40a070">224</span>)       <span style="color:#666">//</span>model <span style="color:#007020">input</span> B x C x H x W
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span>    writer<span style="color:#666">.</span>add_graph(model, <span style="color:#007020">input</span>)  
-</code></pre></div><h2 id="add_embedding">add_embedding()</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python">    <span class="s2">&#34;&#34;&#34;Arguments
+</span><span class="s2">        model(torch.nn.Module)- 模型实例
+</span><span class="s2">        input_to_model(torch.autograd.Variable)- 模型的输入数据，可以随机，只要shape符合就可
+</span><span class="s2">    &#34;&#34;&#34;</span>
+    <span class="nb">input</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">224</span><span class="p">,</span> <span class="mi">224</span><span class="p">)</span>       <span class="o">//</span><span class="n">model</span> <span class="nb">input</span> <span class="n">B</span> <span class="n">x</span> <span class="n">C</span> <span class="n">x</span> <span class="n">H</span> <span class="n">x</span> <span class="n">W</span>
+    <span class="n">writer</span><span class="o">.</span><span class="n">add_graph</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="nb">input</span><span class="p">)</span>  
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="add_embedding">add_embedding()</h2>
 <p>在三维空间或二维空间展示数据分布，可选 T-SNE、PCA 和 CUSTOM 方法</p>
-<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span>    <span style="color:#4070a0">&#34;&#34;&#34;Arguments
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span style="color:#4070a0">        mat(torch.Tensor or numpy.array)- 需要绘制的数据，必须是 shape = (N, D) N 是样本数，D 是feature数量?
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span style="color:#4070a0">        metadata(list)- 数据的标签，是一个 list，长度为 N
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span style="color:#4070a0">        label_img(torch.Tensor)- 空间中展示的图片，shape = (N,C,H,W)
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span style="color:#4070a0">        global_step(int)- 记录时间点?
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span style="color:#4070a0">    &#34;&#34;&#34;</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span>    dataset <span style="color:#666">=</span> datasets<span style="color:#666">.</span>MNIST(<span style="color:#4070a0">&#39;mnist&#39;</span>, train<span style="color:#666">=</span>False, download<span style="color:#666">=</span>True)  
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span>    images <span style="color:#666">=</span> dataset<span style="color:#666">.</span>test_data[:<span style="color:#40a070">100</span>]<span style="color:#666">.</span>float()  
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span>    label <span style="color:#666">=</span> dataset<span style="color:#666">.</span>test_labels[:<span style="color:#40a070">100</span>]  
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span>    features <span style="color:#666">=</span> images<span style="color:#666">.</span>view(<span style="color:#40a070">100</span>, <span style="color:#40a070">784</span>)       <span style="color:#666">//</span><span style="">将二维图片转成一维数据</span>  
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span>    writer<span style="color:#666">.</span>add_embedding(features, metadata<span style="color:#666">=</span>label, label_img<span style="color:#666">=</span>images<span style="color:#666">.</span>unsqueeze(<span style="color:#40a070">1</span>))  
-</code></pre></div><p><figure role="group">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python">    <span class="s2">&#34;&#34;&#34;Arguments
+</span><span class="s2">        mat(torch.Tensor or numpy.array)- 需要绘制的数据，必须是 shape = (N, D) N 是样本数，D 是feature数量?
+</span><span class="s2">        metadata(list)- 数据的标签，是一个 list，长度为 N
+</span><span class="s2">        label_img(torch.Tensor)- 空间中展示的图片，shape = (N,C,H,W)
+</span><span class="s2">        global_step(int)- 记录时间点?
+</span><span class="s2">    &#34;&#34;&#34;</span>
+    <span class="n">dataset</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">MNIST</span><span class="p">(</span><span class="s1">&#39;mnist&#39;</span><span class="p">,</span> <span class="n">train</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">download</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>  
+    <span class="n">images</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">test_data</span><span class="p">[:</span><span class="mi">100</span><span class="p">]</span><span class="o">.</span><span class="n">float</span><span class="p">()</span>  
+    <span class="n">label</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">test_labels</span><span class="p">[:</span><span class="mi">100</span><span class="p">]</span>  
+    <span class="n">features</span> <span class="o">=</span> <span class="n">images</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">784</span><span class="p">)</span>       <span class="o">//</span><span class="err">将二维图片转成一维数据</span>  
+    <span class="n">writer</span><span class="o">.</span><span class="n">add_embedding</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">label</span><span class="p">,</span> <span class="n">label_img</span><span class="o">=</span><span class="n">images</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>  
+</code></pre></td></tr></table>
+</div>
+</div><p>
+
+
+
+
+<figure role="group">
     <a href=" https://i.postimg.cc/Y9FQFjNd/image.png" class="img-link">
-        <img src="https://i.postimg.cc/Y9FQFjNd/image.png" width="60%" title="数据分布">
+        <img src="https://i.postimg.cc/Y9FQFjNd/image.png" width=60% title="数据分布">
     </a>
     <figcaption>
         可以看一看哪些样本比较难区分
@@ -528,163 +639,339 @@
 </figure></p>
 <h2 id="add_figure">add_figure</h2>
 <p>添加 matplotlib 图片到图像中，记录模型训练效果</p>
-<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span>    <span style="color:#4070a0">&#34;&#34;&#34;Arguments
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span style="color:#4070a0">        tag(string)- 该图的标签
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span style="color:#4070a0">        feature((matplotlib.pyplot.figure)- 一个或一组(list)图
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span style="color:#4070a0">        global_step(int)- 记录时间点
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span style="color:#4070a0">        close(bool)- 是否自动关闭这个图
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span style="color:#4070a0">    &#34;&#34;&#34;</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span>    tag <span style="color:#666">=</span> env<span style="color:#666">.</span>spec<span style="color:#666">.</span>id <span style="color:#666">+</span> <span style="color:#4070a0">&#34;/&#34;</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span>    <span style="color:#007020;font-weight:bold">if</span> stats<span style="color:#666">.</span>episode_rewards:
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span>        writer<span style="color:#666">.</span>add_scalar(tag <span style="color:#666">+</span> <span style="color:#4070a0">&#34;episode_reward&#34;</span>, stats<span style="color:#666">.</span>episode_rewards[<span style="color:#666">-</span><span style="color:#40a070">1</span>], episode_num)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span>    <span style="color:#007020;font-weight:bold">if</span> episode<span style="color:#666">.</span>rewards:
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span>        rewards <span style="color:#666">=</span> np<span style="color:#666">.</span>stack(episode<span style="color:#666">.</span>rewards)        <span style="color:#666">//</span>gather <span style="color:#007020">all</span> rewards
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span>        figure <span style="color:#666">=</span> plt<span style="color:#666">.</span>figure()
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span>        writer<span style="color:#666">.</span>add_histogram(tag <span style="color:#666">+</span> <span style="color:#4070a0">&#34;reward&#34;</span>, rewards, episode_num)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span>        plt<span style="color:#666">.</span>plot(rewards, label<span style="color:#666">=</span><span style="color:#4070a0">&#34;reward&#34;</span>)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span>        plt<span style="color:#666">.</span>xlabel(<span style="color:#4070a0">&#34;Step&#34;</span>)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span>        plt<span style="color:#666">.</span>ylabel(<span style="color:#4070a0">&#34;Reward&#34;</span>)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span>        plt<span style="color:#666">.</span>tight_layout()
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span>        plt<span style="color:#666">.</span>legend()
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span>        <span style="color:#007020;font-weight:bold">if</span> np<span style="color:#666">.</span>all(np<span style="color:#666">.</span>isfinite(env<span style="color:#666">.</span>reward_range)):
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span>            plt<span style="color:#666">.</span>ylim(env<span style="color:#666">.</span>reward_range[<span style="color:#40a070">0</span>], env<span style="color:#666">.</span>reward_range[<span style="color:#40a070">1</span>])
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span>        writer<span style="color:#666">.</span>add_figure(tag <span style="color:#666">+</span> <span style="color:#4070a0">&#34;rewards&#34;</span>, figure, episode_num)
-</code></pre></div><h2 id="例子">例子</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python">    <span class="s2">&#34;&#34;&#34;Arguments
+</span><span class="s2">        tag(string)- 该图的标签
+</span><span class="s2">        feature((matplotlib.pyplot.figure)- 一个或一组(list)图
+</span><span class="s2">        global_step(int)- 记录时间点
+</span><span class="s2">        close(bool)- 是否自动关闭这个图
+</span><span class="s2">    &#34;&#34;&#34;</span>
+    <span class="n">tag</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">spec</span><span class="o">.</span><span class="n">id</span> <span class="o">+</span> <span class="s2">&#34;/&#34;</span>
+    <span class="k">if</span> <span class="n">stats</span><span class="o">.</span><span class="n">episode_rewards</span><span class="p">:</span>
+        <span class="n">writer</span><span class="o">.</span><span class="n">add_scalar</span><span class="p">(</span><span class="n">tag</span> <span class="o">+</span> <span class="s2">&#34;episode_reward&#34;</span><span class="p">,</span> <span class="n">stats</span><span class="o">.</span><span class="n">episode_rewards</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">episode_num</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">episode</span><span class="o">.</span><span class="n">rewards</span><span class="p">:</span>
+        <span class="n">rewards</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">episode</span><span class="o">.</span><span class="n">rewards</span><span class="p">)</span>        <span class="o">//</span><span class="n">gather</span> <span class="nb">all</span> <span class="n">rewards</span>
+        <span class="n">figure</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+        <span class="n">writer</span><span class="o">.</span><span class="n">add_histogram</span><span class="p">(</span><span class="n">tag</span> <span class="o">+</span> <span class="s2">&#34;reward&#34;</span><span class="p">,</span> <span class="n">rewards</span><span class="p">,</span> <span class="n">episode_num</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">rewards</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&#34;reward&#34;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&#34;Step&#34;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&#34;Reward&#34;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">reward_range</span><span class="p">)):</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">reward_range</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">env</span><span class="o">.</span><span class="n">reward_range</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">writer</span><span class="o">.</span><span class="n">add_figure</span><span class="p">(</span><span class="n">tag</span> <span class="o">+</span> <span class="s2">&#34;rewards&#34;</span><span class="p">,</span> <span class="n">figure</span><span class="p">,</span> <span class="n">episode_num</span><span class="p">)</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="例子">例子</h2>
 <h3 id="任务">任务</h3>
 <p><code>CartPole-V0</code>任务，智能点需要决定两种动作：向左或向右来使其上的杆保持直立，环境的状态不是简单的四个环境状态(位置、速度等，见源代码)，而是以车为中心的一块屏幕作为输入(类似atari game)。在这项任务中，每增加一个时间步，奖励+1，如果杆子掉得太远或大车移动距离中心超过2.4个单位，环境就会终止(我们的info game可以学习这一点)</p>
 <h3 id="经验回放池">经验回放池</h3>
 <p>通过从中随机抽样，组成<code>Batch</code>的<code>Transition</code>将被取消相关性。结果表明，这大大稳定和改进了训练过程</p>
-<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span>    Transition <span style="color:#666">=</span> namedtuple(<span style="color:#4070a0">&#39;Transition&#39;</span>,(<span style="color:#4070a0">&#39;state&#39;</span>, <span style="color:#4070a0">&#39;action&#39;</span>, <span style="color:#4070a0">&#39;next_state&#39;</span>, <span style="color:#4070a0">&#39;reward&#39;</span>))
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span>    <span style="color:#007020;font-weight:bold">class</span> <span style="color:#0e84b5;font-weight:bold">ReplayMemory</span>(<span style="color:#007020">object</span>):
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span>        <span style="color:#007020;font-weight:bold">def</span> <span style="color:#06287e">push</span>(self, <span style="color:#666">*</span>args):
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span>            <span style="color:#4070a0">&#34;&#34;&#34;Saves a transition.&#34;&#34;&#34;</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span>            self<span style="color:#666">.</span>memory[self<span style="color:#666">.</span>position] <span style="color:#666">=</span> Transition(<span style="color:#666">*</span>args)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span>            self<span style="color:#666">.</span>position <span style="color:#666">=</span> (self<span style="color:#666">.</span>position <span style="color:#666">+</span> <span style="color:#40a070">1</span>) <span style="color:#666">%</span> self<span style="color:#666">.</span>capacity
-</code></pre></div><h3 id="dqn算法">DQN算法</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python">    <span class="n">Transition</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;Transition&#39;</span><span class="p">,(</span><span class="s1">&#39;state&#39;</span><span class="p">,</span> <span class="s1">&#39;action&#39;</span><span class="p">,</span> <span class="s1">&#39;next_state&#39;</span><span class="p">,</span> <span class="s1">&#39;reward&#39;</span><span class="p">))</span>
+    <span class="k">class</span> <span class="nc">ReplayMemory</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">push</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+            <span class="s2">&#34;&#34;&#34;Saves a transition.&#34;&#34;&#34;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">memory</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">position</span><span class="p">]</span> <span class="o">=</span> <span class="n">Transition</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">position</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">position</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">capacity</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="dqn算法">DQN算法</h3>
 <p>为了尽量减少这个错误，我们将使用Huber loss。Huber损失在误差很小的情况下表现为均方误差，但在误差较大的情况下表现为平均绝对误差 —— 这使得当对的估计噪音很大时，对有异常值奖励的数据更加robust。</p>
-<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span>    <span style="color:#007020;font-weight:bold">class</span> <span style="color:#0e84b5;font-weight:bold">DQN</span>(nn<span style="color:#666">.</span>Module):
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span>        <span style="color:#007020;font-weight:bold">def</span> __init__(self, h, w, outputs):
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span>            <span style="color:#007020">super</span>(DQN, self)<span style="color:#666">.</span>__init__()
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span>            self<span style="color:#666">.</span>conv1 <span style="color:#666">=</span> nn<span style="color:#666">.</span>Conv2d(<span style="color:#40a070">3</span>, <span style="color:#40a070">16</span>, kernel_size<span style="color:#666">=</span><span style="color:#40a070">5</span>, stride<span style="color:#666">=</span><span style="color:#40a070">2</span>)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span>            self<span style="color:#666">.</span>bn1 <span style="color:#666">=</span> nn<span style="color:#666">.</span>BatchNorm2d(<span style="color:#40a070">16</span>)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span>            self<span style="color:#666">.</span>conv2 <span style="color:#666">=</span> nn<span style="color:#666">.</span>Conv2d(<span style="color:#40a070">16</span>, <span style="color:#40a070">32</span>, kernel_size<span style="color:#666">=</span><span style="color:#40a070">5</span>, stride<span style="color:#666">=</span><span style="color:#40a070">2</span>)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span>            self<span style="color:#666">.</span>bn2 <span style="color:#666">=</span> nn<span style="color:#666">.</span>BatchNorm2d(<span style="color:#40a070">32</span>)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span>            self<span style="color:#666">.</span>conv3 <span style="color:#666">=</span> nn<span style="color:#666">.</span>Conv2d(<span style="color:#40a070">32</span>, <span style="color:#40a070">32</span>, kernel_size<span style="color:#666">=</span><span style="color:#40a070">5</span>, stride<span style="color:#666">=</span><span style="color:#40a070">2</span>)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span>            self<span style="color:#666">.</span>bn3 <span style="color:#666">=</span> nn<span style="color:#666">.</span>BatchNorm2d(<span style="color:#40a070">32</span>)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span>            self<span style="color:#666">.</span>head <span style="color:#666">=</span> nn<span style="color:#666">.</span>Linear(linear_input_size, outputs)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span>        <span style="color:#666">//</span> <span style="">使用一个元素调用以确定下一个操作，或在优化期间调用批处理。返回张量</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span>        <span style="color:#007020;font-weight:bold">def</span> <span style="color:#06287e">forward</span>(self, x):
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span>            x <span style="color:#666">=</span> F<span style="color:#666">.</span>relu(self<span style="color:#666">.</span>bn1(self<span style="color:#666">.</span>conv1(x)))
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span>            x <span style="color:#666">=</span> F<span style="color:#666">.</span>relu(self<span style="color:#666">.</span>bn2(self<span style="color:#666">.</span>conv2(x)))
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span>            x <span style="color:#666">=</span> F<span style="color:#666">.</span>relu(self<span style="color:#666">.</span>bn3(self<span style="color:#666">.</span>conv3(x)))
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span>            <span style="color:#007020;font-weight:bold">return</span> self<span style="color:#666">.</span>head(x<span style="color:#666">.</span>view(x<span style="color:#666">.</span>size(<span style="color:#40a070">0</span>), <span style="color:#666">-</span><span style="color:#40a070">1</span>))
-</code></pre></div><h3 id="获取输入">获取输入</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python">    <span class="k">class</span> <span class="nc">DQN</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+
+        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">outputs</span><span class="p">):</span>
+            <span class="nb">super</span><span class="p">(</span><span class="n">DQN</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">conv1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bn1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">BatchNorm2d</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">conv2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bn2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">BatchNorm2d</span><span class="p">(</span><span class="mi">32</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">conv3</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bn3</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">BatchNorm2d</span><span class="p">(</span><span class="mi">32</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">head</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">linear_input_size</span><span class="p">,</span> <span class="n">outputs</span><span class="p">)</span>
+
+        <span class="o">//</span> <span class="err">使用一个元素调用以确定下一个操作，或在优化期间调用批处理。返回张量</span>
+        <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bn1</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">conv1</span><span class="p">(</span><span class="n">x</span><span class="p">)))</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bn2</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">conv2</span><span class="p">(</span><span class="n">x</span><span class="p">)))</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bn3</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">conv3</span><span class="p">(</span><span class="n">x</span><span class="p">)))</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="获取输入">获取输入</h3>
 <p>从环境中提取和处理渲染图像。使用<code>torchvision</code>包预处理，这样就可以很容易地组合图像转换</p>
-<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span>    resize <span style="color:#666">=</span> T<span style="color:#666">.</span>Compose([T<span style="color:#666">.</span>ToPILImage(),
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span>                    T<span style="color:#666">.</span>Resize(<span style="color:#40a070">40</span>, interpolation<span style="color:#666">=</span>Image<span style="color:#666">.</span>CUBIC),
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span>                    T<span style="color:#666">.</span>ToTensor()])
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span>    <span style="color:#007020;font-weight:bold">def</span> <span style="color:#06287e">get_screen</span>():
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span>        <span style="color:#666">//</span> <span style="">返回</span> gym <span style="">需要的</span><span style="color:#40a070">400</span>x600x3 <span style="">图片</span>, <span style="">但有时会更大，如</span><span style="color:#40a070">800</span>x1200x3<span style="color:#666">.</span> <span style="">将其转换为</span>torch (CHW)<span style="color:#666">.</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span>        screen <span style="color:#666">=</span> env<span style="color:#666">.</span>render(mode<span style="color:#666">=</span><span style="color:#4070a0">&#39;rgb_array&#39;</span>)<span style="color:#666">.</span>transpose((<span style="color:#40a070">2</span>, <span style="color:#40a070">0</span>, <span style="color:#40a070">1</span>))
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span>        <span style="color:#666">//</span> <span style="">车子在下半部分，因此请剥去屏幕的顶部和底部。</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span>        screen <span style="color:#666">=</span> screen[:, <span style="color:#007020">int</span>(screen_height<span style="color:#666">*</span><span style="color:#40a070">0.4</span>):<span style="color:#007020">int</span>(screen_height <span style="color:#666">*</span> <span style="color:#40a070">0.8</span>)]
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span>        view_width <span style="color:#666">=</span> <span style="color:#007020">int</span>(screen_width <span style="color:#666">*</span> <span style="color:#40a070">0.6</span>)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span>        cart_location <span style="color:#666">=</span> get_cart_location(screen_width)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span>        <span style="color:#666">//</span> <span style="">比较</span> cart_location <span style="">和</span> view_width <span style="">去掉边缘，取得一个以车子为中心的正方形图像</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span>        screen <span style="color:#666">=</span> screen[:, :, slice_range]
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span>        screen <span style="color:#666">=</span> np<span style="color:#666">.</span>ascontiguousarray(screen, dtype<span style="color:#666">=</span>np<span style="color:#666">.</span>float32) <span style="color:#666">/</span> <span style="color:#40a070">255</span>    <span style="color:#666">//</span><span style="">转换为</span>float类
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span>        screen <span style="color:#666">=</span> torch<span style="color:#666">.</span>from_numpy(screen)                                <span style="color:#666">//</span><span style="">转换为</span>torch类
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span>        <span style="color:#007020;font-weight:bold">return</span> resize(screen)<span style="color:#666">.</span>unsqueeze(<span style="color:#40a070">0</span>)<span style="color:#666">.</span>to(device)                    <span style="color:#666">//</span><span style="">加入</span>batch维度
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span>    <span style="color:#666">//</span> test get_screen()
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span>    env<span style="color:#666">.</span>reset()
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span>    plt<span style="color:#666">.</span>figure()
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span>    plt<span style="color:#666">.</span>imshow(get_screen()<span style="color:#666">.</span>cpu()<span style="color:#666">.</span>squeeze(<span style="color:#40a070">0</span>)<span style="color:#666">.</span>permute(<span style="color:#40a070">1</span>, <span style="color:#40a070">2</span>, <span style="color:#40a070">0</span>)<span style="color:#666">.</span>numpy(),
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span>            interpolation<span style="color:#666">=</span><span style="color:#4070a0">&#39;none&#39;</span>)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23</span>    plt<span style="color:#666">.</span>title(<span style="color:#4070a0">&#39;Example extracted screen&#39;</span>)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24</span>    plt<span style="color:#666">.</span>show()
-</code></pre></div><h3 id="超参数和配置">超参数和配置</h3>
-<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span>    BATCH_SIZE <span style="color:#666">=</span> <span style="color:#40a070">128</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span>    GAMMA <span style="color:#666">=</span> <span style="color:#40a070">0.999</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span>    EPS_START <span style="color:#666">=</span> <span style="color:#40a070">0.9</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span>    EPS_END <span style="color:#666">=</span> <span style="color:#40a070">0.05</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span>    EPS_DECAY <span style="color:#666">=</span> <span style="color:#40a070">200</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span>    TARGET_UPDATE <span style="color:#666">=</span> <span style="color:#40a070">10</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span>    
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span>    n_actions <span style="color:#666">=</span> env<span style="color:#666">.</span>action_space<span style="color:#666">.</span>n
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span>    policy_net <span style="color:#666">=</span> DQN(screen_height, screen_width, n_actions)<span style="color:#666">.</span>to(device)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span>    target_net <span style="color:#666">=</span> DQN(screen_height, screen_width, n_actions)<span style="color:#666">.</span>to(device)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span>    target_net<span style="color:#666">.</span>load_state_dict(policy_net<span style="color:#666">.</span>state_dict())    <span style="color:#666">//</span><span style="">复制参数到</span>target_net
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span>    target_net<span style="color:#666">.</span>eval()
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span>    optimizer <span style="color:#666">=</span> optim<span style="color:#666">.</span>RMSprop(policy_net<span style="color:#666">.</span>parameters())     <span style="color:#666">//</span><span style="">累计梯度大的</span>feature更新率小
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span>    memory <span style="color:#666">=</span> ReplayMemory(<span style="color:#40a070">10000</span>)                           <span style="color:#666">//</span>memory size
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span>    <span style="color:#007020;font-weight:bold">def</span> <span style="color:#06287e">select_action</span>(state):
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span>        eps_threshold <span style="color:#666">=</span> EPS_END <span style="color:#666">+</span> (EPS_START <span style="color:#666">-</span> EPS_END) <span style="color:#666">*</span>  math<span style="color:#666">.</span>exp(<span style="color:#666">-</span><span style="color:#40a070">1.</span> <span style="color:#666">*</span> steps_done <span style="color:#666">/</span> EPS_DECAY)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span>        steps_done <span style="color:#666">+=</span> <span style="color:#40a070">1</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span>        <span style="color:#007020;font-weight:bold">if</span> random<span style="color:#666">.</span>random() <span style="color:#666">&gt;</span> eps_threshold:                <span style="color:#666">//</span>epsilon<span style="color:#666">-</span>greedy 
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span>            <span style="color:#007020;font-weight:bold">with</span> torch<span style="color:#666">.</span>no_grad():
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span>                <span style="color:#666">//</span> t<span style="color:#666">.</span>max(<span style="color:#40a070">1</span>) <span style="">返回每一行最大值，为什么提取第二个</span>index<span style="">？</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23</span>                <span style="color:#007020;font-weight:bold">return</span> policy_net(state)<span style="color:#666">.</span>max(<span style="color:#40a070">1</span>)[<span style="color:#40a070">1</span>]<span style="color:#666">.</span>view(<span style="color:#40a070">1</span>, <span style="color:#40a070">1</span>)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24</span>        <span style="color:#007020;font-weight:bold">else</span>:
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25</span>            <span style="color:#007020;font-weight:bold">return</span> torch<span style="color:#666">.</span>tensor([[random<span style="color:#666">.</span>randrange(n_actions)]], device<span style="color:#666">=</span>device, dtype<span style="color:#666">=</span>torch<span style="color:#666">.</span>long)
-</code></pre></div><h3 id="训练循环">训练循环</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python">    <span class="n">resize</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span><span class="n">T</span><span class="o">.</span><span class="n">ToPILImage</span><span class="p">(),</span>
+                    <span class="n">T</span><span class="o">.</span><span class="n">Resize</span><span class="p">(</span><span class="mi">40</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="n">Image</span><span class="o">.</span><span class="n">CUBIC</span><span class="p">),</span>
+                    <span class="n">T</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">()])</span>
+
+    <span class="k">def</span> <span class="nf">get_screen</span><span class="p">():</span>
+        <span class="o">//</span> <span class="err">返回</span> <span class="n">gym</span> <span class="err">需要的</span><span class="mi">400</span><span class="n">x600x3</span> <span class="err">图片</span><span class="p">,</span> <span class="err">但有时会更大，如</span><span class="mi">800</span><span class="n">x1200x3</span><span class="o">.</span> <span class="err">将其转换为</span><span class="n">torch</span> <span class="p">(</span><span class="n">CHW</span><span class="p">)</span><span class="o">.</span>
+        <span class="n">screen</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s1">&#39;rgb_array&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="o">//</span> <span class="err">车子在下半部分，因此请剥去屏幕的顶部和底部。</span>
+        <span class="n">screen</span> <span class="o">=</span> <span class="n">screen</span><span class="p">[:,</span> <span class="nb">int</span><span class="p">(</span><span class="n">screen_height</span><span class="o">*</span><span class="mf">0.4</span><span class="p">):</span><span class="nb">int</span><span class="p">(</span><span class="n">screen_height</span> <span class="o">*</span> <span class="mf">0.8</span><span class="p">)]</span>
+        <span class="n">view_width</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">screen_width</span> <span class="o">*</span> <span class="mf">0.6</span><span class="p">)</span>
+        <span class="n">cart_location</span> <span class="o">=</span> <span class="n">get_cart_location</span><span class="p">(</span><span class="n">screen_width</span><span class="p">)</span>
+        <span class="o">//</span> <span class="err">比较</span> <span class="n">cart_location</span> <span class="err">和</span> <span class="n">view_width</span> <span class="err">去掉边缘，取得一个以车子为中心的正方形图像</span>
+        <span class="n">screen</span> <span class="o">=</span> <span class="n">screen</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">slice_range</span><span class="p">]</span>
+        <span class="n">screen</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ascontiguousarray</span><span class="p">(</span><span class="n">screen</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span> <span class="o">/</span> <span class="mi">255</span>    <span class="o">//</span><span class="err">转换为</span><span class="n">float类</span>
+        <span class="n">screen</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">screen</span><span class="p">)</span>                                <span class="o">//</span><span class="err">转换为</span><span class="n">torch类</span>
+        <span class="k">return</span> <span class="n">resize</span><span class="p">(</span><span class="n">screen</span><span class="p">)</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>                    <span class="o">//</span><span class="err">加入</span><span class="n">batch维度</span>
+
+    <span class="o">//</span> <span class="n">test</span> <span class="n">get_screen</span><span class="p">()</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">get_screen</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">permute</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span>
+            <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Example extracted screen&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="超参数和配置">超参数和配置</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python">    <span class="n">BATCH_SIZE</span> <span class="o">=</span> <span class="mi">128</span>
+    <span class="n">GAMMA</span> <span class="o">=</span> <span class="mf">0.999</span>
+    <span class="n">EPS_START</span> <span class="o">=</span> <span class="mf">0.9</span>
+    <span class="n">EPS_END</span> <span class="o">=</span> <span class="mf">0.05</span>
+    <span class="n">EPS_DECAY</span> <span class="o">=</span> <span class="mi">200</span>
+    <span class="n">TARGET_UPDATE</span> <span class="o">=</span> <span class="mi">10</span>
+    
+    <span class="n">n_actions</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">n</span>
+    <span class="n">policy_net</span> <span class="o">=</span> <span class="n">DQN</span><span class="p">(</span><span class="n">screen_height</span><span class="p">,</span> <span class="n">screen_width</span><span class="p">,</span> <span class="n">n_actions</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+    <span class="n">target_net</span> <span class="o">=</span> <span class="n">DQN</span><span class="p">(</span><span class="n">screen_height</span><span class="p">,</span> <span class="n">screen_width</span><span class="p">,</span> <span class="n">n_actions</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+    <span class="n">target_net</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">policy_net</span><span class="o">.</span><span class="n">state_dict</span><span class="p">())</span>    <span class="o">//</span><span class="err">复制参数到</span><span class="n">target_net</span>
+    <span class="n">target_net</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+
+    <span class="n">optimizer</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">RMSprop</span><span class="p">(</span><span class="n">policy_net</span><span class="o">.</span><span class="n">parameters</span><span class="p">())</span>     <span class="o">//</span><span class="err">累计梯度大的</span><span class="n">feature更新率小</span>
+    <span class="n">memory</span> <span class="o">=</span> <span class="n">ReplayMemory</span><span class="p">(</span><span class="mi">10000</span><span class="p">)</span>                           <span class="o">//</span><span class="n">memory</span> <span class="n">size</span>
+
+    <span class="k">def</span> <span class="nf">select_action</span><span class="p">(</span><span class="n">state</span><span class="p">):</span>
+        <span class="n">eps_threshold</span> <span class="o">=</span> <span class="n">EPS_END</span> <span class="o">+</span> <span class="p">(</span><span class="n">EPS_START</span> <span class="o">-</span> <span class="n">EPS_END</span><span class="p">)</span> <span class="o">*</span>  <span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mf">1.</span> <span class="o">*</span> <span class="n">steps_done</span> <span class="o">/</span> <span class="n">EPS_DECAY</span><span class="p">)</span>
+        <span class="n">steps_done</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">&gt;</span> <span class="n">eps_threshold</span><span class="p">:</span>                <span class="o">//</span><span class="n">epsilon</span><span class="o">-</span><span class="n">greedy</span> 
+            <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+                <span class="o">//</span> <span class="n">t</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="err">返回每一行最大值，为什么提取第二个</span><span class="n">index</span><span class="err">？</span>
+                <span class="k">return</span> <span class="n">policy_net</span><span class="p">(</span><span class="n">state</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([[</span><span class="n">random</span><span class="o">.</span><span class="n">randrange</span><span class="p">(</span><span class="n">n_actions</span><span class="p">)]],</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">long</span><span class="p">)</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="训练循环">训练循环</h3>
 <ol>
 <li>首先对一批数据进行采样，将所有张量连接成一个张量</li>
 <li>然后计算Q(s_t, a) 和 基于greedy-Q和reward算出来的 E[Q(s_t,a)]</li>
 <li>还使用目标网络增加训练稳定性，每隔一段时间，对目标网络进行更新</li>
 </ol>
-<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span>    <span style="color:#007020;font-weight:bold">def</span> <span style="color:#06287e">optimize_model</span>():
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span>        <span style="color:#007020;font-weight:bold">if</span> <span style="color:#007020">len</span>(memory) <span style="color:#666">&lt;</span> BATCH_SIZE: <span style="color:#007020;font-weight:bold">return</span> 
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span>        
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span>        transitions <span style="color:#666">=</span> memory<span style="color:#666">.</span>sample(BATCH_SIZE)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span>        batch <span style="color:#666">=</span> Transition(<span style="color:#666">*</span><span style="color:#007020">zip</span>(<span style="color:#666">*</span>transitions))              <span style="color:#666">//</span><span style="">转置批量样本</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span>        <span style="color:#666">//</span><span style="">计算</span>Q(s_t, a): <span style="">模型计算</span> Q(s_t)<span style="">，然后选择所采取行动的列</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span>        state_action_values <span style="color:#666">=</span> policy_net(state_batch)<span style="color:#666">.</span>gather(<span style="color:#40a070">1</span>, action_batch)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span>        
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span>        <span style="color:#666">//</span><span style="">注意考虑状态是否是结束状态，</span><span style="color:#007020">max</span>(<span style="color:#40a070">1</span>)[<span style="color:#40a070">0</span>]<span style="">贪婪求出</span>Q_max(s<span style="color:#4070a0">&#39;) &#39;</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span>        non_final_mask <span style="color:#666">=</span> torch<span style="color:#666">.</span>tensor(<span style="color:#007020">tuple</span>(<span style="color:#007020">map</span>(<span style="color:#007020;font-weight:bold">lambda</span> s: s <span style="color:#007020;font-weight:bold">is</span> <span style="color:#007020;font-weight:bold">not</span> None,batch<span style="color:#666">.</span>next_state)), device<span style="color:#666">=</span>device, dtype<span style="color:#666">=</span>torch<span style="color:#666">.</span>uint8)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span>        non_final_next_states <span style="color:#666">=</span> torch<span style="color:#666">.</span>cat([s <span style="color:#007020;font-weight:bold">for</span> s <span style="color:#007020;font-weight:bold">in</span> batch<span style="color:#666">.</span>next_state <span style="color:#007020;font-weight:bold">if</span> s <span style="color:#007020;font-weight:bold">is</span> <span style="color:#007020;font-weight:bold">not</span> None])
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span>        next_state_values <span style="color:#666">=</span> torch<span style="color:#666">.</span>zeros(BATCH_SIZE, device<span style="color:#666">=</span>device)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span>        next_state_values[non_final_mask] <span style="color:#666">=</span> target_net(non_final_next_states)<span style="color:#666">.</span>max(<span style="color:#40a070">1</span>)[<span style="color:#40a070">0</span>]<span style="color:#666">.</span>detach()
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span>        
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span>        <span style="color:#666">//</span><span style="">计算期望</span> Q <span style="">值</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span>        expected_state_action_values <span style="color:#666">=</span> (next_state_values <span style="color:#666">*</span> GAMMA) <span style="color:#666">+</span> reward_batch
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span>        <span style="color:#666">//</span><span style="">计算</span> Huber <span style="">损失</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span>        loss <span style="color:#666">=</span> F<span style="color:#666">.</span>smooth_l1_loss(state_action_values, expected_state_action_values<span style="color:#666">.</span>unsqueeze(<span style="color:#40a070">1</span>))
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span>        <span style="color:#666">//</span><span style="">优化模型</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span>        optimizer<span style="color:#666">.</span>zero_grad()
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span>        loss<span style="color:#666">.</span>backward()
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span>        <span style="color:#007020;font-weight:bold">for</span> param <span style="color:#007020;font-weight:bold">in</span> policy_net<span style="color:#666">.</span>parameters():
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23</span>            param<span style="color:#666">.</span>grad<span style="color:#666">.</span>data<span style="color:#666">.</span>clamp_(<span style="color:#666">-</span><span style="color:#40a070">1</span>, <span style="color:#40a070">1</span>)                   <span style="color:#666">//</span><span style="">限定</span>gradient的范围
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24</span>        optimizer<span style="color:#666">.</span>step()
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26</span>    <span style="color:#666">//</span><span style="">主训练循环</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27</span>    num_episodes <span style="color:#666">=</span> <span style="color:#40a070">50</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28</span>    <span style="color:#007020;font-weight:bold">for</span> i_episode <span style="color:#007020;font-weight:bold">in</span> <span style="color:#007020">range</span>(num_episodes):
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29</span>        env<span style="color:#666">.</span>reset()
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30</span>        state <span style="color:#666">=</span> current_screen <span style="color:#666">-</span> last_screen
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31</span>        <span style="color:#007020;font-weight:bold">for</span> t <span style="color:#007020;font-weight:bold">in</span> count():
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32</span>            action <span style="color:#666">=</span> select_action(state)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33</span>            _, reward, done, _ <span style="color:#666">=</span> env<span style="color:#666">.</span>step(action<span style="color:#666">.</span>item())
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34</span>            reward <span style="color:#666">=</span> torch<span style="color:#666">.</span>tensor([reward], device<span style="color:#666">=</span>device)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35</span>            <span style="color:#007020;font-weight:bold">if</span> <span style="color:#007020;font-weight:bold">not</span> done:
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36</span>                next_state <span style="color:#666">=</span> current_screen <span style="color:#666">-</span> last_screen
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37</span>            <span style="color:#007020;font-weight:bold">else</span>:
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38</span>                next_state <span style="color:#666">=</span> None
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39</span>            memory<span style="color:#666">.</span>push(state, action, next_state, reward)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40</span>            state <span style="color:#666">=</span> next_state
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41</span>            optimize_model()
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42</span>            <span style="color:#007020;font-weight:bold">if</span> done:
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43</span>                <span style="color:#007020;font-weight:bold">break</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44</span>    <span style="color:#666">//</span><span style="">更新目标网络</span>, <span style="">复制在</span> DQN <span style="">中的所有权重偏差</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45</span>    <span style="color:#007020;font-weight:bold">if</span> i_episode <span style="color:#666">%</span> TARGET_UPDATE <span style="color:#666">==</span> <span style="color:#40a070">0</span>:
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46</span>        target_net<span style="color:#666">.</span>load_state_dict(policy_net<span style="color:#666">.</span>state_dict())
-</code></pre></div>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python">    <span class="k">def</span> <span class="nf">optimize_model</span><span class="p">():</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">memory</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">BATCH_SIZE</span><span class="p">:</span> <span class="k">return</span> 
+        
+        <span class="n">transitions</span> <span class="o">=</span> <span class="n">memory</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">BATCH_SIZE</span><span class="p">)</span>
+        <span class="n">batch</span> <span class="o">=</span> <span class="n">Transition</span><span class="p">(</span><span class="o">*</span><span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">transitions</span><span class="p">))</span>              <span class="o">//</span><span class="err">转置批量样本</span>
+        <span class="o">//</span><span class="err">计算</span><span class="n">Q</span><span class="p">(</span><span class="n">s_t</span><span class="p">,</span> <span class="n">a</span><span class="p">):</span> <span class="err">模型计算</span> <span class="n">Q</span><span class="p">(</span><span class="n">s_t</span><span class="p">)</span><span class="err">，然后选择所采取行动的列</span>
+        <span class="n">state_action_values</span> <span class="o">=</span> <span class="n">policy_net</span><span class="p">(</span><span class="n">state_batch</span><span class="p">)</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">action_batch</span><span class="p">)</span>
+        
+        <span class="o">//</span><span class="err">注意考虑状态是否是结束状态，</span><span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="err">贪婪求出</span><span class="n">Q_max</span><span class="p">(</span><span class="n">s</span><span class="s1">&#39;) &#39;</span>
+        <span class="n">non_final_mask</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">s</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">,</span><span class="n">batch</span><span class="o">.</span><span class="n">next_state</span><span class="p">)),</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+        <span class="n">non_final_next_states</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">s</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">batch</span><span class="o">.</span><span class="n">next_state</span> <span class="k">if</span> <span class="n">s</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">])</span>
+        <span class="n">next_state_values</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">BATCH_SIZE</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span>
+        <span class="n">next_state_values</span><span class="p">[</span><span class="n">non_final_mask</span><span class="p">]</span> <span class="o">=</span> <span class="n">target_net</span><span class="p">(</span><span class="n">non_final_next_states</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span>
+        
+        <span class="o">//</span><span class="err">计算期望</span> <span class="n">Q</span> <span class="err">值</span>
+        <span class="n">expected_state_action_values</span> <span class="o">=</span> <span class="p">(</span><span class="n">next_state_values</span> <span class="o">*</span> <span class="n">GAMMA</span><span class="p">)</span> <span class="o">+</span> <span class="n">reward_batch</span>
+        <span class="o">//</span><span class="err">计算</span> <span class="n">Huber</span> <span class="err">损失</span>
+        <span class="n">loss</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">smooth_l1_loss</span><span class="p">(</span><span class="n">state_action_values</span><span class="p">,</span> <span class="n">expected_state_action_values</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+        <span class="o">//</span><span class="err">优化模型</span>
+        <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+        <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">policy_net</span><span class="o">.</span><span class="n">parameters</span><span class="p">():</span>
+            <span class="n">param</span><span class="o">.</span><span class="n">grad</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">clamp_</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>                   <span class="o">//</span><span class="err">限定</span><span class="n">gradient的范围</span>
+        <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+
+    <span class="o">//</span><span class="err">主训练循环</span>
+    <span class="n">num_episodes</span> <span class="o">=</span> <span class="mi">50</span>
+    <span class="k">for</span> <span class="n">i_episode</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_episodes</span><span class="p">):</span>
+        <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="n">current_screen</span> <span class="o">-</span> <span class="n">last_screen</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">count</span><span class="p">():</span>
+            <span class="n">action</span> <span class="o">=</span> <span class="n">select_action</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+            <span class="n">_</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">done</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">action</span><span class="o">.</span><span class="n">item</span><span class="p">())</span>
+            <span class="n">reward</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="n">reward</span><span class="p">],</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">done</span><span class="p">:</span>
+                <span class="n">next_state</span> <span class="o">=</span> <span class="n">current_screen</span> <span class="o">-</span> <span class="n">last_screen</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">next_state</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="n">memory</span><span class="o">.</span><span class="n">push</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">action</span><span class="p">,</span> <span class="n">next_state</span><span class="p">,</span> <span class="n">reward</span><span class="p">)</span>
+            <span class="n">state</span> <span class="o">=</span> <span class="n">next_state</span>
+            <span class="n">optimize_model</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">done</span><span class="p">:</span>
+                <span class="k">break</span>
+    <span class="o">//</span><span class="err">更新目标网络</span><span class="p">,</span> <span class="err">复制在</span> <span class="n">DQN</span> <span class="err">中的所有权重偏差</span>
+    <span class="k">if</span> <span class="n">i_episode</span> <span class="o">%</span> <span class="n">TARGET_UPDATE</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">target_net</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">policy_net</span><span class="o">.</span><span class="n">state_dict</span><span class="p">())</span>
+</code></pre></td></tr></table>
+</div>
+</div>
 	
 
 <a href="#" id="back-to-top" class="back-to-top" style="display: inline;">Back to Top</a>

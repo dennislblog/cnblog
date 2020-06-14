@@ -19,6 +19,8 @@
   <meta name="theme-color" content="#ffffff">
 
   <link rel="stylesheet" href="https://dennislblog.github.io/cnblog/css/prism.css" media="none" onload="this.media='all';">
+  <link rel="stylesheet" href="https://dennislblog.github.io/cnblog/css/syntax.css" media="none" onload="this.media='all';">
+
 
   
   
@@ -245,6 +247,61 @@
           </a>
         </li>
       
+        
+        <li class="toc-h2">
+          
+          
+          
+          
+          <a href="#%e4%b8%80%e4%b8%aa%e8%b0%b7%e6%ad%8c%e4%ba%91%e8%ae%a1%e7%ae%97%e7%9b%b8%e5%85%b3%e7%9a%84repo%e8%a7%a3%e6%9e%9067%22%3e%e4%b8%80%e4%b8%aa%e8%b0%b7%e6%ad%8c%e4%ba%91%e8%ae%a1%e7%ae%97%e7%9b%b8%e5%85%b3%e7%9a%84Repo%e8%a7%a3%e6%9e%90%3csup%20id%3d%22fnref%3a5%22%3e%3ca%20href%3d%22%23fn%3a5%22%20class%3d%22footnote-ref%22%20role%3d%22doc-noteref%22%3e5%3c%2fa%3e%3c%2fsup%3e%3csup%20id%3d%22fnref%3a6%22%3e%3ca%20href%3d%22%23fn%3a6%22%20class%3d%22footnote-ref%22%20role%3d%22doc-noteref" style="padding-left: 0rem">
+            一个谷歌云计算相关的Repo解析56
+          </a>
+        </li>
+      
+        
+        <li class="toc-h3">
+          
+          
+          
+          
+          <a href="#%e5%88%9b%e5%bb%ba%e4%ba%91%e8%ae%a1%e7%ae%97%e8%99%9a%e6%8b%9f%e6%9c%ba%e5%ae%9e%e4%be%8b" style="padding-left: 0rem">
+            创建云计算虚拟机实例
+          </a>
+        </li>
+      
+        
+        <li class="toc-h3">
+          
+          
+          
+          
+          <a href="#%e5%9f%ba%e4%ba%8eansible%e7%ae%a1%e7%90%86%e4%b8%8d%e5%90%8c%e5%ae%9e%e4%be%8b" style="padding-left: 0rem">
+            基于ansible管理不同实例
+          </a>
+        </li>
+      
+        
+        <li class="toc-h3">
+          
+          
+          
+          
+          <a href="#%e5%9c%a8%e6%89%80%e6%9c%89%e6%89%98%e7%ae%a1%e6%9c%8d%e5%8a%a1%e5%99%a8%e4%b8%8a%e5%ae%89%e8%a3%85%e5%b7%a5%e5%85%b7" style="padding-left: 0rem">
+            在所有托管服务器上安装工具
+          </a>
+        </li>
+      
+        
+        <li class="toc-h3">
+          
+          
+          
+          
+          <a href="#%e5%9c%a8%e6%89%80%e6%9c%89%e6%89%98%e7%ae%a1%e6%9c%8d%e5%8a%a1%e5%99%a8%e4%b8%8a%e6%89%a7%e8%a1%8c%e5%ae%9e%e9%aa%8c" style="padding-left: 0rem">
+            在所有托管服务器上执行实验
+          </a>
+        </li>
+      
     </ol>
   </nav>
 
@@ -309,9 +366,14 @@
     
     <p>notes from Google Cloud Blog <sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup><sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup> on how to use GCP for reinforcement learning tasks</p>
 <h2 id="谷歌早期的impala模型3">谷歌早期的IMPALA模型<sup id="fnref:3"><a href="#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup></h2>
-<p><figure role="group">
+<p>
+
+
+
+
+<figure role="group">
     <a href=" pics/impala.gif" class="img-link">
-        <img src="pics/impala.gif" width="60%" title="impala framework">
+        <img src="pics/impala.gif" width=60% title="impala framework">
     </a>
     <figcaption>
         IMPALA学习框架，有一个<code>central agent</code>不断完善模型，并传递给不同的影分身，让他们去探索相同的环境
@@ -325,21 +387,455 @@
       <use xlink:href="#info"></use>
     </svg>
     
-这个和 A3C 模型有什么不一样？ 
+这个和 A2C 模型有什么不一样？ 
     <br>
-    
+    <img src="pics/a2c.webp" alt="a2c vs impala" class="center">
+<p>在<code>a2c</code>里，每一个<code>Actor</code>不仅收集经验，还要完成梯度计算，先完成经验收集的<code>Actor</code>也需要等待其他<code>Actor</code>完成后才能进行梯度计算操作。在<code>Impala</code>里，学习和操作的分离导致<code>Actor</code>的策略落后于<code>Learner</code>的策略
   </div>
 </aside>
 </p>
 <h2 id="改进版本的seed模型4">改进版本的SEED模型<sup id="fnref:4"><a href="#fn:4" class="footnote-ref" role="doc-noteref">4</a></sup></h2>
-<p><figure role="group">
+<p>
+
+
+
+
+<figure role="group">
     <a href=" pics/seed.gif" class="img-link">
-        <img src="pics/seed.gif" width="60%" title="seed framework">
+        <img src="pics/seed.gif" width=60% title="seed framework">
     </a>
     <figcaption>
         SEED学习框架，只有一个<code>model</code>完成学习和预测，并且把预测结果传输给每一个环境，这不就是<code>multi-env</code>?
     </figcaption>
 </figure></p>
+<h2 id="一个谷歌云计算相关的repo解析67">一个谷歌云计算相关的Repo解析<sup id="fnref:5"><a href="#fn:5" class="footnote-ref" role="doc-noteref">5</a></sup><sup id="fnref:6"><a href="#fn:6" class="footnote-ref" role="doc-noteref">6</a></sup></h2>
+<h3 id="创建云计算虚拟机实例">创建云计算虚拟机实例</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sh" data-lang="sh">    <span class="c1"># bash ./scripts/gcp-create-instances.sh 可以同时运行多个instance执行不同实验</span>
+    gcloud compute instances create rl-worker-0001 --source-instance-template rl-04cpu --zone<span class="o">=</span>europe-west1-b --labels <span class="nv">experiment</span><span class="o">=</span>breakout_a2c,algo<span class="o">=</span>a2c
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="基于ansible管理不同实例">基于<code>ansible</code>管理不同实例</h3>
+<p>
+
+
+
+
+<figure role="group">
+    <a href=" pics/ansible.jpg" class="img-link">
+        <img src="pics/ansible.jpg" width=60% title="Ansible 工作原理">
+    </a>
+    <figcaption>
+        用户通过写playbook把所有命令分发给被托管的主机实例
+    </figcaption>
+</figure>
+自动化管理<code>instance</code>配置和云服务管理</p>
+<ol>
+<li>安装<code>ansible</code>，可以使用<code>pip install ansible</code>，用<code>ansible --version</code>验证版本，</li>
+<li>编辑<code>host inventory</code>，告诉<code>ansible</code>哪些<code>实例</code>需要被托管，还可以将他们分类管理，例如下面的</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="w">
+</span><span class="w">    </span><span class="k">plugin</span><span class="p">:</span><span class="w"> </span>gcp_compute<span class="w">
+</span><span class="w">    </span>projects<span class="p">:</span><span class="w">
+</span><span class="w">    </span>- projectname<span class="w">
+</span><span class="w">    </span><span class="k">auth_kind</span><span class="p">:</span><span class="w"> </span>serviceaccount<span class="w">
+</span><span class="w">    </span>groups<span class="p">:</span><span class="w">
+</span><span class="w">    </span><span class="k">rl</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="w">    </span>filters<span class="p">:</span><span class="w">
+</span><span class="w">    </span>- <span class="s1">&#39;labels.algo = ppo&#39;</span><span class="w">
+</span><span class="w">    </span>- any<span class="w"> </span>filters<span class="w"> </span>you<span class="w"> </span>may<span class="w"> </span>want<span class="w">
+</span><span class="w">    </span><span class="k">service_account_file</span><span class="p">:</span><span class="w"> </span>/home/yourdir/gcp/serviceaccount.json<span class="w">
+</span></code></pre></td></tr></table>
+</div>
+</div><h3 id="在所有托管服务器上安装工具">在所有托管服务器上安装工具</h3>
+<p>从<code>Ansible Galaxy</code>下载别人写好的<code>role</code>，然后指定每一个<code>role</code>需要执行的命令</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sh" data-lang="sh">    ansible-galaxy install geerlingguy.docker geerlingguy.pip
+</code></pre></td></tr></table>
+</div>
+</div><p>对敏感数据文件进行加密，存放在<code>vault/mongo.yaml</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sh" data-lang="sh">    ansible-playbook full_setup.yaml -i inventory/rl.gcp.yml --vault-id /home/jerry/gcp/vault_password.secret -e @vault/mongo.yaml
+</code></pre></td></tr></table>
+</div>
+</div><p>下面是一个<code>rl.gcp.yml</code>的例子，明确了<code>主机名称</code>, 并激活权限提升<code>(become:yes)</code>，</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="w">    </span><span class="c"># Root role - set up server packages that require higher privilege</span><span class="w">
+</span><span class="w">    </span>- <span class="k">name</span><span class="p">:</span><span class="w"> </span>Priviledged<span class="w"> </span>server<span class="w"> </span>setup<span class="w">
+</span><span class="w">        </span><span class="k">hosts</span><span class="p">:</span><span class="w"> </span>rl<span class="w">
+</span><span class="w">        </span><span class="k">become</span><span class="p">:</span><span class="w"> </span>yes<span class="w">
+</span><span class="w">        </span>roles<span class="p">:</span><span class="w">
+</span><span class="w">            </span>- <span class="k">role</span><span class="p">:</span><span class="w"> </span>geerlingguy.docker<span class="w">
+</span><span class="w">            </span>vars<span class="p">:</span><span class="w">
+</span><span class="w">                </span>docker_users<span class="p">:</span><span class="w">
+</span><span class="w">                </span>- ubuntu<span class="w">
+</span><span class="w">            </span>- <span class="k">role</span><span class="p">:</span><span class="w"> </span>geerlingguy.pip<span class="w">
+</span><span class="w">            </span>vars<span class="p">:</span><span class="w">
+</span><span class="w">                </span>pip_install_packages<span class="p">:</span><span class="w">
+</span><span class="w">                </span>- docker<span class="w">
+</span><span class="w">                </span>- daemonize<span class="w">
+</span><span class="w">                </span>- pyyaml<span class="w">
+</span><span class="w">            </span>- <span class="k">role</span><span class="p">:</span><span class="w"> </span>nvidia-docker<span class="w">
+</span></code></pre></td></tr></table>
+</div>
+</div><p>对于<code>geerlingguy.docker</code>和<code>geerlingguy.pip</code>，其中的变量<code>vars</code>都将在<code>roles</code>中生效，而<code>nvidia-docker</code>则被定义在<code>roles/nvidia-docker</code>文件夹里，定义需要被执行的任务，实现的变量，安装依赖等等 (<code>apt</code>是linux里的安装工具，<code>state</code>代表仅搜索稳定的版本)
+<div class="expandable-section">
+  
+    <h3>
+  
+    <button aria-expanded="false" data-expands="js-expandable-e66d920b6e67b09817a5cfd107f6849b">
+      <span class="expandable-label">GPU镜像</span>
+      <svg aria-hidden="true" focusable="false" viewBox="0 0 70.866142 70.866141">
+        <g transform="translate(0 -981.5)">
+          <rect style="stroke-width:0;fill:currentColor" ry="5" height="60" width="9.8985" y="987.36" x="30.051" class="up-strut" />
+          <rect style="stroke-width:0;fill:currentColor" ry="5" height="10" width="60" y="1012.4" x="5"/>
+        </g>
+      </svg>
+    </button>
+  
+    </h3>
+  
+  <div id="js-expandable-e66d920b6e67b09817a5cfd107f6849b" hidden>
+    <div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="w">    </span><span class="k">docker_restart_handler_state</span><span class="p">:</span><span class="w"> </span>restarted<span class="w">
+</span><span class="w">    </span><span class="k">nvidia_cuda_package_url</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1604/x86_64/cuda-repo-ubuntu1604_9.2.148-1_amd64.deb&#34;</span><span class="w">
+</span><span class="w">    </span><span class="k">nvidia_cuda_key_url</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1604/x86_64/7fa2af80.pub&#34;</span><span class="w">
+</span><span class="w">    </span><span class="c"># defaults/main.yml</span><span class="w">
+</span><span class="w">    </span>- <span class="k">name</span><span class="p">:</span><span class="w"> </span>restart<span class="w"> </span>docker<span class="w">
+</span><span class="w">        </span><span class="k">service</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;name=docker state={{ docker_restart_handler_state }}&#34;</span><span class="w">
+</span><span class="w">    </span><span class="c"># handlers/main.yml 上面就是满足条件就会被触发，需要和下面任务中的notify对应</span><span class="w">
+</span><span class="w">    </span>- <span class="k">name</span><span class="p">:</span><span class="w"> </span>Download<span class="w"> </span>CUDA<span class="w"> </span>package<span class="w">
+</span><span class="w">        </span>get_url<span class="p">:</span><span class="w">
+</span><span class="w">        </span><span class="k">url</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;{{ nvidia_cuda_package_url }}&#34;</span><span class="w">
+</span><span class="w">        </span><span class="k">dest</span><span class="p">:</span><span class="w"> </span>/tmp/cuda_install.deb<span class="w">
+</span><span class="w">    </span>- <span class="k">name</span><span class="p">:</span><span class="w"> </span>CUDA<span class="w"> </span>|<span class="w"> </span>Install<span class="w"> </span>downloaded<span class="w"> </span>deb<span class="w"> </span>package<span class="w"> </span>for<span class="w"> </span>Ubuntu<span class="w"> </span><span class="m">16.04</span><span class="w">
+</span><span class="w">        </span>apt<span class="p">:</span><span class="w">
+</span><span class="w">            </span><span class="k">deb</span><span class="p">:</span><span class="w"> </span>/tmp/cuda_install.deb<span class="w">
+</span><span class="w">    </span>- <span class="k">name</span><span class="p">:</span><span class="w"> </span>Install<span class="w"> </span>cuda<span class="w"> </span>repo<span class="w"> </span>key<span class="w">
+</span><span class="w">        </span>apt_key<span class="p">:</span><span class="w">
+</span><span class="w">            </span><span class="k">url</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;{{nvidia_cuda_key_url}}&#34;</span><span class="w">
+</span><span class="w">            </span><span class="k">state</span><span class="p">:</span><span class="w"> </span>present<span class="w">
+</span><span class="w">    </span>- <span class="k">name</span><span class="p">:</span><span class="w"> </span>Install<span class="w"> </span>cuda<span class="w">
+</span><span class="w">        </span>apt<span class="p">:</span><span class="w">
+</span><span class="w">            </span><span class="k">name</span><span class="p">:</span><span class="w"> </span>cuda<span class="w">
+</span><span class="w">            </span><span class="k">state</span><span class="p">:</span><span class="w"> </span>present<span class="w">
+</span><span class="w">            </span><span class="k">update_cache</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;{{ &#39;yes&#39; if not ansible_check_mode | bool else &#39;no&#39; }}&#34;</span><span class="w">
+</span><span class="w">    </span>- <span class="k">name</span><span class="p">:</span><span class="w"> </span>nvidia-runtime-containerd<span class="w"> </span>release<span class="w"> </span>key<span class="w"> </span>is<span class="w"> </span>registered<span class="w">
+</span><span class="w">        </span>apt_key<span class="p">:</span><span class="w">
+</span><span class="w">            </span><span class="k">url</span><span class="p">:</span><span class="w"> </span>https<span class="p">:</span>//nvidia.github.io/nvidia-container-runtime/gpgkey<span class="w">
+</span><span class="w">            </span><span class="k">state</span><span class="p">:</span><span class="w"> </span>present<span class="w">
+</span><span class="w">    </span>- <span class="k">name</span><span class="p">:</span><span class="w"> </span>software-properties-common<span class="w"> </span>is<span class="w"> </span>installed<span class="w"> </span>for<span class="w"> </span>prerequisite<span class="w"> </span>for<span class="w"> </span>apt_repository<span class="w"> </span>ansible<span class="w"> </span>module<span class="w">
+</span><span class="w">        </span>apt<span class="p">:</span><span class="w">
+</span><span class="w">            </span><span class="k">name</span><span class="p">:</span><span class="w"> </span>software-properties-common<span class="w">
+</span><span class="w">            </span><span class="k">state</span><span class="p">:</span><span class="w"> </span>present<span class="w">
+</span><span class="w">            </span><span class="k">update_cache</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;{{ &#39;yes&#39; if not ansible_check_mode | bool else &#39;no&#39; }}&#34;</span><span class="w">
+</span><span class="w">    </span>- <span class="k">name</span><span class="p">:</span><span class="w"> </span>nvidia-container-runtime<span class="w"> </span>apt<span class="w"> </span>repositories<span class="w"> </span>are<span class="w"> </span>registered<span class="w">
+</span><span class="w">        </span>apt_repository<span class="p">:</span><span class="w">
+</span><span class="w">            </span><span class="k">repo</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;{{ item }}&#34;</span><span class="w">
+</span><span class="w">            </span><span class="k">filename</span><span class="p">:</span><span class="w"> </span>nvidia-container-runtime<span class="w">
+</span><span class="w">            </span><span class="k">state</span><span class="p">:</span><span class="w"> </span>present<span class="w">
+</span><span class="w">            </span><span class="k">mode</span><span class="p">:</span><span class="w"> </span><span class="m">0644</span><span class="w">
+</span><span class="w">            </span><span class="k">update_cache</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;{{ &#39;yes&#39; if not ansible_check_mode | bool else &#39;no&#39; }}&#34;</span><span class="w">
+</span><span class="w">        </span>with_items<span class="p">:</span><span class="w">
+</span><span class="w">            </span>- <span class="s1">&#39;deb https://nvidia.github.io/libnvidia-container/ubuntu16.04/amd64 /&#39;</span><span class="w">
+</span><span class="w">            </span>- <span class="s1">&#39;deb https://nvidia.github.io/nvidia-container-runtime/ubuntu16.04/amd64 /&#39;</span><span class="w">
+</span><span class="w">            </span>- <span class="s1">&#39;deb https://nvidia.github.io/nvidia-docker/ubuntu16.04/amd64 /&#39;</span><span class="w">
+</span><span class="w">    </span>- <span class="k">name</span><span class="p">:</span><span class="w"> </span>Install<span class="w"> </span>nvidia-docker2<span class="w">
+</span><span class="w">        </span>apt<span class="p">:</span><span class="w">
+</span><span class="w">            </span><span class="k">name</span><span class="p">:</span><span class="w"> </span>nvidia-docker2<span class="w">
+</span><span class="w">            </span><span class="k">state</span><span class="p">:</span><span class="w"> </span>present<span class="w">
+</span><span class="w">        </span><span class="k">when</span><span class="p">:</span><span class="w"> </span>not<span class="w"> </span>ansible_check_mode<span class="w">
+</span><span class="w">        </span><span class="k">notify</span><span class="p">:</span><span class="w"> </span>restart<span class="w"> </span>docker<span class="w">
+</span><span class="w">    </span><span class="c"># tasks/main.yml</span><span class="w">
+</span></code></pre></td></tr></table>
+</div>
+</div>
+  </div>
+</div>
+</p>
+<h3 id="在所有托管服务器上执行实验">在所有托管服务器上执行实验</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sh" data-lang="sh">    ansible-playbook run_experiments.yaml -i inventory/rl.gcp.yml --vault-id /home/jerry/gcp/vault_password.secret -e @vault/mongo.yaml
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="w">    </span><span class="c"># User role - carry out experiment defined in </span><span class="w">
+</span><span class="w">    </span>- <span class="k">name</span><span class="p">:</span><span class="w"> </span>User<span class="w"> </span>environment<span class="w"> </span>setup<span class="w">
+</span><span class="w">    </span><span class="k">hosts</span><span class="p">:</span><span class="w"> </span>rl<span class="w">
+</span><span class="w">    </span><span class="k">user</span><span class="p">:</span><span class="w"> </span>ubuntu<span class="w">
+</span><span class="w">    </span>roles<span class="p">:</span><span class="w">
+</span><span class="w">    </span>- experiment-data<span class="w">  </span>//执行./roles/experiment-data文件夹的指令<span class="w">
+</span></code></pre></td></tr></table>
+</div>
+</div><div class="expandable-section">
+  
+    <h3>
+  
+    <button aria-expanded="false" data-expands="js-expandable-50966c5b6c52be38230369ee374d3e26">
+      <span class="expandable-label">实验过程</span>
+      <svg aria-hidden="true" focusable="false" viewBox="0 0 70.866142 70.866141">
+        <g transform="translate(0 -981.5)">
+          <rect style="stroke-width:0;fill:currentColor" ry="5" height="60" width="9.8985" y="987.36" x="30.051" class="up-strut" />
+          <rect style="stroke-width:0;fill:currentColor" ry="5" height="10" width="60" y="1012.4" x="5"/>
+        </g>
+      </svg>
+    </button>
+  
+    </h3>
+  
+  <div id="js-expandable-50966c5b6c52be38230369ee374d3e26" hidden>
+    <div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cmd" data-lang="cmd">    # templates/tasklist.j2
+    tasks:
+    - name: experiment
+    <span class="k">path</span>: {{ hostvars[inventory_hostname][&#39;labels&#39;][&#39;experiment&#39;] }}
+    number: 1
+    - name: experiment
+    <span class="k">path</span>: {{ hostvars[inventory_hostname][&#39;labels&#39;][&#39;experiment&#39;] }}
+    number: 2
+    - name: experiment
+    <span class="k">path</span>: {{ hostvars[inventory_hostname][&#39;labels&#39;][&#39;experiment&#39;] }}
+    number: 3
+    - name: experiment
+    <span class="k">path</span>: {{ hostvars[inventory_hostname][&#39;labels&#39;][&#39;experiment&#39;] }}
+    number: 4
+    - name: experiment
+    <span class="k">path</span>: {{ hostvars[inventory_hostname][&#39;labels&#39;][&#39;experiment&#39;] }}
+    number: 5
+    - name: experiment
+    <span class="k">path</span>: {{ hostvars[inventory_hostname][&#39;labels&#39;][&#39;experiment&#39;] }}
+    number: 6
+    - name: halt
+
+    # templates/velproject.j2
+    storage:
+        name: vel.storage.classic
+        backend:
+            name: vel.storage.backend.mongodb
+            uri: {{ mongodb_connection_url }}
+            database: deep_learning
+        streaming:
+            - name: vel.storage.streaming.stdout
+
+    checkpoint_strategy:
+        name: vel.storage.strategy.classic_checkpoint_strategy
+</code></pre></td></tr></table>
+</div>
+</div><p>下面定义主要执行任务, 然后<code>./experiments/</code>文件夹里也是定义了一大堆的<code>config</code>文件来定义某一个实验的参数</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="w">    </span>- <span class="k">name</span><span class="p">:</span><span class="w"> </span>Set<span class="w"> </span>correct<span class="w"> </span>owner<span class="w"> </span>to<span class="w"> </span>the<span class="w"> </span>experimenets<span class="w"> </span>directory<span class="w">
+</span><span class="w">        </span><span class="k">become</span><span class="p">:</span><span class="w"> </span>yes<span class="w">
+</span><span class="w">        </span>file<span class="p">:</span><span class="w">
+</span><span class="w">            </span><span class="k">path</span><span class="p">:</span><span class="w"> </span>/experiments<span class="w">
+</span><span class="w">            </span><span class="k">owner</span><span class="p">:</span><span class="w"> </span>ubuntu<span class="w">
+</span><span class="w">            </span><span class="k">state</span><span class="p">:</span><span class="w"> </span>directory<span class="w">
+</span><span class="w">    </span>- <span class="k">name</span><span class="p">:</span><span class="w"> </span>Copy<span class="w"> </span>experiment<span class="w"> </span>configuration<span class="w"> </span>to<span class="w"> </span>a<span class="w"> </span>destination<span class="w"> </span>server<span class="w">
+</span><span class="w">        </span><span class="k">become</span><span class="p">:</span><span class="w"> </span>yes<span class="w">
+</span><span class="w">        </span>copy<span class="p">:</span><span class="w">
+</span><span class="w">            </span><span class="k">src</span><span class="p">:</span><span class="w"> </span>./experiments/<span class="w">
+</span><span class="w">            </span><span class="k">dest</span><span class="p">:</span><span class="w"> </span>/experiments<span class="w">
+</span><span class="w">            </span><span class="k">owner</span><span class="p">:</span><span class="w"> </span>ubuntu<span class="w">
+</span><span class="w">    </span>- <span class="k">name</span><span class="p">:</span><span class="w"> </span>Pull<span class="w"> </span>docker<span class="w"> </span>image<span class="w">
+</span><span class="w">        </span>docker_image<span class="p">:</span><span class="w">
+</span><span class="w">            </span><span class="k">name</span><span class="p">:</span><span class="w"> </span>millionintegrals/baselines-experiments<span class="p">:</span>latest<span class="w">
+</span><span class="w">            </span><span class="k">pull</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="w">            </span><span class="k">force</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="w">    </span>- <span class="k">name</span><span class="p">:</span><span class="w"> </span>Project<span class="w"> </span>configuration<span class="w"> </span>template<span class="w">
+</span><span class="w">        </span>template<span class="p">:</span><span class="w">
+</span><span class="w">            </span><span class="k">src</span><span class="p">:</span><span class="w"> </span>templates/velproject.j2<span class="w">
+</span><span class="w">            </span><span class="k">dest</span><span class="p">:</span><span class="w"> </span>/experiments/.velproject.yaml<span class="w">
+</span><span class="w">    </span>- <span class="k">name</span><span class="p">:</span><span class="w"> </span>Project<span class="w"> </span>task<span class="w"> </span>list<span class="w">
+</span><span class="w">        </span>template<span class="p">:</span><span class="w">
+</span><span class="w">            </span><span class="k">src</span><span class="p">:</span><span class="w"> </span>templates/tasklist.j2<span class="w">
+</span><span class="w">            </span><span class="k">dest</span><span class="p">:</span><span class="w"> </span>/experiments/tasklist.yaml<span class="w">
+</span><span class="w">    </span>- <span class="k">name</span><span class="p">:</span><span class="w"> </span>Run<span class="w"> </span>experiment<span class="w">
+</span><span class="w">        </span><span class="k">command</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;python /experiments/run_experiment.py /experiments/tasklist.yaml&#34;</span><span class="w">
+</span></code></pre></td></tr></table>
+</div>
+</div>
+  </div>
+</div>
+
 <section class="footnotes" role="doc-endnotes">
 <hr>
 <ol>
@@ -354,6 +850,12 @@
 </li>
 <li id="fn:4" role="doc-endnote">
 <p>Espeholt, Lasse, et al. &ldquo;<a href="https://arxiv.org/abs/1910.06591">SEED RL: Scalable and Efficient Deep-RL with Accelerated Central Inference</a>.&rdquo; arXiv preprint arXiv:1910.06591 (2019). <a href="#fnref:4" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:5" role="doc-endnote">
+<p>Jerry <a href="https://github.com/MillionIntegrals/vel">Velocity in deep-learning research</a> <a href="#fnref:5" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:6" role="doc-endnote">
+<p>小马奔腾 <a href="https://pdf.us/2018/12/03/2331.html">Ansible使用指南</a> 和 云计算 <a href="https://www.lagou.com/lgeduarticle/8890.html">Ansible之Playboook</a> <a href="#fnref:6" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
 </li>
 </ol>
 </section>

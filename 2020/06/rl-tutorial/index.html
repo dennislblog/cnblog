@@ -19,6 +19,8 @@
   <meta name="theme-color" content="#ffffff">
 
   <link rel="stylesheet" href="https://dennislblog.github.io/cnblog/css/prism.css" media="none" onload="this.media='all';">
+  <link rel="stylesheet" href="https://dennislblog.github.io/cnblog/css/syntax.css" media="none" onload="this.media='all';">
+
 
   
   
@@ -245,6 +247,17 @@
           </a>
         </li>
       
+        
+        <li class="toc-h2">
+          
+          
+          
+          
+          <a href="#policy-gradient" style="padding-left: 0rem">
+            Policy Gradient
+          </a>
+        </li>
+      
     </ol>
   </nav>
 
@@ -301,9 +314,14 @@
     
     <p>review the history of reinforcement learning algorithms developed in recent years</p>
 <h2 id="强化学习概述">强化学习概述</h2>
-<p><figure role="group">
+<p>
+
+
+
+
+<figure role="group">
     <a href=" pics/rl-method.png" class="img-link">
-        <img src="pics/rl-method.png" width="60%" title="模型概述">
+        <img src="pics/rl-method.png" width=100% title="模型概述">
     </a>
     <figcaption>
         深度强化学习关键论文
@@ -331,7 +349,7 @@ $$L=E[(\color{blue}{r+\gamma Q_{w^-}(s&rsquo;,\color{red}{\mathop{\arg\max}_{a&r
 <p>2016年<code>ICML</code>上发表的 <a href="http://www.jmlr.org/proceedings/papers/v48/gu16.pdf">continuous Q learning</a> 不同于<code>actor-critic</code>对<code>action-value</code>分别评估的方法，用一个函数对<code>state</code>输出三个值$V\in R$,$\mu\in R^n$,$L_0 \in R^{nxn}$，通过<code>Cholesky</code>分解重构<code>advantage value</code>和 <code>Q value</code> 
 <div class="expandable-section">
   
-    <button aria-expanded="false" data-expands="js-expandable-35741e7253fe28724acd014155a190da">
+    <button aria-expanded="false" data-expands="js-expandable-0261c20df9cbb58760da3a3d7e352203">
       <span class="expandable-label">算法详细</span>
       <svg aria-hidden="true" focusable="false" viewBox="0 0 70.866142 70.866141">
         <g transform="translate(0 -981.5)">
@@ -341,29 +359,53 @@ $$L=E[(\color{blue}{r+\gamma Q_{w^-}(s&rsquo;,\color{red}{\mathop{\arg\max}_{a&r
       </svg>
     </button>
   
-  <div id="js-expandable-35741e7253fe28724acd014155a190da" hidden>
+  <div id="js-expandable-0261c20df9cbb58760da3a3d7e352203" hidden>
     <img src="pics/naf.png" alt="ff" class="center">
 <p>上图代表<code>NAF</code>的模型结构图，根据输入状态-动作<code>(s,a)</code>计算相对应的<code>Q</code>值用于反向求导
 $$A(s,\mu)=-\frac{1}{2}\langle a-\mu_\theta(s)\rangle^T P_L(s)\langle a-\mu_\theta(s)\rangle$$</p>
-<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span>    <span style="color:#007020;font-weight:bold">def</span> <span style="color:#06287e">forward</span>(self, inputs):
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span>        s, a <span style="color:#666">=</span> inputs
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span>        <span style="color:#666">//</span> <span style="color:#007020">input</span> embedder
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span>        s <span style="color:#666">=</span> self<span style="color:#666">.</span>bn0(s); s <span style="color:#666">=</span> F<span style="color:#666">.</span>tanh(self<span style="color:#666">.</span>linear(s))
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span>        <span style="color:#666">//</span> output value, action mean <span style="color:#007020;font-weight:bold">and</span> L corner matrix
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span>        V <span style="color:#666">=</span> self<span style="color:#666">.</span>V(s)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span>        mu <span style="color:#666">=</span> F<span style="color:#666">.</span>tanh(self<span style="color:#666">.</span>mu(s))
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span>        Q <span style="color:#666">=</span> None
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span>        <span style="color:#007020;font-weight:bold">if</span> a:
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span>            num_outputs <span style="color:#666">=</span> mu<span style="color:#666">.</span>size(<span style="color:#40a070">1</span>)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span>            L <span style="color:#666">=</span> self<span style="color:#666">.</span>L(s)<span style="color:#666">.</span>view(<span style="color:#666">-</span><span style="color:#40a070">1</span>, num_outputs, num_outputs)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span>            L <span style="color:#666">=</span> L <span style="color:#666">*</span> self<span style="color:#666">.</span>tril_mask<span style="color:#666">.</span>expand_as(L) \
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span>                <span style="color:#666">+</span> torch<span style="color:#666">.</span>exp(L) <span style="color:#666">*</span> self<span style="color:#666">.</span>diag_mask<span style="color:#666">.</span>expand_as(L)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span>            P <span style="color:#666">=</span> torch<span style="color:#666">.</span>bmm(L, L<span style="color:#666">.</span>transpose(<span style="color:#40a070">2</span>, <span style="color:#40a070">1</span>))
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span>            a_mu <span style="color:#666">=</span> (a <span style="color:#666">-</span> mu)<span style="color:#666">.</span>unsqueeze(<span style="color:#40a070">2</span>)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span>            A <span style="color:#666">=</span> <span style="color:#666">-</span><span style="color:#40a070">0.5</span> <span style="color:#666">*</span> torch<span style="color:#666">.</span>bmm(torch<span style="color:#666">.</span>bmm(a_mu<span style="color:#666">.</span>transpose(<span style="color:#40a070">2</span>, <span style="color:#40a070">1</span>), P), a_mu)[:, :, <span style="color:#40a070">0</span>]
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span>            Q <span style="color:#666">=</span> A <span style="color:#666">+</span> V
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span>        <span style="color:#007020;font-weight:bold">return</span> mu, Q, V
-</code></pre></div><p>其中$\mu$表示预测策略的期望值，通过增加<code>action noise</code>输出决策行为</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">):</span>
+    <span class="n">s</span><span class="p">,</span> <span class="n">a</span> <span class="o">=</span> <span class="n">inputs</span>
+    <span class="o">//</span> <span class="nb">input</span> <span class="n">embedder</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bn0</span><span class="p">(</span><span class="n">s</span><span class="p">);</span> <span class="n">s</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">linear</span><span class="p">(</span><span class="n">s</span><span class="p">))</span>
+    <span class="o">//</span> <span class="n">output</span> <span class="n">value</span><span class="p">,</span> <span class="n">action</span> <span class="n">mean</span> <span class="ow">and</span> <span class="n">L</span> <span class="n">corner</span> <span class="n">matrix</span>
+    <span class="n">V</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">V</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+    <span class="n">mu</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mu</span><span class="p">(</span><span class="n">s</span><span class="p">))</span>
+    <span class="n">Q</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="k">if</span> <span class="n">a</span><span class="p">:</span>
+        <span class="n">num_outputs</span> <span class="o">=</span> <span class="n">mu</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">L</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">L</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_outputs</span><span class="p">,</span> <span class="n">num_outputs</span><span class="p">)</span>
+        <span class="n">L</span> <span class="o">=</span> <span class="n">L</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">tril_mask</span><span class="o">.</span><span class="n">expand_as</span><span class="p">(</span><span class="n">L</span><span class="p">)</span> \
+            <span class="o">+</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">L</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">diag_mask</span><span class="o">.</span><span class="n">expand_as</span><span class="p">(</span><span class="n">L</span><span class="p">)</span>
+        <span class="n">P</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">bmm</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="n">L</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="n">a_mu</span> <span class="o">=</span> <span class="p">(</span><span class="n">a</span> <span class="o">-</span> <span class="n">mu</span><span class="p">)</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">A</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">bmm</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">bmm</span><span class="p">(</span><span class="n">a_mu</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">P</span><span class="p">),</span> <span class="n">a_mu</span><span class="p">)[:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="n">Q</span> <span class="o">=</span> <span class="n">A</span> <span class="o">+</span> <span class="n">V</span>
+    <span class="k">return</span> <span class="n">mu</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">V</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>其中$\mu$表示预测策略的期望值，通过增加<code>action noise</code>输出决策行为</p>
 
   </div>
 </div>
@@ -387,196 +429,391 @@ $$A(s,\mu)=-\frac{1}{2}\langle a-\mu_\theta(s)\rangle^T P_L(s)\langle a-\mu_\the
     </button>
   
   <div id="js-expandable-89ca8b2c61d8ed687d695e15a7dcc18c" hidden>
-    <div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">  1</span>    <span style="color:#4070a0">&#34;&#34;&#34;1. Prioritized replay Buffer with N-step collection of rewards based on TD error&#34;&#34;&#34;</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">  2</span>    <span style="color:#007020;font-weight:bold">class</span> <span style="color:#0e84b5;font-weight:bold">PrioritizedReplayBuffer</span>(ReplayBuffer):
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">  3</span>        <span style="color:#4070a0">&#34;&#34;&#34; transition = (obs, act, rew, next_obs, done) &#34;&#34;&#34;</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">  4</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">  5</span>        <span style="color:#007020;font-weight:bold">def</span> __init__(self, obs_dim, size, batch_size, n_step, gamma):
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">  6</span>            self<span style="color:#666">.</span>n_step_buffer <span style="color:#666">=</span> deque(maxlen<span style="color:#666">=</span>n_step)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">  7</span>            self<span style="color:#666">.</span>sum_tree <span style="color:#666">=</span> SumSegmentTree(tree_capacity)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">  8</span>            self<span style="color:#666">.</span>min_tree <span style="color:#666">=</span> MinSegmentTree(tree_capacity)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">  9</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 10</span>        <span style="color:#007020;font-weight:bold">def</span> <span style="color:#06287e">_get_n_step_info</span>(self, <span style="color:#007020">buffer</span>):
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 11</span>            _, rew, next_obs, done <span style="color:#666">=</span> n_step_buffer[<span style="color:#666">-</span><span style="color:#40a070">1</span>]
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 12</span>            <span style="color:#007020;font-weight:bold">for</span> transition <span style="color:#007020;font-weight:bold">in</span> <span style="color:#007020">reversed</span>(<span style="color:#007020">list</span>(<span style="color:#007020">buffer</span>)[:<span style="color:#666">-</span><span style="color:#40a070">1</span>]):
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 13</span>                _, r, n_o, d <span style="color:#666">=</span> transition
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 14</span>                rew <span style="color:#666">=</span> r <span style="color:#666">+</span> self<span style="color:#666">.</span>gamma <span style="color:#666">*</span> rew <span style="color:#666">*</span> (<span style="color:#40a070">1</span><span style="color:#666">-</span>d)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 15</span>                next_obs, done <span style="color:#666">=</span> (n_o, d) <span style="color:#007020;font-weight:bold">if</span> d <span style="color:#007020;font-weight:bold">else</span> (next_obs, done)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 16</span>            <span style="color:#007020;font-weight:bold">return</span> rew, next_obs, done
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 17</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 18</span>        <span style="color:#007020;font-weight:bold">def</span> <span style="color:#06287e">_calculate_weight</span>(self, idx: <span style="color:#007020">int</span>, beta: <span style="color:#007020">float</span>):
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 19</span>            <span style="color:#4070a0">&#34;&#34;&#34; calculate the weight of the experience at idx.&#34;&#34;&#34;</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 20</span>            p_min <span style="color:#666">=</span> self<span style="color:#666">.</span>min_tree<span style="color:#666">.</span>min() <span style="color:#666">/</span> self<span style="color:#666">.</span>sum_tree<span style="color:#666">.</span>sum()
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 21</span>            max_weight <span style="color:#666">=</span> (p_min <span style="color:#666">*</span> <span style="color:#007020">len</span>(self)) <span style="color:#666">**</span> (<span style="color:#666">-</span>beta)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 22</span>            p_sample <span style="color:#666">=</span> self<span style="color:#666">.</span>sum_tree[idx] <span style="color:#666">/</span> self<span style="color:#666">.</span>sum_tree<span style="color:#666">.</span>sum()
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 23</span>            weight <span style="color:#666">=</span> (p_sample <span style="color:#666">*</span> <span style="color:#007020">len</span>(self)) <span style="color:#666">**</span> (<span style="color:#666">-</span>beta)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 24</span>            weight <span style="color:#666">=</span> weight <span style="color:#666">/</span> max_weight
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 25</span>            <span style="color:#007020;font-weight:bold">return</span> weight
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 26</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 27</span>    <span style="color:#4070a0">&#34;&#34;&#34;2. Noisy linear module for the last two layers of A and V function &#34;&#34;&#34;</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 28</span>    <span style="color:#007020;font-weight:bold">class</span> <span style="color:#0e84b5;font-weight:bold">NoisyLinear</span>(nn<span style="color:#666">.</span>Module):
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 29</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 30</span>        <span style="color:#007020;font-weight:bold">def</span> __init__(self, in_features, out_features, std_init):
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 31</span>            self<span style="color:#666">.</span>weight_mu<span style="color:#666">.</span>data<span style="color:#666">.</span>uniform_(<span style="color:#666">-</span>mu_range, mu_range)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 32</span>            self<span style="color:#666">.</span>weight_sigma<span style="color:#666">.</span>data<span style="color:#666">.</span>fill_(self<span style="color:#666">.</span>std_init <span style="color:#666">/</span> math<span style="color:#666">.</span>sqrt(self<span style="color:#666">.</span>in_features))
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 33</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 34</span>        <span style="color:#007020;font-weight:bold">def</span> <span style="color:#06287e">forward</span>(self, <span style="color:#007020">input</span>):
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 35</span>            <span style="color:#007020;font-weight:bold">return</span> F<span style="color:#666">.</span>linear(<span style="color:#007020">input</span>, self<span style="color:#666">.</span>weight_mu <span style="color:#666">+</span> self<span style="color:#666">.</span>weight_sigma <span style="color:#666">*</span> self<span style="color:#666">.</span>weight_epsilon, self<span style="color:#666">.</span>bias_mu <span style="color:#666">+</span> self<span style="color:#666">.</span>bias_sigma <span style="color:#666">*</span> self<span style="color:#666">.</span>bias_epsilon)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 36</span>    
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 37</span>    <span style="color:#007020;font-weight:bold">class</span> <span style="color:#0e84b5;font-weight:bold">Network</span>(nn<span style="color:#666">.</span>Module):
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 38</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 39</span>        <span style="color:#007020;font-weight:bold">def</span> __init__(self, in_dim, out_dim, atom_size, support):
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 40</span>            <span style="color:#4070a0">&#34;&#34;&#34;
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 41</span><span style="color:#4070a0">                atom size: N actions in M (atom_size) value support
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 42</span><span style="color:#4070a0">                support: torch.linspace(v_min, v_max, atom_size)
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 43</span><span style="color:#4070a0">            &#34;&#34;&#34;</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 44</span>            self<span style="color:#666">.</span>feature_layer <span style="color:#666">=</span> nn<span style="color:#666">.</span>Sequential(nn<span style="color:#666">.</span>Linear(in_dim, <span style="color:#40a070">128</span>), nn<span style="color:#666">.</span>ReLU())
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 45</span>            self<span style="color:#666">.</span>advantage_hidden_layer <span style="color:#666">=</span> NoisyLinear(<span style="color:#40a070">128</span>, <span style="color:#40a070">128</span>)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 46</span>            self<span style="color:#666">.</span>advantage_layer <span style="color:#666">=</span> NoisyLinear(<span style="color:#40a070">128</span>, out_dim <span style="color:#666">*</span> atom_size)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 47</span>            self<span style="color:#666">.</span>value_hidden_layer <span style="color:#666">=</span> NoisyLinear(<span style="color:#40a070">128</span>, <span style="color:#40a070">128</span>)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 48</span>            self<span style="color:#666">.</span>value_layer <span style="color:#666">=</span> NoisyLinear(<span style="color:#40a070">128</span>, atom_size)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 49</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 50</span>        <span style="color:#007020;font-weight:bold">def</span> <span style="color:#06287e">dist</span>(self, x: torch<span style="color:#666">.</span>Tensor) <span style="color:#666">-&gt;</span> torch<span style="color:#666">.</span>Tensor:
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 51</span>            <span style="color:#4070a0">&#34;&#34;&#34;Get distribution for atoms.&#34;&#34;&#34;</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 52</span>            feature <span style="color:#666">=</span> self<span style="color:#666">.</span>feature_layer(x)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 53</span>            adv_hid <span style="color:#666">=</span> F<span style="color:#666">.</span>relu(self<span style="color:#666">.</span>advantage_hidden_layer(feature))
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 54</span>            val_hid <span style="color:#666">=</span> F<span style="color:#666">.</span>relu(self<span style="color:#666">.</span>value_hidden_layer(feature))
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 55</span>            advantage <span style="color:#666">=</span> self<span style="color:#666">.</span>advantage_layer(adv_hid)<span style="color:#666">.</span>view(<span style="color:#666">-</span><span style="color:#40a070">1</span>, self<span style="color:#666">.</span>out_dim, self<span style="color:#666">.</span>atom_size)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 56</span>            value <span style="color:#666">=</span> self<span style="color:#666">.</span>value_layer(val_hid)<span style="color:#666">.</span>view(<span style="color:#666">-</span><span style="color:#40a070">1</span>, <span style="color:#40a070">1</span>, self<span style="color:#666">.</span>atom_size)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 57</span>            q_atoms <span style="color:#666">=</span> value <span style="color:#666">+</span> advantage <span style="color:#666">-</span> advantage<span style="color:#666">.</span>mean(dim<span style="color:#666">=</span><span style="color:#40a070">1</span>,keepdim<span style="color:#666">=</span>True)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 58</span>            dist <span style="color:#666">=</span> F<span style="color:#666">.</span>softmax(q_atoms, dim<span style="color:#666">=-</span><span style="color:#40a070">1</span>)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 59</span>            dist <span style="color:#666">=</span> dist<span style="color:#666">.</span>clamp(<span style="color:#007020">min</span><span style="color:#666">=</span><span style="color:#40a070">1e-3</span>)  <span style="color:#666">//</span> <span style="color:#007020;font-weight:bold">for</span> avoiding nans
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 60</span>            <span style="color:#007020;font-weight:bold">return</span> dist
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 61</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 62</span>        <span style="color:#007020;font-weight:bold">def</span> <span style="color:#06287e">forward</span>(self, x):
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 63</span>            dist <span style="color:#666">=</span> self<span style="color:#666">.</span>dist(x)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 64</span>            q <span style="color:#666">=</span> torch<span style="color:#666">.</span>sum(dist <span style="color:#666">*</span> self<span style="color:#666">.</span>support, dim<span style="color:#666">=</span><span style="color:#40a070">2</span>)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 65</span>            <span style="color:#007020;font-weight:bold">return</span> q
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 66</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 67</span>     <span style="color:#4070a0">&#34;&#34;&#34;3. When you put them together &#34;&#34;&#34;</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 68</span>     <span style="color:#007020;font-weight:bold">class</span> <span style="color:#0e84b5;font-weight:bold">Agent</span>:
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 69</span>        <span style="color:#4070a0">&#34;&#34;&#34;Attribute:
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 70</span><span style="color:#4070a0">            1. env (gym.Env): openAI Gym environment
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 71</span><span style="color:#4070a0">            2. memory (PrioritizedReplayBuffer): replay memory to store transitions
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 72</span><span style="color:#4070a0">                - alpha (float): determines how much prioritization is used
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 73</span><span style="color:#4070a0">                - beta (float): determines how much importance sampling is used
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 74</span><span style="color:#4070a0">                - prior_eps (float): guarantees every transition can be sampled
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 75</span><span style="color:#4070a0">            3. batch_size (int): batch size for sampling
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 76</span><span style="color:#4070a0">            4. target_update (int): period for target model&#39;s hard update
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 77</span><span style="color:#4070a0">            5. gamma (float): discount factor
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 78</span><span style="color:#4070a0">            6. Categorical+Double+Dueling+NoisyLinear Network
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 79</span><span style="color:#4070a0">                - v_min (float): min value of support
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 80</span><span style="color:#4070a0">                - v_max (float): max value of support
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 81</span><span style="color:#4070a0">                - atom_size (int): the unit number of support
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 82</span><span style="color:#4070a0">                - support (torch.Tensor): support for categorical dqn
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 83</span><span style="color:#4070a0">            7. n_step (int): step number to calculate n-step td error
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 84</span><span style="color:#4070a0">        &#34;&#34;&#34;</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 85</span>        <span style="color:#007020;font-weight:bold">def</span> __init__():
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 86</span>            self<span style="color:#666">.</span>dqn <span style="color:#666">=</span> Network(obs_dim, action_dim, self<span style="color:#666">.</span>atom_size, self<span style="color:#666">.</span>support)<span style="color:#666">.</span>to(self<span style="color:#666">.</span>device)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 87</span>            self<span style="color:#666">.</span>dqn_target<span style="color:#666">.</span>load_state_dict(self<span style="color:#666">.</span>dqn<span style="color:#666">.</span>state_dict())
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 88</span>            self<span style="color:#666">.</span>dqn_target<span style="color:#666">.</span>eval()
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 89</span>            self<span style="color:#666">.</span>optimizer <span style="color:#666">=</span> optim<span style="color:#666">.</span>Adam(self<span style="color:#666">.</span>dqn<span style="color:#666">.</span>parameters())
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 90</span>            self<span style="color:#666">.</span>transition <span style="color:#666">=</span> <span style="color:#007020">list</span>()        <span style="color:#666">//</span>(obs, act, rew, next_obs, done) 
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 91</span>            self<span style="color:#666">.</span>is_test <span style="color:#666">=</span> False            <span style="color:#666">//</span>mode: train<span style="color:#666">/</span>test
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 92</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 93</span>        <span style="color:#007020;font-weight:bold">def</span> <span style="color:#06287e">select_action</span>(self, state):
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 94</span>            action <span style="color:#666">=</span> self<span style="color:#666">.</span>dqn(torch<span style="color:#666">.</span>FloatTensor(state)<span style="color:#666">.</span>to(self<span style="color:#666">.</span>device))<span style="color:#666">.</span>argmax()
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 95</span>            action <span style="color:#666">=</span> action<span style="color:#666">.</span>detach()<span style="color:#666">.</span>cpu()<span style="color:#666">.</span>numpy()
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 96</span>            <span style="color:#007020;font-weight:bold">if</span> <span style="color:#007020;font-weight:bold">not</span> self<span style="color:#666">.</span>is_test:
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 97</span>                self<span style="color:#666">.</span>transition <span style="color:#666">=</span> [state, action]
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 98</span>            <span style="color:#007020;font-weight:bold">return</span> action
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 99</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">100</span>        <span style="color:#007020;font-weight:bold">def</span> <span style="color:#06287e">step</span>(self, action):
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">101</span>            next_state, reward, done, _ <span style="color:#666">=</span> self<span style="color:#666">.</span>env<span style="color:#666">.</span>step(action)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">102</span>            <span style="color:#007020;font-weight:bold">if</span> <span style="color:#007020;font-weight:bold">not</span> self<span style="color:#666">.</span>is_test:
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">103</span>                self<span style="color:#666">.</span>transition <span style="color:#666">+=</span> [reward, next_state, done]
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">104</span>                self<span style="color:#666">.</span>memory<span style="color:#666">.</span>store(<span style="color:#666">*</span>self<span style="color:#666">.</span>transition)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">105</span>            <span style="color:#007020;font-weight:bold">return</span> next_state, reward, done
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">106</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">107</span>        <span style="color:#007020;font-weight:bold">def</span> <span style="color:#06287e">update_model</span>(self):
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">108</span>            samples <span style="color:#666">=</span> self<span style="color:#666">.</span>memory<span style="color:#666">.</span>sample_batch(self<span style="color:#666">.</span>beta)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">109</span>            weights <span style="color:#666">=</span> torch<span style="color:#666">.</span>FloatTensor(samples[<span style="color:#4070a0">&#34;weights&#34;</span>]<span style="color:#666">.</span>reshape(<span style="color:#666">-</span><span style="color:#40a070">1</span>, <span style="color:#40a070">1</span>))<span style="color:#666">.</span>to(self<span style="color:#666">.</span>device)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">110</span>            indices <span style="color:#666">=</span> samples[<span style="color:#4070a0">&#34;indices&#34;</span>]
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">111</span>            <span style="color:#666">//</span> <span style="color:#40a070">1.</span> combine <span style="color:#40a070">1</span><span style="color:#666">-</span>step <span style="color:#007020;font-weight:bold">and</span> n<span style="color:#666">-</span>step loss to prevent high<span style="color:#666">-</span>variance
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">112</span>            loss_ <span style="color:#666">=</span> self<span style="color:#666">.</span>_compute_dqn_loss(samples, self<span style="color:#666">.</span>gamma)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">113</span>            gamma <span style="color:#666">=</span> self<span style="color:#666">.</span>gamma <span style="color:#666">**</span> self<span style="color:#666">.</span>n_step
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">114</span>            loss_ <span style="color:#666">+=</span> self<span style="color:#666">.</span>_compute_dqn_loss(samples, gamma)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">115</span>            loss <span style="color:#666">=</span> torch<span style="color:#666">.</span>mean(loss_ <span style="color:#666">*</span> weights)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">116</span>            <span style="color:#666">//</span> <span style="color:#40a070">2.</span> update network
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">117</span>            self<span style="color:#666">.</span>optimizer<span style="color:#666">.</span>zero_grad()
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">118</span>            loss<span style="color:#666">.</span>backward()
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">119</span>            clip_grad_norm_(self<span style="color:#666">.</span>dqn<span style="color:#666">.</span>parameters(), <span style="color:#40a070">10.0</span>)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">120</span>            self<span style="color:#666">.</span>optimizer<span style="color:#666">.</span>step()
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">121</span>            <span style="color:#666">//</span> <span style="color:#40a070">3.</span> update sample priorities
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">122</span>            loss_for_prior <span style="color:#666">=</span> loss_<span style="color:#666">.</span>detach()<span style="color:#666">.</span>cpu()<span style="color:#666">.</span>numpy()
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">123</span>            new_priorities <span style="color:#666">=</span> loss_for_prior <span style="color:#666">+</span> self<span style="color:#666">.</span>prior_eps <span style="color:#666">//</span>to prevent zero prior_eps
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">124</span>            self<span style="color:#666">.</span>memory<span style="color:#666">.</span>update_priorities(indices, new_priorities)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">125</span>            <span style="color:#666">//</span> <span style="color:#40a070">4.</span> reset noisynet
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">126</span>            self<span style="color:#666">.</span>dqn<span style="color:#666">.</span>reset_noise()
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">127</span>            self<span style="color:#666">.</span>dqn_target<span style="color:#666">.</span>reset_noise()
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">128</span>        
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">129</span>        <span style="color:#007020;font-weight:bold">def</span> <span style="color:#06287e">train</span>(self, num_frames, plot_interval):
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">130</span>            self<span style="color:#666">.</span>is_test <span style="color:#666">=</span> False   
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">131</span>            state <span style="color:#666">=</span> self<span style="color:#666">.</span>env<span style="color:#666">.</span>reset()
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">132</span>            update_cnt <span style="color:#666">=</span> <span style="color:#40a070">0</span> 
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">133</span>            losses, scores <span style="color:#666">=</span> [], []
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">134</span>            <span style="color:#007020;font-weight:bold">for</span> frame_idx <span style="color:#007020;font-weight:bold">in</span> <span style="color:#007020">range</span>(<span style="color:#40a070">1</span>, num_frames <span style="color:#666">+</span> <span style="color:#40a070">1</span>):
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">135</span>                action <span style="color:#666">=</span> self<span style="color:#666">.</span>select_action(state)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">136</span>                next_state, reward, done <span style="color:#666">=</span> self<span style="color:#666">.</span>step(action)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">137</span>                state <span style="color:#666">=</span> next_state
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">138</span>                score <span style="color:#666">+=</span> reward
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">139</span>                self<span style="color:#666">.</span>beta <span style="color:#666">=</span> self<span style="color:#666">.</span>beta <span style="color:#666">+</span> <span style="color:#007020">min</span>(frame_idx<span style="color:#666">/</span>num_frames, <span style="color:#40a070">1.0</span>) <span style="color:#666">*</span> (<span style="color:#40a070">1.0</span> <span style="color:#666">-</span> self<span style="color:#666">.</span>beta)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">140</span>                <span style="color:#007020;font-weight:bold">if</span> done:
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">141</span>                    state <span style="color:#666">=</span> self<span style="color:#666">.</span>env<span style="color:#666">.</span>reset()
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">142</span>                    scores<span style="color:#666">.</span>append(score)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">143</span>                    score <span style="color:#666">=</span> <span style="color:#40a070">0</span> 
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">144</span>                <span style="color:#007020;font-weight:bold">if</span> <span style="color:#007020">len</span>(self<span style="color:#666">.</span>memory) <span style="color:#666">&gt;=</span> self<span style="color:#666">.</span>batch_size:
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">145</span>                    loss <span style="color:#666">=</span> self<span style="color:#666">.</span>update_model()
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">146</span>                    losses<span style="color:#666">.</span>append(loss)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">147</span>                    update_cnt <span style="color:#666">+=</span> <span style="color:#40a070">1</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">148</span>                    <span style="color:#007020;font-weight:bold">if</span> update_cnt <span style="color:#666">%</span> self<span style="color:#666">.</span>target_update <span style="color:#666">==</span> <span style="color:#40a070">0</span>:
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">149</span>                        self<span style="color:#666">.</span>dqn_target<span style="color:#666">.</span>load_state_dict(self<span style="color:#666">.</span>dqn<span style="color:#666">.</span>state_dict())
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">150</span>                <span style="color:#007020;font-weight:bold">if</span> frame_idx <span style="color:#666">%</span> plot_interval <span style="color:#666">==</span> <span style="color:#40a070">0</span>:
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">151</span>                    self<span style="color:#666">.</span>_plot(frame_idx, scores, losses)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">152</span>            self<span style="color:#666">.</span>env<span style="color:#666">.</span>close()
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">153</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">154</span>        <span style="color:#007020;font-weight:bold">def</span> <span style="color:#06287e">_plot</span>(self, frame_idx, scores, losses):
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">155</span>            <span style="color:#007020;font-weight:bold">from</span> <span style="color:#0e84b5;font-weight:bold">IPython.display</span> <span style="color:#007020;font-weight:bold">import</span> clear_output
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">156</span>            clear_output(True)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">157</span>            plt<span style="color:#666">.</span>figure(figsize <span style="color:#666">=</span> (<span style="color:#40a070">20</span>,<span style="color:#40a070">5</span>))
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">158</span>            plt<span style="color:#666">.</span>subplot(<span style="color:#40a070">131</span>); plt<span style="color:#666">.</span>plot(scores)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">159</span>            plt<span style="color:#666">.</span>title(<span style="color:#4070a0">&#34;frame </span><span style="color:#70a0d0;font-style:italic">%s</span><span style="color:#4070a0">. score: </span><span style="color:#70a0d0;font-style:italic">%s</span><span style="color:#4070a0">&#34;</span> <span style="color:#666">%</span>(frame_idx, np<span style="color:#666">.</span>mean(scores[<span style="color:#666">-</span><span style="color:#40a070">10</span>:])))
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">160</span>            plt<span style="color:#666">.</span>subplot(<span style="color:#40a070">132</span>); plt<span style="color:#666">.</span>plot(losses)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">161</span>            plt<span style="color:#666">.</span>show()
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">162</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">163</span>        <span style="color:#007020;font-weight:bold">def</span> <span style="color:#06287e">_compute_dqn_loss</span>(self, samples, gamma):
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">164</span>            <span style="color:#4070a0">&#34;&#34;&#34;calculate categorical dqn loss&#34;&#34;&#34;</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">165</span>            state <span style="color:#666">=</span> torch<span style="color:#666">.</span>FloatTensor(samples[<span style="color:#4070a0">&#34;obs&#34;</span>])<span style="color:#666">.</span>to(device)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">166</span>            next_state <span style="color:#666">=</span> torch<span style="color:#666">.</span>FloatTensor(samples[<span style="color:#4070a0">&#34;next_obs&#34;</span>])<span style="color:#666">.</span>to(device)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">167</span>            action <span style="color:#666">=</span> torch<span style="color:#666">.</span>LongTensor(samples[<span style="color:#4070a0">&#34;acts&#34;</span>])<span style="color:#666">.</span>to(device)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">168</span>            reward <span style="color:#666">=</span> torch<span style="color:#666">.</span>FloatTensor(samples[<span style="color:#4070a0">&#34;rews&#34;</span>]<span style="color:#666">.</span>reshape(<span style="color:#666">-</span><span style="color:#40a070">1</span>, <span style="color:#40a070">1</span>))<span style="color:#666">.</span>to(device)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">169</span>            done <span style="color:#666">=</span> torch<span style="color:#666">.</span>FloatTensor(samples[<span style="color:#4070a0">&#34;done&#34;</span>]<span style="color:#666">.</span>reshape(<span style="color:#666">-</span><span style="color:#40a070">1</span>, <span style="color:#40a070">1</span>))<span style="color:#666">.</span>to(device)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">170</span>            delta_z <span style="color:#666">=</span> <span style="color:#007020">float</span>(self<span style="color:#666">.</span>v_max <span style="color:#666">-</span> self<span style="color:#666">.</span>v_min) <span style="color:#666">/</span> (self<span style="color:#666">.</span>atom_size <span style="color:#666">-</span> <span style="color:#40a070">1</span>)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">171</span>            <span style="color:#007020;font-weight:bold">with</span> torch<span style="color:#666">.</span>no_grad():
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">172</span>                <span style="color:#666">//</span> <span style="color:#40a070">1.</span> choose best <span style="color:#007020">next</span> action <span style="color:#666">=</span> argmax Q(s_, a)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">173</span>                next_action <span style="color:#666">=</span> self<span style="color:#666">.</span>dqn(next_state)<span style="color:#666">.</span>argmax(<span style="color:#40a070">1</span>)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">174</span>                next_dist <span style="color:#666">=</span> self<span style="color:#666">.</span>dqn_target<span style="color:#666">.</span>dist(next_state)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">175</span>                next_dist <span style="color:#666">=</span> next_dist[<span style="color:#007020">range</span>(self<span style="color:#666">.</span>batch_size), next_action]
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">176</span>                <span style="color:#666">//</span> <span style="color:#40a070">2.</span> compute projection of t_z onto the support z
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">177</span>                t_z <span style="color:#666">=</span> reward <span style="color:#666">+</span> (<span style="color:#40a070">1</span> <span style="color:#666">-</span> done) <span style="color:#666">*</span> gamma <span style="color:#666">*</span> self<span style="color:#666">.</span>support
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">178</span>                t_z <span style="color:#666">=</span> t_z<span style="color:#666">.</span>clamp(<span style="color:#007020">min</span><span style="color:#666">=</span>self<span style="color:#666">.</span>v_min, <span style="color:#007020">max</span><span style="color:#666">=</span>self<span style="color:#666">.</span>v_max)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">179</span>                b <span style="color:#666">=</span> (t_z <span style="color:#666">-</span> self<span style="color:#666">.</span>v_min) <span style="color:#666">/</span> delta_z
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">180</span>                l <span style="color:#666">=</span> b<span style="color:#666">.</span>floor()<span style="color:#666">.</span>long()
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">181</span>                u <span style="color:#666">=</span> b<span style="color:#666">.</span>ceil()<span style="color:#666">.</span>long()
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">182</span>                <span style="color:#666">//</span> <span style="color:#40a070">3.</span> get distribution of Q value on the support
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">183</span>                offset <span style="color:#666">=</span> torch<span style="color:#666">.</span>linspace(<span style="color:#40a070">0</span>, ((self<span style="color:#666">.</span>batch_size <span style="color:#666">-</span> <span style="color:#40a070">1</span>) <span style="color:#666">*</span> self<span style="color:#666">.</span>atom_size), self<span style="color:#666">.</span>batch_size)<span style="color:#666">.</span>unsqueeze(<span style="color:#40a070">1</span>)<span style="color:#666">.</span>expand(self<span style="color:#666">.</span>batch_size, self<span style="color:#666">.</span>atom_size)<span style="color:#666">.</span>to(device)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">184</span>                proj_dist <span style="color:#666">=</span> torch<span style="color:#666">.</span>zeros(next_dist<span style="color:#666">.</span>size(), device<span style="color:#666">=</span>self<span style="color:#666">.</span>device)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">185</span>                proj_dist<span style="color:#666">.</span>view(<span style="color:#666">-</span><span style="color:#40a070">1</span>)<span style="color:#666">.</span>index_add_(<span style="color:#40a070">0</span>, (l <span style="color:#666">+</span> offset)<span style="color:#666">.</span>view(<span style="color:#666">-</span><span style="color:#40a070">1</span>),(next_dist <span style="color:#666">*</span> (u<span style="color:#666">.</span>float() <span style="color:#666">-</span> b))<span style="color:#666">.</span>view(<span style="color:#666">-</span><span style="color:#40a070">1</span>))
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">186</span>                proj_dist<span style="color:#666">.</span>view(<span style="color:#666">-</span><span style="color:#40a070">1</span>)<span style="color:#666">.</span>index_add_(<span style="color:#40a070">0</span>, (u <span style="color:#666">+</span> offset)<span style="color:#666">.</span>view(<span style="color:#666">-</span><span style="color:#40a070">1</span>),(next_dist <span style="color:#666">*</span> (b <span style="color:#666">-</span> l<span style="color:#666">.</span>float()))<span style="color:#666">.</span>view(<span style="color:#666">-</span><span style="color:#40a070">1</span>))
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">187</span>            <span style="color:#666">//</span> <span style="color:#40a070">4.</span> calculate cross entropy loss
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">188</span>            log_p <span style="color:#666">=</span> torch<span style="color:#666">.</span>log(self<span style="color:#666">.</span>dqn<span style="color:#666">.</span>dist(state)[<span style="color:#007020">range</span>(self<span style="color:#666">.</span>batch_size), action])
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">189</span>            <span style="color:#007020;font-weight:bold">return</span> <span style="color:#666">-</span>(proj_dist <span style="color:#666">*</span> log_p)<span style="color:#666">.</span>sum(<span style="color:#40a070">1</span>)
-</code></pre></div><p><strong>loss计算过程</strong>:</p>
+    <div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span><span class="lnt">104
+</span><span class="lnt">105
+</span><span class="lnt">106
+</span><span class="lnt">107
+</span><span class="lnt">108
+</span><span class="lnt">109
+</span><span class="lnt">110
+</span><span class="lnt">111
+</span><span class="lnt">112
+</span><span class="lnt">113
+</span><span class="lnt">114
+</span><span class="lnt">115
+</span><span class="lnt">116
+</span><span class="lnt">117
+</span><span class="lnt">118
+</span><span class="lnt">119
+</span><span class="lnt">120
+</span><span class="lnt">121
+</span><span class="lnt">122
+</span><span class="lnt">123
+</span><span class="lnt">124
+</span><span class="lnt">125
+</span><span class="lnt">126
+</span><span class="lnt">127
+</span><span class="lnt">128
+</span><span class="lnt">129
+</span><span class="lnt">130
+</span><span class="lnt">131
+</span><span class="lnt">132
+</span><span class="lnt">133
+</span><span class="lnt">134
+</span><span class="lnt">135
+</span><span class="lnt">136
+</span><span class="lnt">137
+</span><span class="lnt">138
+</span><span class="lnt">139
+</span><span class="lnt">140
+</span><span class="lnt">141
+</span><span class="lnt">142
+</span><span class="lnt">143
+</span><span class="lnt">144
+</span><span class="lnt">145
+</span><span class="lnt">146
+</span><span class="lnt">147
+</span><span class="lnt">148
+</span><span class="lnt">149
+</span><span class="lnt">150
+</span><span class="lnt">151
+</span><span class="lnt">152
+</span><span class="lnt">153
+</span><span class="lnt">154
+</span><span class="lnt">155
+</span><span class="lnt">156
+</span><span class="lnt">157
+</span><span class="lnt">158
+</span><span class="lnt">159
+</span><span class="lnt">160
+</span><span class="lnt">161
+</span><span class="lnt">162
+</span><span class="lnt">163
+</span><span class="lnt">164
+</span><span class="lnt">165
+</span><span class="lnt">166
+</span><span class="lnt">167
+</span><span class="lnt">168
+</span><span class="lnt">169
+</span><span class="lnt">170
+</span><span class="lnt">171
+</span><span class="lnt">172
+</span><span class="lnt">173
+</span><span class="lnt">174
+</span><span class="lnt">175
+</span><span class="lnt">176
+</span><span class="lnt">177
+</span><span class="lnt">178
+</span><span class="lnt">179
+</span><span class="lnt">180
+</span><span class="lnt">181
+</span><span class="lnt">182
+</span><span class="lnt">183
+</span><span class="lnt">184
+</span><span class="lnt">185
+</span><span class="lnt">186
+</span><span class="lnt">187
+</span><span class="lnt">188
+</span><span class="lnt">189
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python">    <span class="s2">&#34;&#34;&#34;1. Prioritized replay Buffer with N-step collection of rewards based on TD error&#34;&#34;&#34;</span>
+    <span class="k">class</span> <span class="nc">PrioritizedReplayBuffer</span><span class="p">(</span><span class="n">ReplayBuffer</span><span class="p">):</span>
+        <span class="s2">&#34;&#34;&#34; transition = (obs, act, rew, next_obs, done) &#34;&#34;&#34;</span>
+
+        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obs_dim</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">n_step</span><span class="p">,</span> <span class="n">gamma</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">n_step_buffer</span> <span class="o">=</span> <span class="n">deque</span><span class="p">(</span><span class="n">maxlen</span><span class="o">=</span><span class="n">n_step</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sum_tree</span> <span class="o">=</span> <span class="n">SumSegmentTree</span><span class="p">(</span><span class="n">tree_capacity</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">min_tree</span> <span class="o">=</span> <span class="n">MinSegmentTree</span><span class="p">(</span><span class="n">tree_capacity</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">_get_n_step_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">buffer</span><span class="p">):</span>
+            <span class="n">_</span><span class="p">,</span> <span class="n">rew</span><span class="p">,</span> <span class="n">next_obs</span><span class="p">,</span> <span class="n">done</span> <span class="o">=</span> <span class="n">n_step_buffer</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">transition</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">buffer</span><span class="p">)[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]):</span>
+                <span class="n">_</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">n_o</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="n">transition</span>
+                <span class="n">rew</span> <span class="o">=</span> <span class="n">r</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">gamma</span> <span class="o">*</span> <span class="n">rew</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">d</span><span class="p">)</span>
+                <span class="n">next_obs</span><span class="p">,</span> <span class="n">done</span> <span class="o">=</span> <span class="p">(</span><span class="n">n_o</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span> <span class="k">if</span> <span class="n">d</span> <span class="k">else</span> <span class="p">(</span><span class="n">next_obs</span><span class="p">,</span> <span class="n">done</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">rew</span><span class="p">,</span> <span class="n">next_obs</span><span class="p">,</span> <span class="n">done</span>
+
+        <span class="k">def</span> <span class="nf">_calculate_weight</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">beta</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+            <span class="s2">&#34;&#34;&#34; calculate the weight of the experience at idx.&#34;&#34;&#34;</span>
+            <span class="n">p_min</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">min_tree</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">sum_tree</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+            <span class="n">max_weight</span> <span class="o">=</span> <span class="p">(</span><span class="n">p_min</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="n">beta</span><span class="p">)</span>
+            <span class="n">p_sample</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sum_tree</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">sum_tree</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+            <span class="n">weight</span> <span class="o">=</span> <span class="p">(</span><span class="n">p_sample</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="n">beta</span><span class="p">)</span>
+            <span class="n">weight</span> <span class="o">=</span> <span class="n">weight</span> <span class="o">/</span> <span class="n">max_weight</span>
+            <span class="k">return</span> <span class="n">weight</span>
+
+    <span class="s2">&#34;&#34;&#34;2. Noisy linear module for the last two layers of A and V function &#34;&#34;&#34;</span>
+    <span class="k">class</span> <span class="nc">NoisyLinear</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+
+        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">in_features</span><span class="p">,</span> <span class="n">out_features</span><span class="p">,</span> <span class="n">std_init</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">weight_mu</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">uniform_</span><span class="p">(</span><span class="o">-</span><span class="n">mu_range</span><span class="p">,</span> <span class="n">mu_range</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">weight_sigma</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">fill_</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">std_init</span> <span class="o">/</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">in_features</span><span class="p">))</span>
+
+        <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">input</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">F</span><span class="o">.</span><span class="n">linear</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">weight_mu</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">weight_sigma</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">weight_epsilon</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bias_mu</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">bias_sigma</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">bias_epsilon</span><span class="p">)</span>
+    
+    <span class="k">class</span> <span class="nc">Network</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+
+        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">in_dim</span><span class="p">,</span> <span class="n">out_dim</span><span class="p">,</span> <span class="n">atom_size</span><span class="p">,</span> <span class="n">support</span><span class="p">):</span>
+            <span class="s2">&#34;&#34;&#34;
+</span><span class="s2">                atom size: N actions in M (atom_size) value support
+</span><span class="s2">                support: torch.linspace(v_min, v_max, atom_size)
+</span><span class="s2">            &#34;&#34;&#34;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">feature_layer</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">in_dim</span><span class="p">,</span> <span class="mi">128</span><span class="p">),</span> <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">())</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">advantage_hidden_layer</span> <span class="o">=</span> <span class="n">NoisyLinear</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="mi">128</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">advantage_layer</span> <span class="o">=</span> <span class="n">NoisyLinear</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="n">out_dim</span> <span class="o">*</span> <span class="n">atom_size</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">value_hidden_layer</span> <span class="o">=</span> <span class="n">NoisyLinear</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="mi">128</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">value_layer</span> <span class="o">=</span> <span class="n">NoisyLinear</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="n">atom_size</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">dist</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+            <span class="s2">&#34;&#34;&#34;Get distribution for atoms.&#34;&#34;&#34;</span>
+            <span class="n">feature</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">feature_layer</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+            <span class="n">adv_hid</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">advantage_hidden_layer</span><span class="p">(</span><span class="n">feature</span><span class="p">))</span>
+            <span class="n">val_hid</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value_hidden_layer</span><span class="p">(</span><span class="n">feature</span><span class="p">))</span>
+            <span class="n">advantage</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">advantage_layer</span><span class="p">(</span><span class="n">adv_hid</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">out_dim</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">atom_size</span><span class="p">)</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_layer</span><span class="p">(</span><span class="n">val_hid</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">atom_size</span><span class="p">)</span>
+            <span class="n">q_atoms</span> <span class="o">=</span> <span class="n">value</span> <span class="o">+</span> <span class="n">advantage</span> <span class="o">-</span> <span class="n">advantage</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">keepdim</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+            <span class="n">dist</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">q_atoms</span><span class="p">,</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">dist</span> <span class="o">=</span> <span class="n">dist</span><span class="o">.</span><span class="n">clamp</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">)</span>  <span class="o">//</span> <span class="k">for</span> <span class="n">avoiding</span> <span class="n">nans</span>
+            <span class="k">return</span> <span class="n">dist</span>
+
+        <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+            <span class="n">dist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dist</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+            <span class="n">q</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dist</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">support</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">q</span>
+
+     <span class="s2">&#34;&#34;&#34;3. When you put them together &#34;&#34;&#34;</span>
+     <span class="k">class</span> <span class="nc">Agent</span><span class="p">:</span>
+        <span class="s2">&#34;&#34;&#34;Attribute:
+</span><span class="s2">            1. env (gym.Env): openAI Gym environment
+</span><span class="s2">            2. memory (PrioritizedReplayBuffer): replay memory to store transitions
+</span><span class="s2">                - alpha (float): determines how much prioritization is used
+</span><span class="s2">                - beta (float): determines how much importance sampling is used
+</span><span class="s2">                - prior_eps (float): guarantees every transition can be sampled
+</span><span class="s2">            3. batch_size (int): batch size for sampling
+</span><span class="s2">            4. target_update (int): period for target model&#39;s hard update
+</span><span class="s2">            5. gamma (float): discount factor
+</span><span class="s2">            6. Categorical+Double+Dueling+NoisyLinear Network
+</span><span class="s2">                - v_min (float): min value of support
+</span><span class="s2">                - v_max (float): max value of support
+</span><span class="s2">                - atom_size (int): the unit number of support
+</span><span class="s2">                - support (torch.Tensor): support for categorical dqn
+</span><span class="s2">            7. n_step (int): step number to calculate n-step td error
+</span><span class="s2">        &#34;&#34;&#34;</span>
+        <span class="k">def</span> <span class="fm">__init__</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dqn</span> <span class="o">=</span> <span class="n">Network</span><span class="p">(</span><span class="n">obs_dim</span><span class="p">,</span> <span class="n">action_dim</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">atom_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">support</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dqn_target</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dqn</span><span class="o">.</span><span class="n">state_dict</span><span class="p">())</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dqn_target</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dqn</span><span class="o">.</span><span class="n">parameters</span><span class="p">())</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">transition</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>        <span class="o">//</span><span class="p">(</span><span class="n">obs</span><span class="p">,</span> <span class="n">act</span><span class="p">,</span> <span class="n">rew</span><span class="p">,</span> <span class="n">next_obs</span><span class="p">,</span> <span class="n">done</span><span class="p">)</span> 
+            <span class="bp">self</span><span class="o">.</span><span class="n">is_test</span> <span class="o">=</span> <span class="bp">False</span>            <span class="o">//</span><span class="n">mode</span><span class="p">:</span> <span class="n">train</span><span class="o">/</span><span class="n">test</span>
+
+        <span class="k">def</span> <span class="nf">select_action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+            <span class="n">action</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dqn</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">FloatTensor</span><span class="p">(</span><span class="n">state</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">))</span><span class="o">.</span><span class="n">argmax</span><span class="p">()</span>
+            <span class="n">action</span> <span class="o">=</span> <span class="n">action</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_test</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">transition</span> <span class="o">=</span> <span class="p">[</span><span class="n">state</span><span class="p">,</span> <span class="n">action</span><span class="p">]</span>
+            <span class="k">return</span> <span class="n">action</span>
+
+        <span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">):</span>
+            <span class="n">next_state</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">done</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_test</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">transition</span> <span class="o">+=</span> <span class="p">[</span><span class="n">reward</span><span class="p">,</span> <span class="n">next_state</span><span class="p">,</span> <span class="n">done</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">memory</span><span class="o">.</span><span class="n">store</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">transition</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">next_state</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">done</span>
+
+        <span class="k">def</span> <span class="nf">update_model</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="n">samples</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">memory</span><span class="o">.</span><span class="n">sample_batch</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">beta</span><span class="p">)</span>
+            <span class="n">weights</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">FloatTensor</span><span class="p">(</span><span class="n">samples</span><span class="p">[</span><span class="s2">&#34;weights&#34;</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+            <span class="n">indices</span> <span class="o">=</span> <span class="n">samples</span><span class="p">[</span><span class="s2">&#34;indices&#34;</span><span class="p">]</span>
+            <span class="o">//</span> <span class="mf">1.</span> <span class="n">combine</span> <span class="mi">1</span><span class="o">-</span><span class="n">step</span> <span class="ow">and</span> <span class="n">n</span><span class="o">-</span><span class="n">step</span> <span class="n">loss</span> <span class="n">to</span> <span class="n">prevent</span> <span class="n">high</span><span class="o">-</span><span class="n">variance</span>
+            <span class="n">loss_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compute_dqn_loss</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gamma</span><span class="p">)</span>
+            <span class="n">gamma</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gamma</span> <span class="o">**</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_step</span>
+            <span class="n">loss_</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compute_dqn_loss</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">gamma</span><span class="p">)</span>
+            <span class="n">loss</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">loss_</span> <span class="o">*</span> <span class="n">weights</span><span class="p">)</span>
+            <span class="o">//</span> <span class="mf">2.</span> <span class="n">update</span> <span class="n">network</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+            <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+            <span class="n">clip_grad_norm_</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dqn</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="mf">10.0</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+            <span class="o">//</span> <span class="mf">3.</span> <span class="n">update</span> <span class="n">sample</span> <span class="n">priorities</span>
+            <span class="n">loss_for_prior</span> <span class="o">=</span> <span class="n">loss_</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+            <span class="n">new_priorities</span> <span class="o">=</span> <span class="n">loss_for_prior</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">prior_eps</span> <span class="o">//</span><span class="n">to</span> <span class="n">prevent</span> <span class="n">zero</span> <span class="n">prior_eps</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">memory</span><span class="o">.</span><span class="n">update_priorities</span><span class="p">(</span><span class="n">indices</span><span class="p">,</span> <span class="n">new_priorities</span><span class="p">)</span>
+            <span class="o">//</span> <span class="mf">4.</span> <span class="n">reset</span> <span class="n">noisynet</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dqn</span><span class="o">.</span><span class="n">reset_noise</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dqn_target</span><span class="o">.</span><span class="n">reset_noise</span><span class="p">()</span>
+        
+        <span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_frames</span><span class="p">,</span> <span class="n">plot_interval</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">is_test</span> <span class="o">=</span> <span class="bp">False</span>   
+            <span class="n">state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+            <span class="n">update_cnt</span> <span class="o">=</span> <span class="mi">0</span> 
+            <span class="n">losses</span><span class="p">,</span> <span class="n">scores</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">frame_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_frames</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="n">action</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">select_action</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+                <span class="n">next_state</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">done</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+                <span class="n">state</span> <span class="o">=</span> <span class="n">next_state</span>
+                <span class="n">score</span> <span class="o">+=</span> <span class="n">reward</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">beta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">beta</span> <span class="o">+</span> <span class="nb">min</span><span class="p">(</span><span class="n">frame_idx</span><span class="o">/</span><span class="n">num_frames</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">beta</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">done</span><span class="p">:</span>
+                    <span class="n">state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+                    <span class="n">scores</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">score</span><span class="p">)</span>
+                    <span class="n">score</span> <span class="o">=</span> <span class="mi">0</span> 
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">memory</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">:</span>
+                    <span class="n">loss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">update_model</span><span class="p">()</span>
+                    <span class="n">losses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">loss</span><span class="p">)</span>
+                    <span class="n">update_cnt</span> <span class="o">+=</span> <span class="mi">1</span>
+                    <span class="k">if</span> <span class="n">update_cnt</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">target_update</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">dqn_target</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dqn</span><span class="o">.</span><span class="n">state_dict</span><span class="p">())</span>
+                <span class="k">if</span> <span class="n">frame_idx</span> <span class="o">%</span> <span class="n">plot_interval</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_plot</span><span class="p">(</span><span class="n">frame_idx</span><span class="p">,</span> <span class="n">scores</span><span class="p">,</span> <span class="n">losses</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+        <span class="k">def</span> <span class="nf">_plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frame_idx</span><span class="p">,</span> <span class="n">scores</span><span class="p">,</span> <span class="n">losses</span><span class="p">):</span>
+            <span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">clear_output</span>
+            <span class="n">clear_output</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">131</span><span class="p">);</span> <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">scores</span><span class="p">)</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&#34;frame </span><span class="si">%s</span><span class="s2">. score: </span><span class="si">%s</span><span class="s2">&#34;</span> <span class="o">%</span><span class="p">(</span><span class="n">frame_idx</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">scores</span><span class="p">[</span><span class="o">-</span><span class="mi">10</span><span class="p">:])))</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">132</span><span class="p">);</span> <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">losses</span><span class="p">)</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+        <span class="k">def</span> <span class="nf">_compute_dqn_loss</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">samples</span><span class="p">,</span> <span class="n">gamma</span><span class="p">):</span>
+            <span class="s2">&#34;&#34;&#34;calculate categorical dqn loss&#34;&#34;&#34;</span>
+            <span class="n">state</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">FloatTensor</span><span class="p">(</span><span class="n">samples</span><span class="p">[</span><span class="s2">&#34;obs&#34;</span><span class="p">])</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+            <span class="n">next_state</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">FloatTensor</span><span class="p">(</span><span class="n">samples</span><span class="p">[</span><span class="s2">&#34;next_obs&#34;</span><span class="p">])</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+            <span class="n">action</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">LongTensor</span><span class="p">(</span><span class="n">samples</span><span class="p">[</span><span class="s2">&#34;acts&#34;</span><span class="p">])</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+            <span class="n">reward</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">FloatTensor</span><span class="p">(</span><span class="n">samples</span><span class="p">[</span><span class="s2">&#34;rews&#34;</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+            <span class="n">done</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">FloatTensor</span><span class="p">(</span><span class="n">samples</span><span class="p">[</span><span class="s2">&#34;done&#34;</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+            <span class="n">delta_z</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v_max</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">v_min</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">atom_size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+                <span class="o">//</span> <span class="mf">1.</span> <span class="n">choose</span> <span class="n">best</span> <span class="nb">next</span> <span class="n">action</span> <span class="o">=</span> <span class="n">argmax</span> <span class="n">Q</span><span class="p">(</span><span class="n">s_</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+                <span class="n">next_action</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dqn</span><span class="p">(</span><span class="n">next_state</span><span class="p">)</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+                <span class="n">next_dist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dqn_target</span><span class="o">.</span><span class="n">dist</span><span class="p">(</span><span class="n">next_state</span><span class="p">)</span>
+                <span class="n">next_dist</span> <span class="o">=</span> <span class="n">next_dist</span><span class="p">[</span><span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">),</span> <span class="n">next_action</span><span class="p">]</span>
+                <span class="o">//</span> <span class="mf">2.</span> <span class="n">compute</span> <span class="n">projection</span> <span class="n">of</span> <span class="n">t_z</span> <span class="n">onto</span> <span class="n">the</span> <span class="n">support</span> <span class="n">z</span>
+                <span class="n">t_z</span> <span class="o">=</span> <span class="n">reward</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">done</span><span class="p">)</span> <span class="o">*</span> <span class="n">gamma</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">support</span>
+                <span class="n">t_z</span> <span class="o">=</span> <span class="n">t_z</span><span class="o">.</span><span class="n">clamp</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">v_min</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">v_max</span><span class="p">)</span>
+                <span class="n">b</span> <span class="o">=</span> <span class="p">(</span><span class="n">t_z</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">v_min</span><span class="p">)</span> <span class="o">/</span> <span class="n">delta_z</span>
+                <span class="n">l</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">floor</span><span class="p">()</span><span class="o">.</span><span class="n">long</span><span class="p">()</span>
+                <span class="n">u</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">ceil</span><span class="p">()</span><span class="o">.</span><span class="n">long</span><span class="p">()</span>
+                <span class="o">//</span> <span class="mf">3.</span> <span class="n">get</span> <span class="n">distribution</span> <span class="n">of</span> <span class="n">Q</span> <span class="n">value</span> <span class="n">on</span> <span class="n">the</span> <span class="n">support</span>
+                <span class="n">offset</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">atom_size</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">)</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">atom_size</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+                <span class="n">proj_dist</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">next_dist</span><span class="o">.</span><span class="n">size</span><span class="p">(),</span> <span class="n">device</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+                <span class="n">proj_dist</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">index_add_</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="n">l</span> <span class="o">+</span> <span class="n">offset</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">),(</span><span class="n">next_dist</span> <span class="o">*</span> <span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">float</span><span class="p">()</span> <span class="o">-</span> <span class="n">b</span><span class="p">))</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+                <span class="n">proj_dist</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">index_add_</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="n">u</span> <span class="o">+</span> <span class="n">offset</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">),(</span><span class="n">next_dist</span> <span class="o">*</span> <span class="p">(</span><span class="n">b</span> <span class="o">-</span> <span class="n">l</span><span class="o">.</span><span class="n">float</span><span class="p">()))</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+            <span class="o">//</span> <span class="mf">4.</span> <span class="n">calculate</span> <span class="n">cross</span> <span class="n">entropy</span> <span class="n">loss</span>
+            <span class="n">log_p</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dqn</span><span class="o">.</span><span class="n">dist</span><span class="p">(</span><span class="n">state</span><span class="p">)[</span><span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">),</span> <span class="n">action</span><span class="p">])</span>
+            <span class="k">return</span> <span class="o">-</span><span class="p">(</span><span class="n">proj_dist</span> <span class="o">*</span> <span class="n">log_p</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>loss计算过程</strong>:</p>
 <ol>
 <li>根据$s_{t+n}$计算相对应的$Q(s_{t+n},a ; \theta) = \sum_i  z_i \Pr_i(s_{t+n},a; \theta)$ (见<code>network forward()</code>)</li>
 <li>$a^* \gets \arg\max_a Q(s_{t+n},a ; \theta)$ 得到 <code>next_action</code></li>
@@ -596,6 +833,7 @@ m_u &amp;\gets m_u + \Pr(s_{t+n}, a^* ; \theta&rsquo;)\times(b-l)
 </p>
 </li>
 </ul>
+<h2 id="policy-gradient">Policy Gradient</h2>
 <!-- a list of [papers](https://spinningup.openai.com/en/latest/spinningup/keypapers.html) in deep RL that are worth reading -->
 <section class="footnotes" role="doc-endnotes">
 <hr>

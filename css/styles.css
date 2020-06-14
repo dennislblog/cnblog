@@ -154,12 +154,12 @@ pre,
 .file-tree {
   overflow-x: auto;
   padding: 1.5rem 0rem;
-  overflow-y: scroll;
-
+  height: calc(100% - 64px);
+  overflow-y: auto;
 }
 code {
   font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
-  font-size: .9em;
+  font-size: inherit;
   border: 1px solid #d0d0d0;
   border-radius: .25rem;
   padding: 0 .125rem;
@@ -508,7 +508,7 @@ caption {
 /* Notes and warnings */
 .note {
   border-left: 0.5rem solid;
-  font-size: 0.85rem;
+  font-size: inherit;
 }
 .note .sign {
   height: 1.5rem;

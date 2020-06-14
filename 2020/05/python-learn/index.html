@@ -19,6 +19,8 @@
   <meta name="theme-color" content="#ffffff">
 
   <link rel="stylesheet" href="https://dennislblog.github.io/cnblog/css/prism.css" media="none" onload="this.media='all';">
+  <link rel="stylesheet" href="https://dennislblog.github.io/cnblog/css/syntax.css" media="none" onload="this.media='all';">
+
 
   
   
@@ -486,25 +488,52 @@
 </table>
 <h2 id="装饰器">装饰器</h2>
 <h3 id="property">property</h3>
-<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span>    <span style="color:#007020;font-weight:bold">class</span> <span style="color:#0e84b5;font-weight:bold">C</span>:  
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span>        <span style="color:#007020;font-weight:bold">def</span> __init__(self):
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span>            self<span style="color:#666">.</span>_name <span style="color:#666">=</span> <span style="color:#4070a0">&#39;&#39;</span>            <span style="color:#666">//</span>c <span style="color:#666">=</span> C()  
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span>        <span style="color:#555;font-weight:bold">@property</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span>        <span style="color:#007020;font-weight:bold">def</span> <span style="color:#06287e">name</span>(self):                <span style="color:#666">//</span><span style="">除非提供</span>delter<span style="">，否则属性不能被</span>del删除
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span>            <span style="color:#007020;font-weight:bold">return</span> self<span style="color:#666">.</span>_name          <span style="color:#666">//</span>c<span style="color:#666">.</span>name <span style="">访问属性</span>  
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span>        <span style="color:#555;font-weight:bold">@name.setter</span> 
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span>        <span style="color:#007020;font-weight:bold">def</span> <span style="color:#06287e">name</span>(self,value):  
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span>            <span style="color:#007020;font-weight:bold">if</span> value <span style="color:#007020;font-weight:bold">is</span> None:          <span style="color:#666">//</span>c<span style="color:#666">.</span>name <span style="color:#666">=</span> None <span style="">设置属性时进行验证，会报错</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span>                <span style="color:#007020;font-weight:bold">raise</span> <span style="color:#007020">RuntimeError</span>(<span style="color:#4070a0">&#39;name cannot be None&#39;</span>)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span>            <span style="color:#007020;font-weight:bold">else</span>:
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span>                self<span style="color:#666">.</span>_name <span style="color:#666">=</span> name
-</code></pre></div><h2 id="功能代码">功能代码</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-py" data-lang="py">    <span class="k">class</span> <span class="nc">C</span><span class="p">:</span>  
+        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>            <span class="o">//</span><span class="n">c</span> <span class="o">=</span> <span class="n">C</span><span class="p">()</span>  
+        <span class="nd">@property</span>
+        <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>                <span class="o">//</span><span class="err">除非提供</span><span class="n">delter</span><span class="err">，否则属性不能被</span><span class="n">del删除</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span>          <span class="o">//</span><span class="n">c</span><span class="o">.</span><span class="n">name</span> <span class="err">访问属性</span>  
+        <span class="nd">@name.setter</span> 
+        <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">value</span><span class="p">):</span>  
+            <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>          <span class="o">//</span><span class="n">c</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="bp">None</span> <span class="err">设置属性时进行验证，会报错</span>
+                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;name cannot be None&#39;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">name</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="功能代码">功能代码</h2>
 <h3 id="argparse简要用法总结">Argparse简要用法总结</h3>
 <p>argparse 是python自带的命令行参数解析包，可以用来方便地读取命令行参数，比如这样</p>
-<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span>    parser  <span style="color:#666">=</span> argparse<span style="color:#666">.</span>ArgumentParser()
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span>    parser<span style="color:#666">.</span>add_argument(<span style="color:#4070a0">&#34;--a&#34;</span>, <span style="color:#007020">type</span><span style="color:#666">=</span><span style="color:#007020">int</span>, default<span style="color:#666">=</span><span style="color:#40a070">16</span>, help<span style="color:#666">=</span><span style="color:#4070a0">&#34;size of the batches&#34;</span>)
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span>    args <span style="color:#666">=</span> parser<span style="color:#666">.</span>parse_known_args()             <span style="color:#666">//</span>args[<span style="color:#40a070">0</span>] <span style="color:#666">=</span> Namespace(a<span style="color:#666">=</span><span style="color:#40a070">16</span>), <span style="">也可以直接</span>call args[<span style="color:#40a070">0</span>]<span style="color:#666">.</span>a
-</code></pre></div><table>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python">    <span class="n">parser</span>  <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&#34;--a&#34;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&#34;size of the batches&#34;</span><span class="p">)</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_known_args</span><span class="p">()</span>             <span class="o">//</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">Namespace</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="mi">16</span><span class="p">),</span> <span class="err">也可以直接</span><span class="n">call</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">a</span>
+</code></pre></td></tr></table>
+</div>
+</div><table>
 <thead>
 <tr>
 <th>参数</th>

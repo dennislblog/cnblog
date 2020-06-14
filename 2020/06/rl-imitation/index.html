@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
   <meta name="generator" content="Hugo 0.69.0" />
-  <link rel="canonical" href="https://dennislblog.github.io/cnblog/2020/05/_vc-dimension/">
+  <link rel="canonical" href="https://dennislblog.github.io/cnblog/2020/06/rl-imitation/">
 
   
 
@@ -19,6 +19,8 @@
   <meta name="theme-color" content="#ffffff">
 
   <link rel="stylesheet" href="https://dennislblog.github.io/cnblog/css/prism.css" media="none" onload="this.media='all';">
+  <link rel="stylesheet" href="https://dennislblog.github.io/cnblog/css/syntax.css" media="none" onload="this.media='all';">
+
 
   
   
@@ -32,7 +34,7 @@
 
   
   
-  <title>VC维的理解 | My Site Title</title>
+  <title>Imitation Learning | My Site Title</title>
   
 
 <script type="text/javascript" async
@@ -229,8 +231,30 @@
           
           
           
-          <a href="#%e5%ad%a6%e4%b9%a0%e7%9a%84%e8%bf%87%e7%a8%8b" style="padding-left: 0rem">
-            学习的过程
+          <a href="#%e5%ad%a6%e4%b9%a0%e4%b8%80%e4%b8%aaimitation%e7%9a%84github-repo1" style="padding-left: 0rem">
+            学习一个imitation的Github Repo[^1]
+          </a>
+        </li>
+      
+        
+        <li class="toc-h3">
+          
+          
+          
+          
+          <a href="#agent" style="padding-left: 0rem">
+            Agent
+          </a>
+        </li>
+      
+        
+        <li class="toc-h3">
+          
+          
+          
+          
+          <a href="#trajectory" style="padding-left: 0rem">
+            Trajectory
           </a>
         </li>
       
@@ -240,52 +264,8 @@
           
           
           
-          <a href="#hoeffding%e4%b8%8d%e7%ad%89%e5%bc%8f" style="padding-left: 0rem">
-            Hoeffding不等式
-          </a>
-        </li>
-      
-        
-        <li class="toc-h2">
-          
-          
-          
-          
-          <a href="#%e5%8f%af%e5%ad%a6%e4%b9%a0%e7%9a%84%e6%9d%a1%e4%bb%b6" style="padding-left: 0rem">
-            可学习的条件
-          </a>
-        </li>
-      
-        
-        <li class="toc-h2">
-          
-          
-          
-          
-          <a href="#%e6%9c%89%e6%95%88%e5%81%87%e8%ae%be%e6%95%b0" style="padding-left: 0rem">
-            有效假设数
-          </a>
-        </li>
-      
-        
-        <li class="toc-h2">
-          
-          
-          
-          
-          <a href="#%e5%af%b9%e5%88%86dichotomy%e5%92%8c%e6%89%93%e6%95%a3shatter" style="padding-left: 0rem">
-            对分(dichotomy)和打散(shatter)
-          </a>
-        </li>
-      
-        
-        <li class="toc-h2">
-          
-          
-          
-          
-          <a href="#%e5%a2%9e%e9%95%bf%e5%87%bd%e6%95%b0growth-function%e5%92%8c%e6%96%ad%e7%82%b9break-point" style="padding-left: 0rem">
-            增长函数(growth function)和断点(break point)
+          <a href="#reference" style="padding-left: 0rem">
+            Reference
           </a>
         </li>
       
@@ -307,13 +287,13 @@
       <svg class="bookmark-icon" aria-hidden="true" viewBox="0 0 40 50" focusable="false">
         <use xlink:href="#bookmark"></use>
       </svg>
-      VC维的理解
+      Imitation Learning
     </h1>
 
     <div class="date">
       
       
-      <strong aria-hidden="true">Publish date: </strong>Tuesday, May 19, 2020
+      <strong aria-hidden="true">Publish date: </strong>Tuesday, June 9, 2020
       
         
       
@@ -329,7 +309,7 @@
                 <use xlink:href="#tag"></use>
               </svg>
               
-              <a href="https://dennislblog.github.io/cnblog/tags/vc/">VC</a>
+              <a href="https://dennislblog.github.io/cnblog/tags/thesis/">Thesis</a>
             </li>
           
             <li>
@@ -337,95 +317,184 @@
                 <use xlink:href="#tag"></use>
               </svg>
               
-              <a href="https://dennislblog.github.io/cnblog/tags/%E5%AD%A6%E4%B9%A0%E7%90%86%E8%AE%BA/">学习理论</a>
+              <a href="https://dennislblog.github.io/cnblog/tags/rl/">RL</a>
             </li>
           
         </ul>
       </div>
     
-    <h2 id="学习的过程">学习的过程</h2>
-<p><figure role="group">
-    <a href=" https://i.postimg.cc/Dz3Bsf4m/image.png" class="img-link">
-        <img src="https://i.postimg.cc/Dz3Bsf4m/image.png" width="80%" title="机器学习基石">
-    </a>
-    <figcaption>
-        机器学习的过程就是：通过算法 $\mathcal{A}$，在假设空间 $\mathcal{H}$ 中，根据训练样本集 $\mathcal{D}$，选择最好的假设作为 $g$ 使 $g$ 近似于 $f$
-    </figcaption>
-</figure>
-</figure></p>
-<ul>
-<li>$E_{out}(g)$，是模型在<code>out of sample</code>数据上得到的期望误差</li>
-<li>$E_{in}(g)$，是模型在<code>in of sample</code>数据上得到的经验误差</li>
-</ul>
-<blockquote>
-<p>理论上$E_{out}(f)=0$，所以我们只需要让$g$尽量接近$f$就可以实现我们的目标：$E_{out}(g)=0$，但由于没法获取训练集以外的数据，也就没法计算$E_{out}(g)$</p>
-</blockquote>
-<h2 id="hoeffding不等式">Hoeffding不等式</h2>
-<p><figure role="group">
-    <a href=" https://i.postimg.cc/ZKL15fbv/image.png" class="img-link">
-        <img src="https://i.postimg.cc/ZKL15fbv/image.png" width="80%" title="从v推断μ">
-    </a>
-    <figcaption>
-        假设瓶子里橙色球有$\mu$，我们从中取$N$个样本，其中橙色占$v$吗，那么我们可以根据$v$推论$\mu$吗
-    </figcaption>
-</figure>
-</figure></p>
-<blockquote>
-<p>直觉上来讲，如果样本更大，$v \rightarrow \mu$，用<code>hoeffding不等式</code>可以表示为
-$$\mathbb{P}[|\nu - \mu| &gt; \epsilon] \leq 2 \exp \left(-2 \epsilon^2 N \right) \tag{1}$$
-当$N$越来越大，估计误差大于$\epsilon$的概率上界趋近$0$，这种情况下我们说$v$和 $\mu$概率近似相等(probably approximately correct, PAC)</p>
-</blockquote>
-<h2 id="可学习的条件">可学习的条件</h2>
-<p>注意假设空间$\mathcal{H}$里的模型无穷多，那么对于任何一个假设$g$，$E_{in}(g)$和$E_{out}(g)$之间的估计误差上界是多少呢？
-$$\begin{align*}
-&amp;\mathbb{P}[\mathbf{E}(h_1)&gt; \epsilon \cup \mathbf{E}(h_2)&gt; \epsilon \space … \cup \mathbf{E}(h_M)&gt; \epsilon] \cr 
-\leq &amp;\mathbb{P}[\mathbf{E}(h_1)&gt; \epsilon] + \mathbb{P}[\mathbf{E}(h_2)&gt; \epsilon] \space … + \mathbb{P}[\mathbf{E}(h_M)&gt; \epsilon] \cr
-\leq &amp;2M\exp(-2 \epsilon^2 N) \tag{2}
-\end{align*}$$
-其中$\mathbf{E}(h_i) = |E_{in}(h_i) - E_{out}(h_i)|$，所以对于任意假设而言，上界就同时和样本数$N$和假设空间大小$M$相关，如果假设空间是有限的且样本数量足够大，那么我们就可以学到这样一个模型$g$使得$\mathbb{P}[|E_{in}(g) - E_{out}(g)| &gt; \epsilon] \rightarrow 0$. 当一个假设空间很大的时候，只要给定足够的时间，我们总能够找到$g$使得样本内误差$E_{in}(g)$足够小，但是由于$M$大，所以模型泛化能力弱；而如果假设空间$M$小的时候，则可能训练的$g$并不能显著降低$E_{in}(g)$，虽然模型泛化能力要好一些</p>
-<blockquote>
-<p>直觉上来讲，即使某个事件概率很小，但如果实验次数多，发生概率还是很大的，比如连续抛5次硬币，都是正面朝上的概率只有$\frac{1}{32}$，但如果有100个人做这个实验，则发生5次正面都朝上的概率就变成了$1-\frac{31}{32}^{100} &gt; 0.95$</p>
-</blockquote>
-<h2 id="有效假设数">有效假设数</h2>
-<p>注意在推论不等式(2)过程中我们假设$\mathbf{E}(h_i) &gt; \epsilon$之间相互独立，但事实上很多模型可以被归为一类，A在这个问题上表现的好，B也会表现得好。</p>
-<p><figure role="group">
-    <a href=" https://i.postimg.cc/0QNrs86G/image.png" class="img-link">
-        <img src="https://i.postimg.cc/0QNrs86G/image.png" width="80%" title="假设重叠">
-    </a>
-    <figcaption>
-        如果平明上只有1个点，我们可以把二维平面无数多条分类分成两类：一类预测$x_1$在下方，另一类预测$x_1$在上方。如果有两个数据，则线段可以分为4类，有4个数据，可分为14类, 所以尽管假设是无穷的，有效假设却可能是有限的
-    </figcaption>
-</figure>
-</figure></p>
-<p>所以公式(2)也可以写成 $\mathbb{P}[|E_{in}(g) - E_{out}(g)| &gt; \epsilon] \leq 2\cdot \text{effective}(M) \exp(-2 \epsilon^2 N)$.</p>
-<h2 id="对分dichotomy和打散shatter">对分(dichotomy)和打散(shatter)</h2>
-<p>假设有$\lbrace X_{1:N}\rbrace$ N个数据，对于假设空间$\mathcal{H} = \lbrace h: \mathcal{X} \to \lbrace+1,-1\rbrace \rbrace$, 一个对分(dichotomy)就是所有数据被标识的一种结果，即
-$$h(X_1, X_2,…,X_N) = (h(X_1), h(X_2),…,h(X_n)) \in \lbrace+1,-1 \rbrace ^N$$
-而$\mathcal{H}(X_1, X_2,…,X_N)$代表所有可能的对分，例如上图所展示的，当$N=4$时，$|\mathcal{H}(X_1, X_2,X_3,X_4)|=14$，为啥不等于$2^4$呢？因为当$\mathcal{H}$仅包括线性模型时，右边第三种情况并不能被一条线段对分，这时我们称样本没有被这种假设空间打散(shatter)</p>
-<h2 id="增长函数growth-function和断点break-point">增长函数(growth function)和断点(break point)</h2>
-<p>为了去掉对具体数据$\mathcal{D} = \lbrace X_{1:N}\rbrace$的依赖性，引入增长函数的概念
-$$m_{\mathcal{H}}(N) = \underset{X_1,X2,…,X_N \in \mathcal{X}}{max} |\mathcal{H}(X_1, X_2,…,X_N)|$$
-表示对任意$N$个样本所能赋予标记的最大可能结果数，上界为$2^N$，也就是说N个点，最多只有$2^N$种有效的二分分类模型。当$N$从$1$开始往上增加，当增大到$k$时，第一次出现数据不能被打散(shatter)的情况，即$m_{\mathcal{H}}(N) &lt; 2^N$的情况，则称$k$是该假设空间的断点(break point)，所以当假设空间为平面上的所有直线时，断点$k=4$，因为$|\mathcal{H}(X_{1:4})|=14 \neq 2^4$</p>
-<p>假设断点存在且为$k$时的假设空间$\mathcal{H}$的增粘函数$m_{\mathcal{H}}(N)$的上界为$B(N,k)$，则$B(N,k)$满足
-$$m_{\mathcal{H}}(N) \le B(N,k) \le \sum_{i=0}^{k-1}{N \choose i} \le N^{k-1}$$
-多项式没有幂项式的量级高，所以进一步缩小了假设空间里可选模型范围的上界，那么对于公式(2)，我们就可以进一步缩小左边的范围
-$$\begin{align*}\forall g \in \mathcal{H}, \mathbb{P}[|E_{in}(g) - E_{out}(g)| &gt; \epsilon] &amp;\leq 4 m_{\mathcal{H}}(2N) \exp(-\frac18 \epsilon^2 N)  \cr &amp;\leq 4(2N)^{k-1}\exp(-\frac18 \epsilon^2 N)  \tag{3}\end{align*}$$</p>
-<blockquote>
-<p>公式(3)就是定义的<code>VC界</code>，如果假设空间$\mathcal{H}$存在有限的断点$k$，那么增长函数(可选模型范围)$m_{\mathcal{H}}(2N)$就会被$(2N)^{k-1}$的多项式上界给束缚住，并且随着数据量$N$的增大，指数项$\exp(.)$的下降会比多项式$m_\mathcal{H}(.)$的增长速度更快，此时可以推断出<code>VC界</code>是有上界的，更进一步，当$N$足够大时，对于$H$中的任意一个假设$g$，估计误差都会无限减小，即学习是可行的。</p>
-</blockquote>
-<p>进一步说公式(3)中的$k-1$就是<code>VC维</code>代表能被假设空间打散的最大数据集大小。<code>VC维</code>和数据具体分布，学习算法，和目标模型$f$都没有关系，只和假设空间有关系，<code>VC维</code>越大，代表假设空间的模型越复杂，也就越容易过拟合，假设估计误差过大的概率不超过$\delta$，即$\mathbb{P}[|E_{in}(g) - E_{out}(g)| &gt; \epsilon] \leq \delta$，那么我们可以得到一个关于<code>VC维</code>和误差关系的图</p>
-<p><figure role="group">
-    <a href=" https://i.postimg.cc/PrgFYrYS/image.png" class="img-link">
-        <img src="https://i.postimg.cc/PrgFYrYS/image.png" width="80%" title="根据误差估算需要的样本量">
-    </a>
-    <figcaption>
-        假设VC维是$3$，要达到$\epsilon=0.1, \delta=0.1$，理论上样本要达到$N=10000 VC(\mathcal{H})$这个量级，但实际应用中发现只需要$10VC(\mathcal{H})$就可以了，这是因为VC界是一个及其宽松的上界，对任何学习算法，数据分布，目标函数都要成立
-    </figcaption>
-</figure>
-</figure></p>
-<p>上图参照的具体公式是
-$$E_{in}(g) - \sqrt{\frac 8 N \ln \left( \frac {4(2N)^{VC(\mathcal{H})}} \delta \right)} \le E_{out}(g) \le E_{in}(g) + \sqrt{\frac 8 N \ln \left( \frac {4(2N)^{VC(\mathcal{H})}} \delta \right)} \tag{4}$$</p>
+    <p>learning reward via expert policies</p>
+<h2 id="学习一个imitation的github-repo1">学习一个imitation的Github Repo[^1]</h2>
+<p>之后是打算总结所有算法推导和数学证明的，在此之前，先通过别人写的代码快速了解这个领域，这个<code>Repo</code>里的任务是<code>CartPole-v1</code>，把一根杆子立起来，这个环境包含四个观测变量 position($-2.4-2.4$), velocity($-\infty, \infty$), angle($-41.8^\circ, 41.8^\circ$) and velocity at tip ($-\infty, \infty$) 和 一个离散决策 (← or →)，奖励是每一个<code>step</code>得到一分，坚持越久分数越高，游戏结束的条件是要么倾斜超过$12^\circ$，要么移动到屏幕之外$\pm 2.4$，要么超过$500$个回合</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python">    <span class="n">register</span><span class="p">(</span>
+        <span class="nb">id</span><span class="o">=</span><span class="s1">&#39;CartPole-v1&#39;</span><span class="p">,</span>
+        <span class="n">entry_point</span><span class="o">=</span><span class="s1">&#39;gym.envs.classic_control:CartPoleEnv&#39;</span><span class="p">,</span>
+        <span class="n">max_episode_steps</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
+        <span class="n">reward_threshold</span><span class="o">=</span><span class="mf">475.0</span><span class="p">)</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="agent">Agent</h3>
+<p>离散决策</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python">    <span class="n">agent</span> <span class="o">=</span> <span class="n">ActorCritic</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">observation_space</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">env</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">hidden_size</span><span class="p">)</span>
+    <span class="n">agent_optimiser</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">RMSprop</span><span class="p">(</span><span class="n">agent</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">learning_rate</span><span class="p">)</span>
+</code></pre></td></tr></table>
+</div>
+</div><div class="expandable-section">
+  
+    <h3>
+  
+    <button aria-expanded="false" data-expands="js-expandable-fe685d2feec84fc120d8247ff4150b51">
+      <span class="expandable-label">Actor-Critic Network</span>
+      <svg aria-hidden="true" focusable="false" viewBox="0 0 70.866142 70.866141">
+        <g transform="translate(0 -981.5)">
+          <rect style="stroke-width:0;fill:currentColor" ry="5" height="60" width="9.8985" y="987.36" x="30.051" class="up-strut" />
+          <rect style="stroke-width:0;fill:currentColor" ry="5" height="10" width="60" y="1012.4" x="5"/>
+        </g>
+      </svg>
+    </button>
+  
+    </h3>
+  
+  <div id="js-expandable-fe685d2feec84fc120d8247ff4150b51" hidden>
+    <pre><code>class Actor(nn.Module):
+    def __init__(self, state_size, action_size, hidden_size):
+        super().__init__()
+        self.actor = nn.Sequential(nn.Linear(state_size, hidden_size), nn.Tanh(), nn.Linear(hidden_size, hidden_size), nn.Tanh(), nn.Linear(hidden_size, action_size))
+    def forward(self, state):
+        policy = Categorical(logits=self.actor(state)) //改成Normal?
+        return policy
 
+class Critic(nn.Module):
+    def __init__(self, state_size, hidden_size):
+        super().__init__()
+        self.critic = nn.Sequential(nn.Linear(state_size, hidden_size), nn.Tanh(), nn.Linear(hidden_size, hidden_size), nn.Tanh(), nn.Linear(hidden_size, 1))
+    def forward(self, state):
+        value = self.critic(state).squeeze(dim=1)
+        return value
+
+class ActorCritic(nn.Module):
+    def __init__(self, state_size, action_size, hidden_size):
+        super().__init__()
+        self.actor = Actor(state_size, action_size, hidden_size)
+        self.critic = Critic(state_size, hidden_size)
+    def forward(self, state):
+        policy, value = self.actor(state), self.critic(state)
+        return policy, value
+    def log_prob(self, state, action):
+        return self.actor(state).log_prob(action)
+</code></pre>
+
+  </div>
+</div>
+
+<h3 id="trajectory">Trajectory</h3>
+<p>通过让<code>expert agent</code>在环境中跑<code>n</code>个回合，得到每个<code>episode</code>中每个<code>step</code>的<code>state, action, reward, done</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python">    <span class="n">terminals</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">rewards</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">),</span> <span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">1</span><span class="p">)])</span>
+    <span class="n">trajectories</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">states</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">states</span><span class="p">),</span> <span class="n">actions</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">actions</span><span class="p">),</span> \
+        <span class="n">rewards</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">rewards</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">),</span> <span class="n">terminals</span><span class="o">=</span><span class="n">terminals</span><span class="p">))</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">trajectories</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;results&#39;</span><span class="p">,</span> <span class="s1">&#39;trajectories.pth&#39;</span><span class="p">))</span>
+    
+    <span class="o">//</span> <span class="err">由于之前是一个</span><span class="n">episode的信息保存成一个dictionary</span><span class="err">，加到</span><span class="n">list里的</span><span class="err">，为了</span><span class="n">non</span><span class="o">-</span><span class="n">correlation</span>
+    <span class="n">expert_trajectories</span> <span class="o">=</span> <span class="n">TransitionDataset</span><span class="p">(</span><span class="n">flatten_list_dicts</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;expert_trajectories.pth&#39;</span><span class="p">)))</span>
+</code></pre></td></tr></table>
+</div>
+</div><div class="expandable-section">
+  
+    <h3>
+  
+    <button aria-expanded="false" data-expands="js-expandable-d489042cba10c55fcb875d8f5551bfa1">
+      <span class="expandable-label">Evaluate Agent</span>
+      <svg aria-hidden="true" focusable="false" viewBox="0 0 70.866142 70.866141">
+        <g transform="translate(0 -981.5)">
+          <rect style="stroke-width:0;fill:currentColor" ry="5" height="60" width="9.8985" y="987.36" x="30.051" class="up-strut" />
+          <rect style="stroke-width:0;fill:currentColor" ry="5" height="10" width="60" y="1012.4" x="5"/>
+        </g>
+      </svg>
+    </button>
+  
+    </h3>
+  
+  <div id="js-expandable-d489042cba10c55fcb875d8f5551bfa1" hidden>
+    <div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python">    <span class="k">def</span> <span class="nf">flatten_list_dicts</span><span class="p">(</span><span class="n">list_dicts</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span>  <span class="n">k</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">d</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">list_dicts</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">list_dicts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>  <span class="p">}</span>
+    
+    <span class="k">def</span> <span class="nf">evaluate_agent</span><span class="p">(</span><span class="n">agent</span><span class="p">,</span> <span class="n">episodes</span><span class="p">,</span> <span class="n">return_trajectories</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">env</span> <span class="o">=</span> <span class="n">CartPoleEnv</span><span class="p">();</span> <span class="n">env</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+        <span class="n">returns</span><span class="p">,</span> <span class="n">trajectories</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">episodes</span><span class="p">):</span>
+            <span class="n">states</span><span class="p">,</span> <span class="n">actions</span><span class="p">,</span> <span class="n">rewards</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[]</span>
+            <span class="n">state</span><span class="p">,</span> <span class="n">terminal</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">(),</span> <span class="bp">False</span>
+            <span class="k">while</span> <span class="ow">not</span> <span class="n">terminal</span><span class="p">:</span>
+                <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+                    <span class="n">policy</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">agent</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+                    <span class="n">action</span> <span class="o">=</span> <span class="n">policy</span><span class="o">.</span><span class="n">logits</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>  <span class="o">//</span>
+                    <span class="n">state</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">terminal</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+
+                    <span class="k">if</span> <span class="n">return_trajectories</span><span class="p">:</span>
+                    <span class="n">states</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+                    <span class="n">actions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+                    <span class="n">rewards</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">reward</span><span class="p">)</span>
+            <span class="n">returns</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">rewards</span><span class="p">))</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">returns</span><span class="p">,</span> <span class="n">trajectories</span><span class="p">)</span> <span class="k">if</span> <span class="n">return_trajectories</span> <span class="k">else</span> <span class="n">returns</span>
+</code></pre></td></tr></table>
+</div>
+</div>
+  </div>
+</div>
+
+<h2 id="reference">Reference</h2>
+<p>[1] Kaixhin <a href="https://github.com/Kaixhin/imitation-learning/tree/135831fddb449684b5f7bd3b4802e2ddff79c475">Imitation learning algorithms</a></p>
 	
 
 <a href="#" id="back-to-top" class="back-to-top" style="display: inline;">Back to Top</a>
@@ -520,6 +589,7 @@ $$E_{in}(g) - \sqrt{\frac 8 N \ln \left( \frac {4(2N)^{VC(\mathcal{H})}} \delta 
     </div>
     <script src="https://dennislblog.github.io/cnblog/js/prism.js"></script>
 <script src="https://dennislblog.github.io/cnblog/js/dom-scripts.js"></script>
+<script src='https://kit.fontawesome.com/a076d05399.js'></script>
     
   
 

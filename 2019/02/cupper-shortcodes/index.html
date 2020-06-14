@@ -19,6 +19,8 @@
   <meta name="theme-color" content="#ffffff">
 
   <link rel="stylesheet" href="https://dennislblog.github.io/cnblog/css/prism.css" media="none" onload="this.media='all';">
+  <link rel="stylesheet" href="https://dennislblog.github.io/cnblog/css/syntax.css" media="none" onload="this.media='all';">
+
 
   
   
@@ -444,10 +446,19 @@
     
     <p>some useful partials in writing Cupper blogs</p>
 <h2 id="blockquote">blockquote</h2>
-<pre><code>{{&lt; blockquote author=&quot;Carl Jung&quot; &gt;}}
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">{{&lt; blockquote author=&#34;Carl Jung&#34; &gt;}}
 Even a happy life cannot be without a measure of darkness, and the word happy would lose its meaning if it were not balanced by sadness. It is far better to take things as they come along with patience and equanimity.
 {{&lt; /blockquote &gt;}}
-</code></pre>
+</code></pre></td></tr></table>
+</div>
+</div>
 
 <blockquote class="blockquote">
   <p>
@@ -459,10 +470,19 @@ Even a happy life cannot be without a measure of darkness, and the word happy wo
   </p>
 </blockquote>
 <h2 id="note">note</h2>
-<pre><code>{{&lt; note &gt;}}
-This is a note! It's something the reader may like to know about but is supplementary to the main content. Use notes when something may be interesting but not critical.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">{{&lt; note &gt;}}
+This is a note! It&#39;s something the reader may like to know about but is supplementary to the main content. Use notes when something may be interesting but not critical.
 {{&lt; /note &gt;}}
-</code></pre>
+</code></pre></td></tr></table>
+</div>
+</div>
 
 <aside aria-label="note" class="note">
   <div>
@@ -478,10 +498,19 @@ This is a note! It's something the reader may like to know about but is suppleme
 </aside>
 
 <h2 id="warning-note">warning note</h2>
-<pre><code>{{&lt; warning &gt;}}
-This is a warning! It's about something the reader should be careful to do or to avoid doing. Use warnings when something could go wrong.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">{{&lt; warning &gt;}}
+This is a warning! It&#39;s about something the reader should be careful to do or to avoid doing. Use warnings when something could go wrong.
 {{&lt; /warning &gt;}}
-</code></pre><aside aria-label="warning" class="note warning">
+</code></pre></td></tr></table>
+</div>
+</div><aside aria-label="warning" class="note warning">
   <div>
     <svg class="sign" aria-hidden="true" viewBox="0 0 48.430474 41.646302" focusable="false">
       <use xlink:href="#warning"></use>
@@ -493,16 +522,43 @@ This is a warning! It's about something the reader should be careful to do or to
 </aside>
 
 <h2 id="cmd">cmd</h2>
-<pre><code>{{&lt; cmd &gt;}}
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">{{&lt; cmd &gt;}}
 hugo server --gc
 {{&lt; /cmd &gt;}}
-</code></pre><pre class="cmd"><code>hugo server --gc</code></pre>
+</code></pre></td></tr></table>
+</div>
+</div><pre class="cmd"><code>hugo server --gc</code></pre>
 
 <h2 id="code">code</h2>
-<pre><code>{{&lt; code numbered=&quot;true&quot; &gt;}}
-&lt;div [[[role=&quot;dialog&quot;]]] [[[aria-labelledby=&quot;dialog-heading&quot;]]]&gt;
-  &lt;button [[[aria-label=&quot;close&quot;]]]&gt;x&lt;/button&gt;
-  &lt;h2 [[[id=&quot;dialog-heading&quot;]]]&gt;Confirmation&lt;/h2&gt;
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">{{&lt; code numbered=&#34;true&#34; &gt;}}
+&lt;div [[[role=&#34;dialog&#34;]]] [[[aria-labelledby=&#34;dialog-heading&#34;]]]&gt;
+  &lt;button [[[aria-label=&#34;close&#34;]]]&gt;x&lt;/button&gt;
+  &lt;h2 [[[id=&#34;dialog-heading&#34;]]]&gt;Confirmation&lt;/h2&gt;
   &lt;p&gt;Press Okay to confirm or Cancel&lt;/p&gt;
   &lt;button&gt;Okay&lt;/button&gt;
   &lt;button&gt;Cancel&lt;/button&gt;
@@ -511,9 +567,11 @@ hugo server --gc
 
 1. The dialog is only announced as a dialog if it takes the `dialog` ARIA role
 2. The `aria-labelledby` relationship attribute makes the element carrying the `id` it points to its label
-3. The close button uses `aria-label` to provide the text label &quot;close&quot;, overriding the text content
-4. The heading is used as the dialog's label. The `aria-labelledby` attribute points to its `id`
-</code></pre>
+3. The close button uses `aria-label` to provide the text label &#34;close&#34;, overriding the text content
+4. The heading is used as the dialog&#39;s label. The `aria-labelledby` attribute points to its `id`
+</code></pre></td></tr></table>
+</div>
+</div>
 
 
 
@@ -536,32 +594,74 @@ hugo server --gc
 </ol>
 <h2 id="syntax-highlighting">syntax highlighting</h2>
 <p>To get syntax highlighting for your code, use markdown code fences, then specify the language:</p>
-<pre><code>```html
-&lt;div role=&quot;dialog&quot; aria-labelledby=&quot;dialog-heading&quot;&gt;
-  &lt;button aria-label=&quot;close&quot;&gt;x&lt;/button&gt;
-  &lt;h2 id=&quot;dialog-heading&quot;&gt;Confirmation&lt;/h2&gt;
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">```html
+&lt;div role=&#34;dialog&#34; aria-labelledby=&#34;dialog-heading&#34;&gt;
+  &lt;button aria-label=&#34;close&#34;&gt;x&lt;/button&gt;
+  &lt;h2 id=&#34;dialog-heading&#34;&gt;Confirmation&lt;/h2&gt;
   &lt;p&gt;Press Okay to confirm or Cancel&lt;/p&gt;
   &lt;button&gt;Okay&lt;/button&gt;
   &lt;button&gt;Cancel&lt;/button&gt;
 &lt;/div&gt;
 ```
-</code></pre><div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span>&lt;<span style="color:#062873;font-weight:bold">div</span> <span style="color:#4070a0">role</span><span style="color:#666">=</span><span style="color:#4070a0">&#34;dialog&#34;</span> <span style="color:#4070a0">aria-labelledby</span><span style="color:#666">=</span><span style="color:#4070a0">&#34;dialog-heading&#34;</span>&gt;
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span>  &lt;<span style="color:#062873;font-weight:bold">button</span> <span style="color:#4070a0">aria-label</span><span style="color:#666">=</span><span style="color:#4070a0">&#34;close&#34;</span>&gt;x&lt;/<span style="color:#062873;font-weight:bold">button</span>&gt;
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span>  &lt;<span style="color:#062873;font-weight:bold">h2</span> <span style="color:#4070a0">id</span><span style="color:#666">=</span><span style="color:#4070a0">&#34;dialog-heading&#34;</span>&gt;Confirmation&lt;/<span style="color:#062873;font-weight:bold">h2</span>&gt;
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span>  &lt;<span style="color:#062873;font-weight:bold">p</span>&gt;Press Okay to confirm or Cancel&lt;/<span style="color:#062873;font-weight:bold">p</span>&gt;
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span>  &lt;<span style="color:#062873;font-weight:bold">button</span>&gt;Okay&lt;/<span style="color:#062873;font-weight:bold">button</span>&gt;
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span>  &lt;<span style="color:#062873;font-weight:bold">button</span>&gt;Cancel&lt;/<span style="color:#062873;font-weight:bold">button</span>&gt;
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span>&lt;/<span style="color:#062873;font-weight:bold">div</span>&gt;
-</code></pre></div><h2 id="codepen">codePen</h2>
-<pre><code>{{&lt; codePen VpVNKW &gt;}}
-</code></pre>
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-html" data-lang="html"><span class="p">&lt;</span><span class="nt">div</span> <span class="na">role</span><span class="o">=</span><span class="s">&#34;dialog&#34;</span> <span class="na">aria-labelledby</span><span class="o">=</span><span class="s">&#34;dialog-heading&#34;</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">button</span> <span class="na">aria-label</span><span class="o">=</span><span class="s">&#34;close&#34;</span><span class="p">&gt;</span>x<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">h2</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;dialog-heading&#34;</span><span class="p">&gt;</span>Confirmation<span class="p">&lt;/</span><span class="nt">h2</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>Press Okay to confirm or Cancel<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">button</span><span class="p">&gt;</span>Okay<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">button</span><span class="p">&gt;</span>Cancel<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="codepen">codePen</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">{{&lt; codePen VpVNKW &gt;}}
+</code></pre></td></tr></table>
+</div>
+</div>
 
   <p class="site-error"><strong>Site error:</strong> The <code>codePenUser</code> param has not been set in <code>config.toml</code></p>
 
 
 <h2 id="colors">colors</h2>
-<pre><code>{{&lt; colors &quot;#111111, #cccccc, #ffffff&quot; &gt;}}
-</code></pre>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">{{&lt; colors &#34;#111111, #cccccc, #ffffff&#34; &gt;}}
+</code></pre></td></tr></table>
+</div>
+</div>
 
 <div class="colors-container">
   <ul class="colors">
@@ -582,10 +682,19 @@ hugo server --gc
 </div>
 
 <h2 id="expandable">expandable</h2>
-<pre><code>{{&lt; expandable label=&quot;A section of dummy text&quot; level=&quot;2&quot; &gt;}}
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">{{&lt; expandable label=&#34;A section of dummy text&#34; level=&#34;2&#34; &gt;}}
 Here is some markdown including [a link](https://twitter.com/heydonworks). Donec erat est, feugiat a est sed, aliquet pharetra ipsum. Vivamus in arcu leo. Praesent feugiat, purus a molestie ultrices, libero massa iaculis ante, sit amet accumsan leo eros vel ligula.
 {{&lt; /expandable &gt;}}
-</code></pre><div class="expandable-section">
+</code></pre></td></tr></table>
+</div>
+</div><div class="expandable-section">
   
     <h2>
   
@@ -607,7 +716,29 @@ Here is some markdown including [a link](https://twitter.com/heydonworks). Donec
 </div>
 
 <h2 id="filetree">fileTree</h2>
-<pre><code>{{&lt; fileTree &gt;}}
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">{{&lt; fileTree &gt;}}
 * Level 1 folder
     * Level 2 file
     * Level 2 folder
@@ -625,7 +756,9 @@ Here is some markdown including [a link](https://twitter.com/heydonworks). Donec
     * Level 2 file
 * Level 1 file
 {{&lt; /fileTree &gt;}}
-</code></pre><div class="file-tree">
+</code></pre></td></tr></table>
+</div>
+</div><div class="file-tree">
   <ul>
 <li>Level 1 folder
 <ul>
@@ -663,12 +796,23 @@ Here is some markdown including [a link](https://twitter.com/heydonworks). Donec
 </div>
 
 <h2 id="ticks">ticks</h2>
-<pre><code>{{&lt; ticks &gt;}}
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">{{&lt; ticks &gt;}}
 * Selling point one
 * Selling point two
 * Selling point three
 {{&lt; /ticks &gt;}}
-</code></pre><div class="ticks">
+</code></pre></td></tr></table>
+</div>
+</div><div class="ticks">
   <ul>
 <li>Selling point one</li>
 <li>Selling point two</li>
@@ -678,12 +822,23 @@ Here is some markdown including [a link](https://twitter.com/heydonworks). Donec
 </div>
 
 <h2 id="cross-ref">figureCupper</h2>
-<pre><code>{{&lt; figureCupper
-img=&quot;sun.jpg&quot;
-caption=&quot;The Sun is the star at the center of the Solar System. It is a nearly perfect sphere of hot plasma, with internal convective motion that generates a magnetic field via a dynamo process. It is by far the most important source of energy for life on Earth. [Credits](https://images.nasa.gov/details-GSFC_20171208_Archive_e000393.html).&quot;
-command=&quot;Resize&quot;
-options=&quot;700x&quot; &gt;}}
-</code></pre>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">{{&lt; figureCupper
+img=&#34;sun.jpg&#34;
+caption=&#34;The Sun is the star at the center of the Solar System. It is a nearly perfect sphere of hot plasma, with internal convective motion that generates a magnetic field via a dynamo process. It is by far the most important source of energy for life on Earth. [Credits](https://images.nasa.gov/details-GSFC_20171208_Archive_e000393.html).&#34;
+command=&#34;Resize&#34;
+options=&#34;700x&#34; &gt;}}
+</code></pre></td></tr></table>
+</div>
+</div>
 
 
 
@@ -707,8 +862,15 @@ options=&quot;700x&quot; &gt;}}
 
 <h2 id="principles">principles</h2>
 <p>See the <a href="https://github.com/zwbetz-gh/cupper-hugo-theme/blob/master/data/principles.json">full principles list</a>.</p>
-<pre><code>{{&lt; principles include=&quot;Add value, Be consistent&quot; descriptions=&quot;true&quot; &gt;}}
-</code></pre>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">{{&lt; principles include=&#34;Add value, Be consistent&#34; descriptions=&#34;true&#34; &gt;}}
+</code></pre></td></tr></table>
+</div>
+</div>
 
 
 
@@ -762,8 +924,15 @@ options=&quot;700x&quot; &gt;}}
 
 <h2 id="wcag">wcag</h2>
 <p>See the <a href="https://github.com/zwbetz-gh/cupper-hugo-theme/blob/master/data/wcag.json">full wcag list</a>.</p>
-<pre><code>{{&lt; wcag include=&quot;1.2.1, 1.3.1, 4.1.2&quot; &gt;}}
-</code></pre>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">{{&lt; wcag include=&#34;1.2.1, 1.3.1, 4.1.2&#34; &gt;}}
+</code></pre></td></tr></table>
+</div>
+</div>
 
 
 
@@ -925,8 +1094,15 @@ options=&quot;700x&quot; &gt;}}
 
 <h2 id="tested">tested</h2>
 <p>See the <a href="https://github.com/zwbetz-gh/cupper-hugo-theme/tree/master/static/images">full browser list</a>.</p>
-<pre><code>{{&lt; tested using=&quot;Firefox + JAWS, Chrome, Safari iOS + Voiceover, Edge&quot; &gt;}}
-</code></pre>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">{{&lt; tested using=&#34;Firefox + JAWS, Chrome, Safari iOS + Voiceover, Edge&#34; &gt;}}
+</code></pre></td></tr></table>
+</div>
+</div>
 
 
 <table class="tested">

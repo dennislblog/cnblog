@@ -6,10 +6,19 @@
     <description>Recent content in Thesis on My Site Title</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 01 Jun 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 09 Jun 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://dennislblog.github.io/cnblog/tags/thesis/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Imitation Learning</title>
+      <link>https://dennislblog.github.io/cnblog/2020/06/rl-imitation/</link>
+      <pubDate>Tue, 09 Jun 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://dennislblog.github.io/cnblog/2020/06/rl-imitation/</guid>
+      <description>&lt;p&gt;learning reward via expert policies&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>Market Game Analysis</title>
