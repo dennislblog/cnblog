@@ -270,17 +270,6 @@
         </li>
       
         
-        <li class="toc-h3">
-          
-          
-          
-          
-          <a href="#pretrain-a-model" style="padding-left: 0rem">
-            pretrain a model
-          </a>
-        </li>
-      
-        
         <li class="toc-h2">
           
           
@@ -481,7 +470,7 @@
   
     <h0>
   
-    <button aria-expanded="false" data-expands="js-expandable-3f611e1f7d47a35e6d2caf40c4fe83bc">
+    <button aria-expanded="false" data-expands="js-expandable-44ca25b0cd61251ae798d8564bdd99c4">
       <span class="expandable-label">Evaluate Agent</span>
       <svg aria-hidden="true" focusable="false" viewBox="0 0 70.866142 70.866141">
         <g transform="translate(0 -981.5)">
@@ -493,7 +482,7 @@
   
     </h0>
   
-  <div id="js-expandable-3f611e1f7d47a35e6d2caf40c4fe83bc" hidden>
+  <div id="js-expandable-44ca25b0cd61251ae798d8564bdd99c4" hidden>
     <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt"> 1
@@ -531,7 +520,7 @@
         <span class="k">while</span> <span class="ow">not</span> <span class="n">terminal</span><span class="p">:</span>
             <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
                 <span class="n">policy</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">agent</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
-                <span class="n">action</span> <span class="o">=</span> <span class="n">policy</span><span class="o">.</span><span class="n">logits</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>  <span class="o">//</span>
+                <span class="n">action</span> <span class="o">=</span> <span class="n">policy</span><span class="o">.</span><span class="n">logits</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>  
                 <span class="n">state</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">terminal</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
 
                 <span class="k">if</span> <span class="n">return_trajectories</span><span class="p">:</span>
@@ -547,14 +536,13 @@
 </div>
 
 <h2 id="behavioral-cloning">Behavioral Cloning</h2>
-<h3 id="pretrain-a-model">pretrain a model</h3>
 <ol>
 <li><code>config</code>文件的用法
 <div class="expandable-section">
   
     <h0>
   
-    <button aria-expanded="false" data-expands="js-expandable-0a2b8c27129c63bf4b691ba50b298fc9">
+    <button aria-expanded="false" data-expands="js-expandable-a291e74767555eb276c7356c8ddcfee8">
       <span class="expandable-label">parsing configurations</span>
       <svg aria-hidden="true" focusable="false" viewBox="0 0 70.866142 70.866141">
         <g transform="translate(0 -981.5)">
@@ -566,7 +554,7 @@
   
     </h0>
   
-  <div id="js-expandable-0a2b8c27129c63bf4b691ba50b298fc9" hidden>
+  <div id="js-expandable-a291e74767555eb276c7356c8ddcfee8" hidden>
     <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt">1
@@ -597,12 +585,14 @@
 </span><span class="lnt">15
 </span><span class="lnt">16
 </span><span class="lnt">17
+</span><span class="lnt">18
 </span></code></pre></td>
 <td class="lntd">
 <pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="s2">&#34;&#34;&#34;
 </span><span class="s2">yaml is a superset of json
 </span><span class="s2">    - dash represents collection of items (i.e., list)
 </span><span class="s2">    no dash represents dictionary (item and key)
+</span><span class="s2">这个例子是 dynamic model, repo 还提供了behavior cloning
 </span><span class="s2">&#34;&#34;&#34;</span><span class="w">
 </span><span class="w"></span><span class="k">mode</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;train&#34;</span><span class="w">
 </span><span class="w"></span><span class="k">exp_prefix</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;dm&#34;</span><span class="w">                                       </span>//dm<span class="w"> </span>for<span class="w"> </span>dynamic<span class="w"> </span>model<span class="w">
@@ -618,16 +608,31 @@
 </span><span class="w"></span><span class="k">test</span><span class="p">:</span><span class="w"> </span>{<span class="k">gt_title: Swing-up sim rollout, model_title: NN Prediction, film: True, video_name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;{{exp_prefix}}_{{model.protocol}}_{{model.backbone}}&#34;</span>}<span class="w">
 </span></code></pre></td></tr></table>
 </div>
+</div><p>训练和测试模型</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="n">worker</span> <span class="o">=</span> <span class="n">Trainer_dynamic_model</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
+<span class="n">worker</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+<span class="n">worker</span> <span class="o">=</span> <span class="n">Tester_dynamic_model</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
+<span class="n">worker</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</code></pre></td></tr></table>
+</div>
 </div>
   </div>
 </div>
 </li>
-<li>训练模型
+<li>训练模型: 
 <div class="expandable-section">
   
     <h0>
   
-    <button aria-expanded="false" data-expands="js-expandable-d97562b819d9f4037eb2152cd1e46c91">
+    <button aria-expanded="false" data-expands="js-expandable-ddca733682852c1293121703ddeabac2">
       <span class="expandable-label">train dynamic model</span>
       <svg aria-hidden="true" focusable="false" viewBox="0 0 70.866142 70.866141">
         <g transform="translate(0 -981.5)">
@@ -639,7 +644,7 @@
   
     </h0>
   
-  <div id="js-expandable-d97562b819d9f4037eb2152cd1e46c91" hidden>
+  <div id="js-expandable-ddca733682852c1293121703ddeabac2" hidden>
     <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt"> 1
@@ -667,16 +672,16 @@
 <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset_protocol</span><span class="p">[</span><span class="n">config</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">protocol</span><span class="p">](</span><span class="n">config</span><span class="p">)</span>
 <span class="bp">self</span><span class="o">.</span><span class="n">dataloader</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">framework</span><span class="o">.</span><span class="n">num_thread</span><span class="p">)</span>
 <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span> <span class="o">=</span> <span class="n">config</span>
-<span class="bp">self</span><span class="o">.</span><span class="n">best_loss</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">maxsize</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">best_loss</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">maxsize</span>                                          <span class="o">//</span><span class="n">largest</span> <span class="n">integer</span>
 <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">SummaryWriter</span><span class="p">(</span><span class="s2">&#34;{}/runs_{}&#34;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">base_dir</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">mode</span><span class="p">))</span>
-<span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model_protocol</span><span class="p">[</span><span class="n">config</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">protocol</span><span class="p">](</span><span class="n">config</span><span class="p">)</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model_protocol</span><span class="p">[</span><span class="n">config</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">protocol</span><span class="p">](</span><span class="n">config</span><span class="p">)</span>            <span class="o">//</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">model_state</span>
 <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">framework</span><span class="o">.</span><span class="n">num_gpu</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>   <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">lr</span><span class="p">)</span>
 <span class="bp">self</span><span class="o">.</span><span class="n">scheduler</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">lr_scheduler</span><span class="o">.</span><span class="n">MultiStepLR</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="p">,</span> <span class="n">milestones</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">lr_ms</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
 <span class="bp">self</span><span class="o">.</span><span class="n">criterion</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">L1Loss</span><span class="p">()</span>
 </code></pre></td></tr></table>
 </div>
-</div><p>初始设置后开始训练模型</p>
+</div><p>其中<code>self.model</code>长这样</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt"> 1
@@ -703,6 +708,56 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre class="chroma"><code class="language-python" data-lang="python"><span class="s2">&#34;&#34;&#34;
+</span><span class="s2">network.model_state
+</span><span class="s2">    其中backbone可以是
+</span><span class="s2">        - basic (or dropout) multi-linear perceptron
+</span><span class="s2">        - basic (or dropout) GRU
+</span><span class="s2">        - basic (or dropout) LSTM
+</span><span class="s2">&#34;&#34;&#34;</span>
+<span class="k">class</span> <span class="nc">model_state</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cfg</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">model_state</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span> <span class="o">=</span> <span class="n">cfg</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">num_datapoints_per_epoch</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">horizon</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">horizon</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">input_dim</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">input_dim</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output_dim</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">output_dim</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hidden_dim</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">hidden_dim</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">backbone</span> <span class="o">=</span> <span class="n">backbone</span><span class="p">[</span><span class="n">cfg</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">backbone</span><span class="p">](</span><span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">backbone</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">m</span><span class="p">)</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>初始设置后开始训练模型，<code>100</code>个<code>num_epoch</code>, 每回合遍历一遍<code>num_datapoints_per_epoch</code>长度的<code>dataset</code>, 在<code>dataset class</code>里，定义了初始状态<code>default_init_state =</code>$\eta * [d\theta, dp, \theta, p]$, 然后用<code>SwingUpAndBalancePolicy (expert policy)</code>跑<code>horizon=50</code>个<code>timestep</code>，得到<code>[time, states_traj, actions_traj]</code> $\in (t+1) \times (t+1)^4 \times t$, 其中$(S,a) \rightarrow S'$, 然后我们希望用$(S,a) \in t^6 $来预测$dS&rsquo; = S&rsquo;-S\in t^4$，为什么自变量信息维度不是$5$? 是因为从原来的的$\langle d\theta, dp, \theta, p \rangle$ 变成了 $\langle p, dp, d\theta, \sin\theta, \cos\theta, a \rangle$, 总而言之就是用$(S,a)$预测$dS'$. 由于把<code>dataset</code>放到了<code>torch.utils.DataLoader</code>里，<code>batch_size=50</code>，因此$X \in 50 \times 50 \times 6$, $Y \in 50 \times 50 \times 1$，通过优化模型，使得<code>model.predict(x) ≈ y</code>, 所以并不是直接模仿策略，而是根据$(S,a)$预测$S'$</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="s2">&#34;&#34;&#34;
 </span><span class="s2">run training
 </span><span class="s2">&#34;&#34;&#34;</span>
 <span class="n">losses</span> <span class="o">=</span> <span class="p">[]</span>
@@ -710,19 +765,173 @@
     <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="p">(</span><span class="n">imgs</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dataloader</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">framework</span><span class="o">.</span><span class="n">num_gpu</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">imgs</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="n">imgs</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> <span class="o">...</span> <span class="p">)</span>
-        <span class="n">y_action</span> <span class="o">=</span> <span class="n">x</span><span class="p">[:,</span> <span class="p">:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">];</span> <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="p">[:,</span> <span class="p">:,</span> <span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>       <span class="o">//</span><span class="n">batch</span><span class="o">+</span>
+        <span class="n">y_action</span> <span class="o">=</span> <span class="n">x</span><span class="p">[:,</span> <span class="p">:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>                                      <span class="o">//</span><span class="n">x</span> <span class="o">=</span> <span class="n">batch</span> <span class="n">x</span> <span class="n">step</span> <span class="n">x</span> <span class="mi">6</span><span class="p">,</span> <span class="n">last</span> <span class="n">dim</span> <span class="ow">is</span> <span class="n">action</span> 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="p">,</span> <span class="n">dataset</span><span class="o">.</span><span class="n">image_dataset</span><span class="p">):</span>
-            <span class="n">p</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">imgs</span><span class="p">)</span>
+            <span class="n">p</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">imgs</span><span class="p">,</span> <span class="n">y_action</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">p</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-        <span class="n">p</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">view_as</span><span class="p">(</span><span class="n">y_action</span><span class="p">)</span>
-        <span class="n">l</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">criterion</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">y_action</span><span class="p">)</span>
+            <span class="o">//</span><span class="err">如果是</span><span class="n">behavioral</span> <span class="n">clone</span><span class="err">，</span><span class="n">x则不包含action</span><span class="err">，就变成用</span><span class="n">x</span><span class="p">[:,</span> <span class="p">:,</span> <span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="err">来预测</span><span class="n">x</span><span class="p">[:,</span> <span class="p">:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">p</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>                                    
+        <span class="n">p</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">view_as</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+        <span class="n">l</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">criterion</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">();</span> <span class="n">l</span><span class="o">.</span><span class="n">backward</span><span class="p">();</span> <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">add_scalar</span><span class="p">(</span><span class="s2">&#34;{}/loss&#34;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">mode</span><span class="p">),</span><span class="n">l</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">idx</span><span class="o">+</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">num_datapoints_per_epoch</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">batch_size</span><span class="p">)</span><span class="o">*</span><span class="n">epoch</span><span class="p">,</span> <span class="p">)</span>
         <span class="n">losses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">l</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>       
     <span class="k">if</span> <span class="n">epoch</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">save_iter</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">save_checkpoints</span><span class="p">(</span><span class="n">losses</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">scheduler</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+</code></pre></td></tr></table>
+</div>
+</div>
+  </div>
+</div>
+</li>
+<li>测试模型
+<div class="expandable-section">
+  
+    <h0>
+  
+    <button aria-expanded="false" data-expands="js-expandable-6b41da5ea6f68c39424f52e1e8bef03d">
+      <span class="expandable-label">test dynamic model</span>
+      <svg aria-hidden="true" focusable="false" viewBox="0 0 70.866142 70.866141">
+        <g transform="translate(0 -981.5)">
+          <rect style="stroke-width:0;fill:currentColor" ry="5" height="60" width="9.8985" y="987.36" x="30.051" class="up-strut" />
+          <rect style="stroke-width:0;fill:currentColor" ry="5" height="10" width="60" y="1012.4" x="5"/>
+        </g>
+      </svg>
+    </button>
+  
+    </h0>
+  
+  <div id="js-expandable-6b41da5ea6f68c39424f52e1e8bef03d" hidden>
+    <div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="s2">&#34;&#34;&#34;
+</span><span class="s2">run testing
+</span><span class="s2">    在初始化的时候和 training script 有些不一样
+</span><span class="s2">        - test在读取network特征后，调用`load_checkpoints()`命令
+</span><span class="s2">        - 使用`model.eval()`模式，并且如果需要`dropout`调用`turn_on_dropout()`命令
+</span><span class="s2">        - 调用`data.visualization.Visualizer`模块，画图(有意思)
+</span><span class="s2">        - logger 用 json 存储 loss 信息
+</span><span class="s2">        self.logger = open(&#34;{}/{}.json&#34;.format(config.base_dir, &#34;test&#34;), &#34;w&#34;)
+</span><span class="s2">&#34;&#34;&#34;</span>
+<span class="n">losses</span><span class="p">,</span> <span class="n">rollout_losses</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="p">(</span><span class="n">imgs</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dataloader</span><span class="p">):</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">framework</span><span class="o">.</span><span class="n">num_gpu</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">imgs</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="n">imgs</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> <span class="o">...</span> <span class="p">)</span>
+    <span class="n">y_action</span> <span class="o">=</span> <span class="n">x</span><span class="p">[:,</span> <span class="p">:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">];</span> <span class="n">gt_action</span> <span class="o">=</span> <span class="n">x</span><span class="p">[:,</span> <span class="p">:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+    <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>                             <span class="o">//</span><span class="n">forward</span> <span class="n">passing</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="p">,</span> <span class="n">dataset</span><span class="o">.</span><span class="n">image_dataset</span><span class="p">):</span>
+            <span class="n">p</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">imgs</span><span class="p">,</span> <span class="n">y_action</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">p</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">view_as</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+    <span class="n">l</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">criterion</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+    <span class="n">losses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">l</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>    
+
+    <span class="o">//</span> <span class="n">simulate</span> <span class="n">rollout</span> <span class="n">trajectory</span> <span class="k">with</span> <span class="n">trained</span> <span class="n">policy</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)):</span>
+        <span class="n">state_traj_rollout</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="o">//</span><span class="n">predict</span> <span class="mi">10</span> <span class="n">instead</span> <span class="n">of</span> <span class="n">just</span> <span class="nb">next</span> <span class="n">state</span><span class="p">,</span> <span class="n">this</span> <span class="ow">is</span> <span class="n">useful</span> <span class="n">to</span> <span class="n">see</span> <span class="n">the</span> <span class="n">error</span> <span class="n">compounding</span> <span class="n">problem</span>
+        <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">num_traj_samples</span><span class="p">):</span>             
+            <span class="n">ts</span><span class="p">,</span> <span class="n">state_traj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sim_rollout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">num_datapoints_per_epoch</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">delta_t</span><span class="p">,</span><span class="n">s</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span><span class="n">gt_action</span><span class="p">[</span><span class="n">j</span><span class="p">],</span><span class="n">imgs</span><span class="p">[</span><span class="n">j</span><span class="p">],)</span>
+            <span class="n">state_traj_rollout</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">state_traj</span><span class="p">)</span>
+        <span class="n">state_traj_rollout</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">state_traj_rollout</span><span class="p">)</span>
+        <span class="n">delta_state_traj_rollout</span> <span class="o">=</span> <span class="p">(</span><span class="n">state_traj_rollout</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:]</span> <span class="o">-</span> <span class="n">state_traj_rollout</span><span class="p">[:,</span> <span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">state_traj_mean</span> <span class="o">=</span> <span class="n">state_traj_rollout</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">delta_state_traj_mean</span> <span class="o">=</span> <span class="n">delta_state_traj_rollout</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">delta_delta_state_traj_var</span> <span class="o">=</span> <span class="n">delta_state_traj_rollout</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">state_rollout_loss</span> <span class="o">=</span> <span class="p">(</span> <span class="p">(</span> <span class="p">(</span> <span class="p">(</span><span class="n">state_traj_rollout</span><span class="p">[:,</span><span class="mi">1</span><span class="p">:]</span><span class="o">-</span><span class="n">state_traj_rollout</span><span class="p">[:,:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">-</span> <span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="n">j</span><span class="p">,</span><span class="mi">1</span><span class="p">:]</span><span class="o">-</span><span class="n">s</span><span class="p">[</span><span class="n">j</span><span class="p">,:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span> <span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="p">)</span><span class="o">**</span><span class="mf">0.5</span> <span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+        <span class="n">rollout_losses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">state_rollout_loss</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&#34;L2 loss: {:.3f}±{:.3f}&#34;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">losses</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">losses</span><span class="p">)))</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&#34;rollout L2 loss: {:.3f}±{:.3f}&#34;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">rollout_losses</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">rollout_losses</span><span class="p">)))</span>
+<span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">({</span><span class="s2">&#34;L2_Loss&#34;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">losses</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span><span class="s2">&#34;rollout_L2_Loss&#34;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">rollout_losses</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="p">},</span><span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="p">,)</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>其中<code>sim_rollout</code>命令被定义为</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">sim_rollout</span><span class="p">(</span><span class="n">dm</span><span class="p">,</span> <span class="n">n_step</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">init_state</span><span class="p">,</span> <span class="n">actions</span><span class="p">,</span> <span class="n">imgs</span><span class="p">):</span>
+    <span class="n">states</span> <span class="o">=</span> <span class="p">[];</span> <span class="n">state</span> <span class="o">=</span> <span class="n">init_state</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_step</span><span class="p">):</span>
+        <span class="n">states</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+        <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+            <span class="n">inp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">augmented_state</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">actions</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>        
+            <span class="n">inp</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">(</span><span class="n">inp</span><span class="p">)</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">framework</span><span class="o">.</span><span class="n">num_gpu</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">inp</span> <span class="o">=</span> <span class="n">inp</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">delta_state</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">dm</span><span class="p">(</span><span class="n">inp</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">delta_state</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">dm</span><span class="p">(</span><span class="n">inp</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>          <span class="o">//</span><span class="n">hidden</span> <span class="n">state</span><span class="err">?</span>
+        <span class="n">delta_state</span> <span class="o">=</span> <span class="n">delta_state</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">:]</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="n">state</span> <span class="o">+</span> <span class="n">delta_state</span>                  <span class="o">//</span><span class="nb">next</span> <span class="n">state</span> <span class="o">=</span> <span class="n">state</span> <span class="o">+</span> <span class="n">delta_state</span>
+    <span class="n">states</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+    <span class="n">time</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_step</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">dt</span>
+    <span class="k">return</span> <span class="n">time</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">states</span><span class="p">)</span> 
 </code></pre></td></tr></table>
 </div>
 </div>

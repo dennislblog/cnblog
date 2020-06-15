@@ -154,8 +154,6 @@ pre,
 .file-tree {
   overflow-x: auto;
   padding: 1.5rem 0rem;
-  height: calc(100% - 64px);
-  overflow-y: auto;
   border: 1px solid #d0d0d0;
   border-radius: 0.25rem;
 }
