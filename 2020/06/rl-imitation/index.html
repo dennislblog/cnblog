@@ -231,8 +231,8 @@
           
           
           
-          <a href="#%e5%ad%a6%e4%b9%a0%e4%b8%80%e4%b8%aaimitation%e7%9a%84github-repo1" style="padding-left: 0rem">
-            学习一个imitation的Github Repo[^1]
+          <a href="#imitation-example" style="padding-left: 0rem">
+            Imitation Example
           </a>
         </li>
       
@@ -255,6 +255,28 @@
           
           <a href="#trajectory" style="padding-left: 0rem">
             Trajectory
+          </a>
+        </li>
+      
+        
+        <li class="toc-h2">
+          
+          
+          
+          
+          <a href="#behavioral-cloning" style="padding-left: 0rem">
+            Behavioral Cloning
+          </a>
+        </li>
+      
+        
+        <li class="toc-h3">
+          
+          
+          
+          
+          <a href="#pretrain-a-model" style="padding-left: 0rem">
+            pretrain a model
           </a>
         </li>
       
@@ -324,7 +346,7 @@
       </div>
     
     <p>learning reward via expert policies</p>
-<h2 id="学习一个imitation的github-repo1">学习一个imitation的Github Repo[^1]</h2>
+<h2 id="imitation-example">Imitation Example</h2>
 <p>之后是打算总结所有算法推导和数学证明的，在此之前，先通过别人写的代码快速了解这个领域，这个<code>Repo</code>里的任务是<code>CartPole-v1</code>，把一根杆子立起来，这个环境包含四个观测变量 position($-2.4-2.4$), velocity($-\infty, \infty$), angle($-41.8^\circ, 41.8^\circ$) and velocity at tip ($-\infty, \infty$) 和 一个离散决策 (← or →)，奖励是每一个<code>step</code>得到一分，坚持越久分数越高，游戏结束的条件是要么倾斜超过$12^\circ$，要么移动到屏幕之外$\pm 2.4$，要么超过$500$个回合</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -335,11 +357,11 @@
 </span><span class="lnt">5
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-python" data-lang="python">    <span class="n">register</span><span class="p">(</span>
-        <span class="nb">id</span><span class="o">=</span><span class="s1">&#39;CartPole-v1&#39;</span><span class="p">,</span>
-        <span class="n">entry_point</span><span class="o">=</span><span class="s1">&#39;gym.envs.classic_control:CartPoleEnv&#39;</span><span class="p">,</span>
-        <span class="n">max_episode_steps</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
-        <span class="n">reward_threshold</span><span class="o">=</span><span class="mf">475.0</span><span class="p">)</span>
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="n">register</span><span class="p">(</span>
+    <span class="nb">id</span><span class="o">=</span><span class="s1">&#39;CartPole-v1&#39;</span><span class="p">,</span>
+    <span class="n">entry_point</span><span class="o">=</span><span class="s1">&#39;gym.envs.classic_control:CartPoleEnv&#39;</span><span class="p">,</span>
+    <span class="n">max_episode_steps</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
+    <span class="n">reward_threshold</span><span class="o">=</span><span class="mf">475.0</span><span class="p">)</span>
 </code></pre></td></tr></table>
 </div>
 </div><h3 id="agent">Agent</h3>
@@ -350,15 +372,15 @@
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-python" data-lang="python">    <span class="n">agent</span> <span class="o">=</span> <span class="n">ActorCritic</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">observation_space</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">env</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">hidden_size</span><span class="p">)</span>
-    <span class="n">agent_optimiser</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">RMSprop</span><span class="p">(</span><span class="n">agent</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">learning_rate</span><span class="p">)</span>
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="n">agent</span> <span class="o">=</span> <span class="n">ActorCritic</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">observation_space</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">env</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">hidden_size</span><span class="p">)</span>
+<span class="n">agent_optimiser</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">RMSprop</span><span class="p">(</span><span class="n">agent</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">learning_rate</span><span class="p">)</span>
 </code></pre></td></tr></table>
 </div>
 </div><div class="expandable-section">
   
-    <h3>
+    <h0>
   
-    <button aria-expanded="false" data-expands="js-expandable-fe685d2feec84fc120d8247ff4150b51">
+    <button aria-expanded="false" data-expands="js-expandable-502d07fd8421bba6b2fa8c94b686577f">
       <span class="expandable-label">Actor-Critic Network</span>
       <svg aria-hidden="true" focusable="false" viewBox="0 0 70.866142 70.866141">
         <g transform="translate(0 -981.5)">
@@ -368,37 +390,68 @@
       </svg>
     </button>
   
-    </h3>
+    </h0>
   
-  <div id="js-expandable-fe685d2feec84fc120d8247ff4150b51" hidden>
-    <pre><code>class Actor(nn.Module):
-    def __init__(self, state_size, action_size, hidden_size):
-        super().__init__()
-        self.actor = nn.Sequential(nn.Linear(state_size, hidden_size), nn.Tanh(), nn.Linear(hidden_size, hidden_size), nn.Tanh(), nn.Linear(hidden_size, action_size))
-    def forward(self, state):
-        policy = Categorical(logits=self.actor(state)) //改成Normal?
-        return policy
+  <div id="js-expandable-502d07fd8421bba6b2fa8c94b686577f" hidden>
+    <div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="k">class</span> <span class="nc">Actor</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state_size</span><span class="p">,</span> <span class="n">action_size</span><span class="p">,</span> <span class="n">hidden_size</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">actor</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">state_size</span><span class="p">,</span> <span class="n">hidden_size</span><span class="p">),</span> <span class="n">nn</span><span class="o">.</span><span class="n">Tanh</span><span class="p">(),</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">hidden_size</span><span class="p">,</span> <span class="n">hidden_size</span><span class="p">),</span> <span class="n">nn</span><span class="o">.</span><span class="n">Tanh</span><span class="p">(),</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">hidden_size</span><span class="p">,</span> <span class="n">action_size</span><span class="p">))</span>
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+        <span class="n">policy</span> <span class="o">=</span> <span class="n">Categorical</span><span class="p">(</span><span class="n">logits</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">actor</span><span class="p">(</span><span class="n">state</span><span class="p">))</span> <span class="o">//</span><span class="err">改成</span><span class="n">Normal</span><span class="err">?</span>
+        <span class="k">return</span> <span class="n">policy</span>
 
-class Critic(nn.Module):
-    def __init__(self, state_size, hidden_size):
-        super().__init__()
-        self.critic = nn.Sequential(nn.Linear(state_size, hidden_size), nn.Tanh(), nn.Linear(hidden_size, hidden_size), nn.Tanh(), nn.Linear(hidden_size, 1))
-    def forward(self, state):
-        value = self.critic(state).squeeze(dim=1)
-        return value
+<span class="k">class</span> <span class="nc">Critic</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state_size</span><span class="p">,</span> <span class="n">hidden_size</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">critic</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">state_size</span><span class="p">,</span> <span class="n">hidden_size</span><span class="p">),</span> <span class="n">nn</span><span class="o">.</span><span class="n">Tanh</span><span class="p">(),</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">hidden_size</span><span class="p">,</span> <span class="n">hidden_size</span><span class="p">),</span> <span class="n">nn</span><span class="o">.</span><span class="n">Tanh</span><span class="p">(),</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">hidden_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">critic</span><span class="p">(</span><span class="n">state</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">value</span>
 
-class ActorCritic(nn.Module):
-    def __init__(self, state_size, action_size, hidden_size):
-        super().__init__()
-        self.actor = Actor(state_size, action_size, hidden_size)
-        self.critic = Critic(state_size, hidden_size)
-    def forward(self, state):
-        policy, value = self.actor(state), self.critic(state)
-        return policy, value
-    def log_prob(self, state, action):
-        return self.actor(state).log_prob(action)
-</code></pre>
-
+<span class="k">class</span> <span class="nc">ActorCritic</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state_size</span><span class="p">,</span> <span class="n">action_size</span><span class="p">,</span> <span class="n">hidden_size</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">actor</span> <span class="o">=</span> <span class="n">Actor</span><span class="p">(</span><span class="n">state_size</span><span class="p">,</span> <span class="n">action_size</span><span class="p">,</span> <span class="n">hidden_size</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">critic</span> <span class="o">=</span> <span class="n">Critic</span><span class="p">(</span><span class="n">state_size</span><span class="p">,</span> <span class="n">hidden_size</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+        <span class="n">policy</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">actor</span><span class="p">(</span><span class="n">state</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">critic</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">policy</span><span class="p">,</span> <span class="n">value</span>
+    <span class="k">def</span> <span class="nf">log_prob</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">action</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">actor</span><span class="p">(</span><span class="n">state</span><span class="p">)</span><span class="o">.</span><span class="n">log_prob</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+</code></pre></td></tr></table>
+</div>
+</div>
   </div>
 </div>
 
@@ -415,20 +468,20 @@ class ActorCritic(nn.Module):
 </span><span class="lnt">7
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-python" data-lang="python">    <span class="n">terminals</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">rewards</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">),</span> <span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">1</span><span class="p">)])</span>
-    <span class="n">trajectories</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">states</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">states</span><span class="p">),</span> <span class="n">actions</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">actions</span><span class="p">),</span> \
-        <span class="n">rewards</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">rewards</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">),</span> <span class="n">terminals</span><span class="o">=</span><span class="n">terminals</span><span class="p">))</span>
-    <span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">trajectories</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;results&#39;</span><span class="p">,</span> <span class="s1">&#39;trajectories.pth&#39;</span><span class="p">))</span>
-    
-    <span class="o">//</span> <span class="err">由于之前是一个</span><span class="n">episode的信息保存成一个dictionary</span><span class="err">，加到</span><span class="n">list里的</span><span class="err">，为了</span><span class="n">non</span><span class="o">-</span><span class="n">correlation</span>
-    <span class="n">expert_trajectories</span> <span class="o">=</span> <span class="n">TransitionDataset</span><span class="p">(</span><span class="n">flatten_list_dicts</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;expert_trajectories.pth&#39;</span><span class="p">)))</span>
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="n">terminals</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">rewards</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">),</span> <span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">1</span><span class="p">)])</span>
+<span class="n">trajectories</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">states</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">states</span><span class="p">),</span> <span class="n">actions</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">actions</span><span class="p">),</span> \
+    <span class="n">rewards</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">rewards</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">),</span> <span class="n">terminals</span><span class="o">=</span><span class="n">terminals</span><span class="p">))</span>
+<span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">trajectories</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;results&#39;</span><span class="p">,</span> <span class="s1">&#39;trajectories.pth&#39;</span><span class="p">))</span>
+
+<span class="o">//</span> <span class="err">由于之前是一个</span><span class="n">episode的信息保存成一个dictionary</span><span class="err">，加到</span><span class="n">list里的</span><span class="err">，为了</span><span class="n">non</span><span class="o">-</span><span class="n">correlation</span>
+<span class="n">expert_trajectories</span> <span class="o">=</span> <span class="n">TransitionDataset</span><span class="p">(</span><span class="n">flatten_list_dicts</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;expert_trajectories.pth&#39;</span><span class="p">)))</span>
 </code></pre></td></tr></table>
 </div>
 </div><div class="expandable-section">
   
-    <h3>
+    <h0>
   
-    <button aria-expanded="false" data-expands="js-expandable-d489042cba10c55fcb875d8f5551bfa1">
+    <button aria-expanded="false" data-expands="js-expandable-3f611e1f7d47a35e6d2caf40c4fe83bc">
       <span class="expandable-label">Evaluate Agent</span>
       <svg aria-hidden="true" focusable="false" viewBox="0 0 70.866142 70.866141">
         <g transform="translate(0 -981.5)">
@@ -438,9 +491,9 @@ class ActorCritic(nn.Module):
       </svg>
     </button>
   
-    </h3>
+    </h0>
   
-  <div id="js-expandable-d489042cba10c55fcb875d8f5551bfa1" hidden>
+  <div id="js-expandable-3f611e1f7d47a35e6d2caf40c4fe83bc" hidden>
     <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt"> 1
@@ -466,35 +519,220 @@ class ActorCritic(nn.Module):
 </span><span class="lnt">21
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-python" data-lang="python">    <span class="k">def</span> <span class="nf">flatten_list_dicts</span><span class="p">(</span><span class="n">list_dicts</span><span class="p">):</span>
-        <span class="k">return</span> <span class="p">{</span>  <span class="n">k</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">d</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">list_dicts</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">list_dicts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>  <span class="p">}</span>
-    
-    <span class="k">def</span> <span class="nf">evaluate_agent</span><span class="p">(</span><span class="n">agent</span><span class="p">,</span> <span class="n">episodes</span><span class="p">,</span> <span class="n">return_trajectories</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
-        <span class="n">env</span> <span class="o">=</span> <span class="n">CartPoleEnv</span><span class="p">();</span> <span class="n">env</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
-        <span class="n">returns</span><span class="p">,</span> <span class="n">trajectories</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">episodes</span><span class="p">):</span>
-            <span class="n">states</span><span class="p">,</span> <span class="n">actions</span><span class="p">,</span> <span class="n">rewards</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[]</span>
-            <span class="n">state</span><span class="p">,</span> <span class="n">terminal</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">(),</span> <span class="bp">False</span>
-            <span class="k">while</span> <span class="ow">not</span> <span class="n">terminal</span><span class="p">:</span>
-                <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
-                    <span class="n">policy</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">agent</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
-                    <span class="n">action</span> <span class="o">=</span> <span class="n">policy</span><span class="o">.</span><span class="n">logits</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>  <span class="o">//</span>
-                    <span class="n">state</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">terminal</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">flatten_list_dicts</span><span class="p">(</span><span class="n">list_dicts</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">{</span>  <span class="n">k</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">d</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">list_dicts</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">list_dicts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>  <span class="p">}</span>
 
-                    <span class="k">if</span> <span class="n">return_trajectories</span><span class="p">:</span>
-                    <span class="n">states</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
-                    <span class="n">actions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
-                    <span class="n">rewards</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">reward</span><span class="p">)</span>
-            <span class="n">returns</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">rewards</span><span class="p">))</span>
-        <span class="k">return</span> <span class="p">(</span><span class="n">returns</span><span class="p">,</span> <span class="n">trajectories</span><span class="p">)</span> <span class="k">if</span> <span class="n">return_trajectories</span> <span class="k">else</span> <span class="n">returns</span>
+<span class="k">def</span> <span class="nf">evaluate_agent</span><span class="p">(</span><span class="n">agent</span><span class="p">,</span> <span class="n">episodes</span><span class="p">,</span> <span class="n">return_trajectories</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="n">env</span> <span class="o">=</span> <span class="n">CartPoleEnv</span><span class="p">();</span> <span class="n">env</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+    <span class="n">returns</span><span class="p">,</span> <span class="n">trajectories</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">episodes</span><span class="p">):</span>
+        <span class="n">states</span><span class="p">,</span> <span class="n">actions</span><span class="p">,</span> <span class="n">rewards</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[]</span>
+        <span class="n">state</span><span class="p">,</span> <span class="n">terminal</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">(),</span> <span class="bp">False</span>
+        <span class="k">while</span> <span class="ow">not</span> <span class="n">terminal</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+                <span class="n">policy</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">agent</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+                <span class="n">action</span> <span class="o">=</span> <span class="n">policy</span><span class="o">.</span><span class="n">logits</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>  <span class="o">//</span>
+                <span class="n">state</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">terminal</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">return_trajectories</span><span class="p">:</span>
+                <span class="n">states</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+                <span class="n">actions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+                <span class="n">rewards</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">reward</span><span class="p">)</span>
+        <span class="n">returns</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">rewards</span><span class="p">))</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">returns</span><span class="p">,</span> <span class="n">trajectories</span><span class="p">)</span> <span class="k">if</span> <span class="n">return_trajectories</span> <span class="k">else</span> <span class="n">returns</span>
 </code></pre></td></tr></table>
 </div>
 </div>
   </div>
 </div>
 
+<h2 id="behavioral-cloning">Behavioral Cloning</h2>
+<h3 id="pretrain-a-model">pretrain a model</h3>
+<ol>
+<li><code>config</code>文件的用法
+<div class="expandable-section">
+  
+    <h0>
+  
+    <button aria-expanded="false" data-expands="js-expandable-0a2b8c27129c63bf4b691ba50b298fc9">
+      <span class="expandable-label">parsing configurations</span>
+      <svg aria-hidden="true" focusable="false" viewBox="0 0 70.866142 70.866141">
+        <g transform="translate(0 -981.5)">
+          <rect style="stroke-width:0;fill:currentColor" ry="5" height="60" width="9.8985" y="987.36" x="30.051" class="up-strut" />
+          <rect style="stroke-width:0;fill:currentColor" ry="5" height="10" width="60" y="1012.4" x="5"/>
+        </g>
+      </svg>
+    </button>
+  
+    </h0>
+  
+  <div id="js-expandable-0a2b8c27129c63bf4b691ba50b298fc9" hidden>
+    <div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&#34;--config&#34;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&#34;configs/example.yaml&#34;</span><span class="p">)</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><code>example.yaml</code>里面定义模型，数据以及存储路径等：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="s2">&#34;&#34;&#34;
+</span><span class="s2">yaml is a superset of json
+</span><span class="s2">    - dash represents collection of items (i.e., list)
+</span><span class="s2">    no dash represents dictionary (item and key)
+</span><span class="s2">&#34;&#34;&#34;</span><span class="w">
+</span><span class="w"></span><span class="k">mode</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;train&#34;</span><span class="w">
+</span><span class="w"></span><span class="k">exp_prefix</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;dm&#34;</span><span class="w">                                       </span>//dm<span class="w"> </span>for<span class="w"> </span>dynamic<span class="w"> </span>model<span class="w">
+</span><span class="w"></span><span class="k">dir_prefix</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;{{exp_prefix}}&#34;</span><span class="w">
+</span><span class="w"></span><span class="k">base_dir</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;results/{{dir_prefix}}/{{model.backbone}}&#34;</span><span class="w">  </span>//见下面model的定义<span class="w">
+</span><span class="w"></span><span class="k">log_dir</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;log.jsonl&#34;</span><span class="w">                                   </span>//json<span class="w"> </span>line<span class="w"> </span>file<span class="w">
+</span><span class="w"></span><span class="k">checkpoint_dir</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;{{base_dir}}/checkpoints&#34;</span><span class="w">
+</span><span class="w"></span><span class="k">checkpoint_file</span><span class="p">:</span><span class="w"> </span>best_model<span class="w">
+</span><span class="w"></span><span class="k">framework</span><span class="p">:</span><span class="w"> </span>{<span class="k">seed: 1, num_thread: 4, num_gpu</span><span class="p">:</span><span class="w"> </span><span class="m">1</span>}<span class="w">
+</span><span class="w"></span><span class="k">model</span><span class="p">:</span><span class="w"> </span>{<span class="k">protocol: state, backbone: dlstm, hidden_dim: 64, num_layers: 1, dropout_p: 0.05, activation_func</span><span class="p">:</span><span class="w"> </span>tanh}<span class="w">
+</span><span class="w"></span><span class="k">data</span><span class="p">:</span><span class="w"> </span>{<span class="k">protocol: state, delta_t: 0.05, horizon: 50, input_dim: 6, output_dim: 4, batch_size: 50, num_datapoints_per_epoch: 50, num_traj_samples: 10, expert_policy: swing_up, policy_dir: &#39;data/policy.npz&#39;, default_init_state: [0.01, 0.01, 0.5, 0.1], image</span><span class="p">:</span><span class="w"> </span>{<span class="k">cart_width: 1.0, cart_height: 0.5, pole_length: 1.0, pole_thickness: 3.0, figsize: [4, 3], alpha</span><span class="p">:</span><span class="w"> </span><span class="m">0.5</span>}}<span class="w">
+</span><span class="w"></span><span class="k">train</span><span class="p">:</span><span class="w"> </span>{<span class="k">num_epoch: 100, lr: 0.01, lr_ms: [70, 90], save_iter</span><span class="p">:</span><span class="w"> </span><span class="m">10</span>}<span class="w">
+</span><span class="w"></span><span class="k">test</span><span class="p">:</span><span class="w"> </span>{<span class="k">gt_title: Swing-up sim rollout, model_title: NN Prediction, film: True, video_name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;{{exp_prefix}}_{{model.protocol}}_{{model.backbone}}&#34;</span>}<span class="w">
+</span></code></pre></td></tr></table>
+</div>
+</div>
+  </div>
+</div>
+</li>
+<li>训练模型
+<div class="expandable-section">
+  
+    <h0>
+  
+    <button aria-expanded="false" data-expands="js-expandable-d97562b819d9f4037eb2152cd1e46c91">
+      <span class="expandable-label">train dynamic model</span>
+      <svg aria-hidden="true" focusable="false" viewBox="0 0 70.866142 70.866141">
+        <g transform="translate(0 -981.5)">
+          <rect style="stroke-width:0;fill:currentColor" ry="5" height="60" width="9.8985" y="987.36" x="30.051" class="up-strut" />
+          <rect style="stroke-width:0;fill:currentColor" ry="5" height="10" width="60" y="1012.4" x="5"/>
+        </g>
+      </svg>
+    </button>
+  
+    </h0>
+  
+  <div id="js-expandable-d97562b819d9f4037eb2152cd1e46c91" hidden>
+    <div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="s2">&#34;&#34;&#34;
+</span><span class="s2">initialization {下面字典里对应的是被调用的class-module}
+</span><span class="s2">    model_protocol = {&#34;state&#34;: network.model_state, &#34;image&#34;: network.model_image}
+</span><span class="s2">    dataset_protocol = {&#34;state&#34;: dataset.state_dataset, &#34;image&#34;: dataset.image_dataset}
+</span><span class="s2">&#34;&#34;&#34;</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset_protocol</span><span class="p">[</span><span class="n">config</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">protocol</span><span class="p">](</span><span class="n">config</span><span class="p">)</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">dataloader</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">framework</span><span class="o">.</span><span class="n">num_thread</span><span class="p">)</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">cfg</span> <span class="o">=</span> <span class="n">config</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">best_loss</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">maxsize</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">SummaryWriter</span><span class="p">(</span><span class="s2">&#34;{}/runs_{}&#34;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">base_dir</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">mode</span><span class="p">))</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model_protocol</span><span class="p">[</span><span class="n">config</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">protocol</span><span class="p">](</span><span class="n">config</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">framework</span><span class="o">.</span><span class="n">num_gpu</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>   <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">lr</span><span class="p">)</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">scheduler</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">lr_scheduler</span><span class="o">.</span><span class="n">MultiStepLR</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="p">,</span> <span class="n">milestones</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">lr_ms</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">criterion</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">L1Loss</span><span class="p">()</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>初始设置后开始训练模型</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="s2">&#34;&#34;&#34;
+</span><span class="s2">run training
+</span><span class="s2">&#34;&#34;&#34;</span>
+<span class="n">losses</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">num_epoch</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="p">(</span><span class="n">imgs</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dataloader</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">framework</span><span class="o">.</span><span class="n">num_gpu</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">imgs</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="n">imgs</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> <span class="o">...</span> <span class="p">)</span>
+        <span class="n">y_action</span> <span class="o">=</span> <span class="n">x</span><span class="p">[:,</span> <span class="p">:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">];</span> <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="p">[:,</span> <span class="p">:,</span> <span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>       <span class="o">//</span><span class="n">batch</span><span class="o">+</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="p">,</span> <span class="n">dataset</span><span class="o">.</span><span class="n">image_dataset</span><span class="p">):</span>
+            <span class="n">p</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">imgs</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">p</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">view_as</span><span class="p">(</span><span class="n">y_action</span><span class="p">)</span>
+        <span class="n">l</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">criterion</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">y_action</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">();</span> <span class="n">l</span><span class="o">.</span><span class="n">backward</span><span class="p">();</span> <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">add_scalar</span><span class="p">(</span><span class="s2">&#34;{}/loss&#34;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">mode</span><span class="p">),</span><span class="n">l</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">idx</span><span class="o">+</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">num_datapoints_per_epoch</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">batch_size</span><span class="p">)</span><span class="o">*</span><span class="n">epoch</span><span class="p">,</span> <span class="p">)</span>
+        <span class="n">losses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">l</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>       
+    <span class="k">if</span> <span class="n">epoch</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">save_iter</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">save_checkpoints</span><span class="p">(</span><span class="n">losses</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">scheduler</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+</code></pre></td></tr></table>
+</div>
+</div>
+  </div>
+</div>
+</li>
+</ol>
 <h2 id="reference">Reference</h2>
 <p>[1] Kaixhin <a href="https://github.com/Kaixhin/imitation-learning/tree/135831fddb449684b5f7bd3b4802e2ddff79c475">Imitation learning algorithms</a></p>
+<p>[2] KuoHaoZeng <a href="https://github.com/KuoHaoZeng/cartpole_model_based_control">Cartpole Model Based Control</a></p>
 	
 
 <a href="#" id="back-to-top" class="back-to-top" style="display: inline;">Back to Top</a>

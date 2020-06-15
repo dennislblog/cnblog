@@ -50,8 +50,6 @@ code[class*="language-"]::selection, code[class*="language-"] ::selection {
 
 /* Code blocks */
 pre[class*="language-"] {
-	padding: 1em;
-	margin: .5em 0;
 	overflow: auto;
 	border: 1px solid #d0d0d0 !important;
 	border-radius: 0.25rem;
@@ -342,5 +340,5 @@ h6 {
   font-size: 0.875em;
 }
 p {
-  margin: 0 0 20px 0;
+  margin: 0 0 10px 0;
 }

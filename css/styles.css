@@ -156,6 +156,8 @@ pre,
   padding: 1.5rem 0rem;
   height: calc(100% - 64px);
   overflow-y: auto;
+  border: 1px solid #d0d0d0;
+  border-radius: 0.25rem;
 }
 code {
   font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
@@ -225,12 +227,12 @@ blockquote .author {
 
 /* Buttons */
 button {
-  font-size: 1.25rem;
+  font-size: 1rem;
   border-radius: 0.33em;
   font-family: inherit;
   background: #111;
   color: #fefefe;
-  padding: 0.75rem;
+  padding: 0.25rem;
   border: 0;
 }
 [data-launch] {
@@ -684,7 +686,7 @@ div.highlight{
 .expandable-section {
   border-top: 1px solid;
   border-bottom: 1px solid;
-  padding: 0.75rem 0;
+  padding: 0.5rem 0;
 }
 [id^="js-expandable-"] {
   margin: 0;

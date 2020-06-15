@@ -1,7 +1,7 @@
-/* Background */ .chroma {color: #f8f8f2;background-color: #272822;margin: 0.5rem 0rem;padding: 1em 0em;}
+/* Background */ .chroma {color: #f8f8f2;background-color: #272822;}
 /*.chroma pre {border:1px solid #d0d0d0 !important;}
 *//* Error */ .chroma .err { color: #960050; background-color: #1e0010 }
-/* LineTableTD */ .chroma .lntd { vertical-align: top; padding: 0; margin: 0; border: 0; }
+/* LineTableTD */ .chroma .lntd { vertical-align: bottom; padding: 0; margin: 0; border: 0; }
 /* LineTable */ .chroma .lntable { border-spacing: 0; padding: 0; margin: 0; border: 0; width: auto; overflow: auto; display: block; }
 /* LineHighlight */ .chroma .hl { display: block; width: 100%;background-color: #ffffcc }
 /* LineNumbersTable */ .chroma .lnt { margin-right: 0.4em; padding: 0 0.4em 0 0.4em;color: #7f7f7f }
@@ -61,7 +61,7 @@
 .chroma pre,
 .chroma code{
 	color: black;
-	text-shadow: 0 1px white;
+	text-shadow: none;
 	font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
 	text-align: left;
 	white-space: pre;
@@ -77,6 +77,7 @@
 	-ms-hyphens: none;
 	hyphens: none;
 	width:100%;
+	margin-bottom: 0.5rem; padding: 0.75rem 0rem;
 }
 .lntd:not(:first-of-type) {
     width: 100%;
