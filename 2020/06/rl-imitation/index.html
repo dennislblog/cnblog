@@ -537,7 +537,8 @@
 
 <h2 id="behavioral-cloning">Behavioral Cloning</h2>
 <ol>
-<li><code>config</code>文件的用法
+<li>
+<p><code>config</code>文件的用法
 <div class="expandable-section">
   
     <h0>
@@ -626,8 +627,10 @@
 </div>
   </div>
 </div>
+</p>
 </li>
-<li>训练模型: 
+<li>
+<p>训练模型: 
 <div class="expandable-section">
   
     <h0>
@@ -784,8 +787,10 @@
 </div>
   </div>
 </div>
+</p>
 </li>
-<li>测试模型
+<li>
+<p>测试模型
 <div class="expandable-section">
   
     <h0>
@@ -937,6 +942,144 @@
 </div>
   </div>
 </div>
+</p>
+</li>
+<li>
+<p>超参数批处理
+<div class="expandable-section">
+  
+    <h0>
+  
+    <button aria-expanded="false" data-expands="js-expandable-14fd3a57739ea0776db7a8c37f2abc89">
+      <span class="expandable-label">running experiment</span>
+      <svg aria-hidden="true" focusable="false" viewBox="0 0 70.866142 70.866141">
+        <g transform="translate(0 -981.5)">
+          <rect style="stroke-width:0;fill:currentColor" ry="5" height="60" width="9.8985" y="987.36" x="30.051" class="up-strut" />
+          <rect style="stroke-width:0;fill:currentColor" ry="5" height="10" width="60" y="1012.4" x="5"/>
+        </g>
+      </svg>
+    </button>
+  
+    </h0>
+  
+  <div id="js-expandable-14fd3a57739ea0776db7a8c37f2abc89" hidden>
+    <div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="n">options</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&#34;framework.seed&#34;</span><span class="p">:</span> <span class="p">[</span><span class="mi">12345</span><span class="p">],</span>
+        <span class="s2">&#34;dm_model.model.backbone&#34;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&#34;dlstm&#34;</span><span class="p">],</span>
+        <span class="s2">&#34;model.backbone&#34;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&#34;fc&#34;</span><span class="p">,</span> <span class="s2">&#34;dfc&#34;</span><span class="p">,</span> <span class="s2">&#34;gru&#34;</span><span class="p">,</span> <span class="s2">&#34;dgru&#34;</span><span class="p">,</span> <span class="s2">&#34;lstm&#34;</span><span class="p">,</span> <span class="s2">&#34;dlstm&#34;</span><span class="p">],</span>
+        <span class="s2">&#34;train.LAMBDA&#34;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">],}</span>
+<span class="n">queue</span> <span class="o">=</span> <span class="n">Queue</span><span class="p">()</span>
+<span class="n">queue</span> <span class="o">=</span> <span class="n">get_all_possible_experiments_options</span><span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="n">queue</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_workers</span><span class="p">):</span>
+    <span class="n">workers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Worker</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">queue</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_workers</span><span class="p">):</span>
+    <span class="n">workers</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_workers</span><span class="p">):</span>
+    <span class="n">workers</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>其中<code>get_all_possible_experiments_options</code>方法的定义是</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="s2">&#34;&#34;&#34;
+</span><span class="s2">   {&#39;framework.seed&#39;: array([12345, 12345, 12345, 12345, 12345, 12345, 12345, 12345, 12345,
+</span><span class="s2">        12345, 12345, 12345, 12345, 12345, 12345, 12345, 12345, 12345,
+</span><span class="s2">        12345, 12345, 12345, 12345, 12345, 12345]),
+</span><span class="s2"> &#39;dm_model.model.backbone&#39;: array([&#39;dlstm&#39;, &#39;dlstm&#39;, &#39;dlstm&#39;, &#39;dlstm&#39;, &#39;dlstm&#39;, &#39;dlstm&#39;, &#39;dlstm&#39;,
+</span><span class="s2">        &#39;dlstm&#39;, &#39;dlstm&#39;, &#39;dlstm&#39;, &#39;dlstm&#39;, &#39;dlstm&#39;, &#39;dlstm&#39;, &#39;dlstm&#39;,
+</span><span class="s2">        &#39;dlstm&#39;, &#39;dlstm&#39;, &#39;dlstm&#39;, &#39;dlstm&#39;, &#39;dlstm&#39;, &#39;dlstm&#39;, &#39;dlstm&#39;,
+</span><span class="s2">        &#39;dlstm&#39;, &#39;dlstm&#39;, &#39;dlstm&#39;], dtype=&#39;&lt;U5&#39;),
+</span><span class="s2"> &#39;model.backbone&#39;: array([&#39;fc&#39;, &#39;fc&#39;, &#39;fc&#39;, &#39;fc&#39;, &#39;dfc&#39;, &#39;dfc&#39;, &#39;dfc&#39;, &#39;dfc&#39;, &#39;gru&#39;, &#39;gru&#39;,
+</span><span class="s2">        &#39;gru&#39;, &#39;gru&#39;, &#39;dgru&#39;, &#39;dgru&#39;, &#39;dgru&#39;, &#39;dgru&#39;, &#39;lstm&#39;, &#39;lstm&#39;,
+</span><span class="s2">        &#39;lstm&#39;, &#39;lstm&#39;, &#39;dlstm&#39;, &#39;dlstm&#39;, &#39;dlstm&#39;, &#39;dlstm&#39;], dtype=&#39;&lt;U5&#39;),
+</span><span class="s2"> &#39;train.LAMBDA&#39;: array([0.  , 0.01, 0.1 , 0.15, 0.  , 0.01, 0.1 , 0.15, 0.  , 0.01, 0.1 ,
+</span><span class="s2">        0.15, 0.  , 0.01, 0.1 , 0.15, 0.  , 0.01, 0.1 , 0.15, 0.  , 0.01,
+</span><span class="s2">        0.1 , 0.15])} 
+</span><span class="s2">&#34;&#34;&#34;</span>
+<span class="k">def</span> <span class="nf">get_all_possible_experiments_options</span><span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="n">queue</span><span class="p">):</span>
+    <span class="n">length</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">options</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>                           
+        <span class="n">length</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>                           
+    <span class="n">new_options</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+        <span class="n">new_shape</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+        <span class="n">new_shape</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">length</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">new_shape</span><span class="p">)</span>
+        <span class="n">axis</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">keys</span><span class="p">())))</span>
+        <span class="n">axis</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">axis</span><span class="p">:</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">length</span><span class="p">[</span><span class="n">a</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="n">a</span><span class="p">)</span>
+        <span class="n">new_options</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>                      
+    <span class="n">keys</span> <span class="o">=</span> <span class="n">new_options</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">length</span><span class="p">)):</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
+            <span class="n">msg</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_options</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">n</span><span class="p">]</span>
+        <span class="n">queue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">queue</span>
+</code></pre></td></tr></table>
+</div>
+</div>
+  </div>
+</div>
+</p>
 </li>
 </ol>
 <h2 id="reference">Reference</h2>

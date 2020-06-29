@@ -264,8 +264,8 @@
           
           
           
-          <a href="#argparse%e7%ae%80%e8%a6%81%e7%94%a8%e6%b3%95%e6%80%bb%e7%bb%93" style="padding-left: 0rem">
-            Argparse简要用法总结
+          <a href="#argparse-%e7%ae%80%e8%a6%81%e7%94%a8%e6%b3%95%e6%80%bb%e7%bb%93" style="padding-left: 0rem">
+            Argparse 简要用法总结
           </a>
         </li>
       
@@ -367,17 +367,17 @@
 <tr>
 <td>bool</td>
 <td><code>bool([])</code> =&gt; False</td>
-<td>数值0，空序列等为False</td>
+<td>数值 0，空序列等为 False</td>
 </tr>
 <tr>
 <td>float &amp; str</td>
 <td><code>float('3')</code> =&gt; 3.0 <br><code>str(123)</code> =&gt; &lsquo;123&rsquo;</td>
-<td>不提供参数则返回0.0<br>不提供参数则返回空string</td>
+<td>不提供参数则返回 0.0<br>不提供参数则返回空 string</td>
 </tr>
 <tr>
-<td>bytearray  <br>bytes</td>
+<td>bytearray <br>bytes</td>
 <td><code>bytearray('中文','utf-8')</code> =&gt; bytearray(b&rsquo;\xe4\xb8\xad\xe6\x96\x87&rsquo;) <br><code>bytes('中文','utf-8')</code> =&gt; b&rsquo;\xe4\xb8\xad\xe6\x96\x87&rsquo;</td>
-<td>(可变)字节数组   <br>不可变字节数组</td>
+<td>(可变)字节数组 <br>不可变字节数组</td>
 </tr>
 <tr>
 <td>memoryview</td>
@@ -387,17 +387,17 @@
 <tr>
 <td>ord <br>chr</td>
 <td><code>ord('a')</code> =&gt; 97 <br><code>chr(97)</code> =&gt; &lsquo;a&rsquo;</td>
-<td>返回整数所对应的的Unicode字符 <br>上面的逆操作</td>
+<td>返回整数所对应的的 Unicode 字符 <br>上面的逆操作</td>
 </tr>
 <tr>
 <td>bin <br>oct <br>hex</td>
 <td><code>bin(3)</code> =&gt; 0b11 <br><code>oct(3)</code> =&gt; &lsquo;0o3&rsquo; <br><code>hex(3)</code> =&gt; 0x3</td>
-<td>2进制字符串 <br>8进制字符串  <br>16进制字符串</td>
+<td>2 进制字符串 <br>8 进制字符串 <br>16 进制字符串</td>
 </tr>
 <tr>
 <td>tuple <br>frozenset</td>
 <td><code>tuple('5215')</code> =&gt; (&lsquo;5&rsquo;, &lsquo;2&rsquo;, &lsquo;1&rsquo;, &lsquo;5&rsquo;) <br><code>frozenset('5215')</code> =&gt; frozenset({&lsquo;1&rsquo;, &lsquo;2&rsquo;, &lsquo;5&rsquo;})</td>
-<td>传入可迭代对象  <br>不可变集合</td>
+<td>传入可迭代对象 <br>不可变集合</td>
 </tr>
 <tr>
 <td>list <br>set</td>
@@ -406,8 +406,8 @@
 </tr>
 <tr>
 <td>dict</td>
-<td><code>dict(a = 1,b = 2)</code> =&gt; {&lsquo;b&rsquo;: 2, &lsquo;a&rsquo;: 1}  <br><code>dict(zip(['a','b'],[1,2]))</code> =&gt; {&lsquo;b&rsquo;: 2, &lsquo;a&rsquo;: 1} <br><code>dict((('a',1),('b',2)))</code> =&gt; {&lsquo;b&rsquo;: 2, &lsquo;a&rsquo;: 1}</td>
-<td>不传参数，返回空字典   <br>传入映射函数   <br>传入可迭代对象</td>
+<td><code>dict(a = 1,b = 2)</code> =&gt; {&lsquo;b&rsquo;: 2, &lsquo;a&rsquo;: 1} <br><code>dict(zip(['a','b'],[1,2]))</code> =&gt; {&lsquo;b&rsquo;: 2, &lsquo;a&rsquo;: 1} <br><code>dict((('a',1),('b',2)))</code> =&gt; {&lsquo;b&rsquo;: 2, &lsquo;a&rsquo;: 1}</td>
+<td>不传参数，返回空字典 <br>传入映射函数 <br>传入可迭代对象</td>
 </tr>
 <tr>
 <td>enumerate | range | iter</td>
@@ -417,22 +417,22 @@
 <tr>
 <td>slice</td>
 <td><code>arr=list(range(10))</code> <br><code>arr[slice(2,5,2)] = arr[2:5:2] =&gt; [2,4]</code></td>
-<td>slice就是切片</td>
+<td>slice 就是切片</td>
 </tr>
 <tr>
 <td>super</td>
 <td><code>class B(A):</code></td>
-<td>调用父类方法 <code>super().method</code> 就会call class A里的这个方法</td>
+<td>调用父类方法 <code>super().method</code> 就会 call class A 里的这个方法</td>
 </tr>
 <tr>
 <td>all <br>any</td>
-<td><code>all([0,1,2])</code> =&gt; False <br><code>any([0,1,2])</code>则返回True</td>
-<td><code>all([])</code> =&gt; True   <br><code>any(空)</code>则返回False</td>
+<td><code>all([0,1,2])</code> =&gt; False <br><code>any([0,1,2])</code>则返回 True</td>
+<td><code>all([])</code> =&gt; True <br><code>any(空)</code>则返回 False</td>
 </tr>
 <tr>
 <td>filter <br>map</td>
 <td><code>list(filter(lambda x: x%3==1,range(10)))</code> =&gt; [1, 4, 7] <br><code>list(map(lambda x: x%3==1,range(10)))</code> =&gt; [False, True, &hellip;, False]</td>
-<td>过滤可迭代对象 <br>将function map到每一个可迭代对象</td>
+<td>过滤可迭代对象 <br>将 function map 到每一个可迭代对象</td>
 </tr>
 <tr>
 <td>sorted</td>
@@ -472,7 +472,7 @@
 <tr>
 <td>callable</td>
 <td><code>b = B(); callable(b)</code> =&gt; True</td>
-<td>b是可以被调用的实例</td>
+<td>b 是可以被调用的实例</td>
 </tr>
 <tr>
 <td>open</td>
@@ -480,7 +480,7 @@
 <td>用指定模式打开文件</td>
 </tr>
 <tr>
-<td>eval  <br>exec</td>
+<td>eval <br>exec</td>
 <td><code>eval('1+2+3')</code> =&gt; 6 <br><code>exec('for i in range(0,10): print (i)')</code>=&gt; 打印<code>0,1,...,9</code></td>
 <td>执行语句 <br>执行语句块</td>
 </tr>
@@ -504,23 +504,82 @@
 </span><span class="lnt">12
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-py" data-lang="py">    <span class="k">class</span> <span class="nc">C</span><span class="p">:</span>  
-        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>            <span class="o">//</span><span class="n">c</span> <span class="o">=</span> <span class="n">C</span><span class="p">()</span>  
-        <span class="nd">@property</span>
-        <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>                <span class="o">//</span><span class="err">除非提供</span><span class="n">delter</span><span class="err">，否则属性不能被</span><span class="n">del删除</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span>          <span class="o">//</span><span class="n">c</span><span class="o">.</span><span class="n">name</span> <span class="err">访问属性</span>  
-        <span class="nd">@name.setter</span> 
-        <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">value</span><span class="p">):</span>  
-            <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>          <span class="o">//</span><span class="n">c</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="bp">None</span> <span class="err">设置属性时进行验证，会报错</span>
-                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;name cannot be None&#39;</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">name</span>
+<pre class="chroma"><code class="language-py" data-lang="py"><span class="k">class</span> <span class="nc">C</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>            <span class="o">//</span><span class="n">c</span> <span class="o">=</span> <span class="n">C</span><span class="p">()</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>                <span class="o">//</span><span class="err">除非提供</span><span class="n">delter</span><span class="err">，否则属性不能被</span><span class="n">del删除</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span>          <span class="o">//</span><span class="n">c</span><span class="o">.</span><span class="n">name</span> <span class="err">访问属性</span>
+    <span class="nd">@name.setter</span>
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>          <span class="o">//</span><span class="n">c</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="bp">None</span> <span class="err">设置属性时进行验证，会报错</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;name cannot be None&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">name</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>另外还可以自己定义<code>decorator</code>，比如我们希望处理<code>division by zero</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-py" data-lang="py"><span class="k">def</span> <span class="nf">check_division</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">inner</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s2">&#34;cannot devide zero&#34;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">inner</span>
+
+<span class="nd">@check_division</span>
+<span class="k">def</span> <span class="nf">div</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">a</span><span class="o">/</span><span class="n">b</span><span class="p">)</span>
+
+<span class="s2">&#34;=======================还可以用class来定义decorator========================&#34;</span>
+
+<span class="k">class</span> <span class="nc">check_division</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">func</span> <span class="o">=</span> <span class="n">func</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s2">&#34;cannot devide zero&#34;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+
+<span class="nd">@check_division</span>
+<span class="k">def</span> <span class="nf">div</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">a</span><span class="o">/</span><span class="n">b</span><span class="p">)</span>
 </code></pre></td></tr></table>
 </div>
 </div><h2 id="功能代码">功能代码</h2>
-<h3 id="argparse简要用法总结">Argparse简要用法总结</h3>
-<p>argparse 是python自带的命令行参数解析包，可以用来方便地读取命令行参数，比如这样</p>
+<h3 id="argparse-简要用法总结">Argparse 简要用法总结</h3>
+<p>argparse 是 python 自带的命令行参数解析包，可以用来方便地读取命令行参数，比如这样</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt">1
@@ -580,7 +639,7 @@
 <tr>
 <td>nargs</td>
 <td>可以提供几个参数 (<code>?</code>=0 or 1, <code>*</code> = 0 or infty, <code>+</code> &gt;= 1)</td>
-<td><code>parser.add_argument('-a', nargs='+')</code> 至少跟1个参数, 比如 <code>python tmp.py -a A B C</code></td>
+<td><code>parser.add_argument('-a', nargs='+')</code> 至少跟 1 个参数, 比如 <code>python tmp.py -a A B C</code></td>
 </tr>
 </tbody>
 </table>
@@ -602,7 +661,7 @@
 <tr>
 <td>mkvirtualenv</td>
 <td>创建<code>virtual env</code></td>
-<td><code>-a path</code>: 每次activate env，自动跳转到该path <br> <code>-i package</code>: 指定安装package <br> <code>-r requirements.txt</code>: 指定pip 安装 <br> <code>-p3.5</code>: 指定python 3.5.x interpreter (前提是电脑里已经有3.5py)</td>
+<td><code>-a path</code>: 每次 activate env，自动跳转到该 path <br> <code>-i package</code>: 指定安装 package <br> <code>-r requirements.txt</code>: 指定 pip 安装 <br> <code>-p3.5</code>: 指定 python 3.5.x interpreter (前提是电脑里已经有 3.5py)</td>
 </tr>
 <tr>
 <td>rmvirtualenv</td>

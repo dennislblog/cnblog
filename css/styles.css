@@ -75,6 +75,7 @@ img {
 }
 .img-link {
   border-bottom: none;
+  position:relative;
 }
 p img {
   margin: 0.75rem 0;
