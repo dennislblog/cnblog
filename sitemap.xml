@@ -3,22 +3,52 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://dennislblog.github.io/cnblog/2020/07/adversarial-recovery-of-reward/</loc>
+    <lastmod>2020-07-22T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://dennislblog.github.io/cnblog/tags/irl/</loc>
+    <lastmod>2020-07-22T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://dennislblog.github.io/cnblog/post/</loc>
+    <lastmod>2020-07-22T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://dennislblog.github.io/cnblog/tags/review/</loc>
+    <lastmod>2020-07-22T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://dennislblog.github.io/cnblog/tags/</loc>
+    <lastmod>2020-07-22T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://dennislblog.github.io/cnblog/tags/computation/</loc>
+    <lastmod>2020-07-19T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://dennislblog.github.io/cnblog/tags/environment/</loc>
+    <lastmod>2020-07-19T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://dennislblog.github.io/cnblog/2020/07/trade-environment/</loc>
+    <lastmod>2020-07-19T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://dennislblog.github.io/cnblog/2020/06/rl-imitation/</loc>
     <lastmod>2020-06-09T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://dennislblog.github.io/cnblog/post/</loc>
-    <lastmod>2020-06-09T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://dennislblog.github.io/cnblog/tags/rl/</loc>
-    <lastmod>2020-06-09T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://dennislblog.github.io/cnblog/tags/</loc>
     <lastmod>2020-06-09T00:00:00+00:00</lastmod>
   </url>
   
@@ -53,32 +83,12 @@
   </url>
   
   <url>
-    <loc>https://dennislblog.github.io/cnblog/tags/fiance/</loc>
-    <lastmod>2020-06-01T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://dennislblog.github.io/cnblog/2020/06/thesis-intro/</loc>
-    <lastmod>2020-06-01T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://dennislblog.github.io/cnblog/tags/problem/</loc>
-    <lastmod>2020-06-01T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://dennislblog.github.io/cnblog/tags/market-making/</loc>
     <lastmod>2020-05-31T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://dennislblog.github.io/cnblog/2020/05/robust-market-making-via-adversarial-reinforcement-learning/</loc>
-    <lastmod>2020-05-31T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://dennislblog.github.io/cnblog/tags/review/</loc>
     <lastmod>2020-05-31T00:00:00+00:00</lastmod>
   </url>
   

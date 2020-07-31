@@ -347,6 +347,7 @@ $$L=E[(\color{blue}{r+\gamma Q_{w^-}(s&rsquo;,\color{red}{\mathop{\arg\max}_{a&r
 </li>
 <li>
 <p>2016年<code>ICML</code>上发表的 <a href="http://www.jmlr.org/proceedings/papers/v48/gu16.pdf">continuous Q learning</a> 不同于<code>actor-critic</code>对<code>action-value</code>分别评估的方法，用一个函数对<code>state</code>输出三个值$V\in R$,$\mu\in R^n$,$L_0 \in R^{nxn}$，通过<code>Cholesky</code>分解重构<code>advantage value</code>和 <code>Q value</code> 
+
 <div class="expandable-section">
   
     <button aria-expanded="false" data-expands="js-expandable-0261c20df9cbb58760da3a3d7e352203">
@@ -416,6 +417,7 @@ $$A(s,\mu)=-\frac{1}{2}\langle a-\mu_\theta(s)\rangle^T P_L(s)\langle a-\mu_\the
 </li>
 <li>
 <p>2017年<code>AAAI</code>上发表的 <a href="https://arxiv.org/pdf/1710.02298.pdf">Rainbow: Combining improvements in deep reinforcement learning</a> 通过整合6种已经发表的<code>DQN</code>改进方法提高训练效果，详细代码请见<a href="https://github.com/Curt-Park/rainbow-is-all-you-need">这里</a>
+
 <div class="expandable-section">
   
     <button aria-expanded="false" data-expands="js-expandable-89ca8b2c61d8ed687d695e15a7dcc18c">

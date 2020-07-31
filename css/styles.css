@@ -686,6 +686,7 @@ div.highlight{
   border-top: 1px solid;
   border-bottom: 1px solid;
   padding: 0.5rem 0;
+  margin-bottom: 1.5rem;
 }
 [id^="js-expandable-"] {
   margin: 0;
@@ -1067,34 +1068,7 @@ h1 svg {
 }
 
 
-
-/* Tables of contents */
-/*.table-of-contents {
-  float: right;
-  font-size: 0.85rem;
-  width: 35%;
-  background: #eee;
-  padding: 1em 1em;
-  margin: 0 0 0.5em 0.5em;
-  border-radius: 0.7em;
+del {
+	text-decoration:none; 
+	color: blue;
 }
-.table-of-contents h2, .table-of-contents nav{
-  font-size: 0.8rem;
-  margin-top: 0.3rem;
-}
-.table-of-contents ul {
-  padding: 0;
-  list-style-type: none;
-  margin-left: 0rem;
-}
-.table-of-contents li ul, .table-of-contents ul li {
-  font-size: 0.8rem;
-  margin-top: 0.1rem !important;
-}
-.table-of-contents li > ul{
-  margin-left: 1.75rem;
-}
-.table-of-contents a {
-  text-decoration: none;
-}*/
-

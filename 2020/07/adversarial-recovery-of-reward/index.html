@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
   <meta name="generator" content="Hugo 0.69.0" />
-  <link rel="canonical" href="https://dennislblog.github.io/cnblog/2020/05/proximal-policy-optimization-algorithms/">
+  <link rel="canonical" href="https://dennislblog.github.io/cnblog/2020/07/adversarial-recovery-of-reward/">
 
   
 
@@ -34,7 +34,7 @@
 
   
   
-  <title>PPO Algorithm | My Site Title</title>
+  <title>Adversarial Reward Learning from Latent Space of LOB | My Site Title</title>
   
 
 <script type="text/javascript" async
@@ -231,8 +231,8 @@
           
           
           
-          <a href="#policy-gradient" style="padding-left: 0rem">
-            Policy Gradient
+          <a href="#summary" style="padding-left: 0rem">
+            Summary
           </a>
         </li>
       
@@ -242,19 +242,8 @@
           
           
           
-          <a href="#trust-region-policy-optimization" style="padding-left: 0rem">
-            Trust Region Policy Optimization
-          </a>
-        </li>
-      
-        
-        <li class="toc-h2">
-          
-          
-          
-          
-          <a href="#proximal-policy-optimization" style="padding-left: 0rem">
-            Proximal Policy Optimization
+          <a href="#%e8%83%8c%e6%99%af" style="padding-left: 0rem">
+            背景
           </a>
         </li>
       
@@ -287,13 +276,13 @@
       <svg class="bookmark-icon" aria-hidden="true" viewBox="0 0 40 50" focusable="false">
         <use xlink:href="#bookmark"></use>
       </svg>
-      PPO Algorithm
+      Adversarial Reward Learning from Latent Space of LOB
     </h1>
 
     <div class="date">
       
       
-      <strong aria-hidden="true">Publish date: </strong>Thursday, May 28, 2020
+      <strong aria-hidden="true">Publish date: </strong>Wednesday, July 22, 2020
       
         
       
@@ -309,7 +298,7 @@
                 <use xlink:href="#tag"></use>
               </svg>
               
-              <a href="https://dennislblog.github.io/cnblog/tags/rl/">RL</a>
+              <a href="https://dennislblog.github.io/cnblog/tags/review/">Review</a>
             </li>
           
             <li>
@@ -317,27 +306,19 @@
                 <use xlink:href="#tag"></use>
               </svg>
               
-              <a href="https://dennislblog.github.io/cnblog/tags/review/">Review</a>
+              <a href="https://dennislblog.github.io/cnblog/tags/irl/">IRL</a>
             </li>
           
         </ul>
       </div>
     
-    <p>summaries on <a href="https://arxiv.org/abs/1707.06347">proximal policy optimization</a>(Schulman, et al., 2017)</p>
-<p>
-
-
-
-
-<figure role="group">
-    <a href=" https://i.postimg.cc/Pq7BspYD/image.png" class="img-link">
-        <img src="https://i.postimg.cc/Pq7BspYD/image.png" width=60% title="Stochastic policies">
-    </a>
-    <figcaption>
-        连续控制问题, 来自Katerina Fragkiadaki课件&lt;Natural Policy Gradients, TRPO, PPO&gt;
-    </figcaption>
-</figure></p>
-<h2 id="policy-gradient">Policy Gradient</h2>
+    <p>summaries on <a href="https://arxiv.org/abs/1912.04242v1">Adversarial recovery of agent rewards from latent spaces of the limit order book</a>(Roa-Vicens &amp; al., 2019)</p>
+<h2 id="summary">Summary</h2>
+<ol>
+<li>金融问题通常 non-stationary 利用对抗学习来适应复杂多变的环境，以及是否可以迁移到新的环境</li>
+<li>先对真实交易数据LOB抽象化<code>Mixture-Density Recurrent Network (RNN-MDN) architecture</code> 然后训练3个强化学习<code>model-based? agent: A2C, DQN, PG</code> 把他们的<code>state-action trajectories</code>当做逆强化学习的输入，最后测试&hellip;.</li>
+</ol>
+<hr>
 
 
 <aside aria-label="note" class="note">
@@ -346,13 +327,9 @@
       <use xlink:href="#info"></use>
     </svg>
     
-我一直有一个疑问, 怎么优化函数, 使得函数的输出 action 更靠近最优 action,但是其实我们并没有最优 action, 因此怎么去定义函数的 loss(y - f(x)) ? 
+为什么不使用PNL作为奖励函数来学习交易策略 
     <br>
-    <ul>
-<li><code>policy gradient</code>: 如果某一个动作得到<code>reward</code>多, 那么我们就使其出现的概率增大</li>
-<li><code>log likelihood</code>: $\log\pi(a|s,\theta)$, 构造<code>loss function</code>$=\sum \log\pi(a|s,\theta) f(s,a)$, 这个$f(s,a)$如果是<code>reward</code>的话, 我们希望$f(s,a)$大的<code>(s,a)</code>的<code>log-likelihood</code>尽可能更大一些</li>
-</ul>
-
+    强化学习在model-free的应用中，通过不断与环境交互，从随机行为慢慢习得能稳定获得高回报的策略，但是对于自动驾驶和市场交易这种探索成本较高的任务不适合，即使在训练集上表现得好也不意味着能在real-time测试过程中保证成功<code>non-stationary env</code>。金融数据往往是<code>high-dimensional, stochastic, non-stationary unknown transition dynamics</code>，于是这篇文章希望通过在真实交易数据中，分析一个专家的交易策略，来学习一个<code>robust reward function</code>，希望这个回报函数比手动设计的更能适应多变的环境
   </div>
 </aside>
 
@@ -364,55 +341,31 @@
       <use xlink:href="#info"></use>
     </svg>
     
-为什么是log-likelihood而不是直接输出likelihood 
+传统建模方法有什么问题？ 
     <br>
-    <ul>
-<li>首先最大化<code>log-likelihood</code>等同于最大化<code>likelihood</code></li>
-<li>其次$\ln(ab) = \ln(a) + \ln(b)$这个性质很有帮助, 简化运算</li>
-<li>另外还有一个非常有用的性质, 就是当我们把期望收益作为目标优化时, 等同于对<code>log-likelihood</code>求导
-$$\nabla_\theta\mathbb{E}_{(s,a)\sim\tau}[f(s,a)]\equiv \mathbb{E}_{(s,a)\sim\tau}\left[f(s,a)\nabla_\theta \log \pi(a|s,\theta) \right]$$</li>
-</ul>
-
+    在开发交易策略时，往往先通过统计建模(例如Auto Regression)来拟合时间序列，然后进行预测，基于模型给出的预测，结合个人风险偏好和启发性/专业知识来做出决策。然后在回测中检验效果。<code>Vector Auto-Regressive model (VAR)</code>可以拟合<code>the non-stationary aspect of financial time-series and can forecast with multiple variances</code>，但这些建模都需要满足一定的假设和对数据的理解，在<code>real time</code>运行中可能条件不满足，错误的统计假设可能导致<code>error compounding</code>&ndash; RL也有这个问题耶，这个和<code>manual labeled deep learning</code>有什么区别？在deep learning里，行为是不改变环境和后续奖励的
   </div>
 </aside>
 
-<!-- 求那个期望$\mathbb{E}_{(s,a)\sim\tau}$怎么求? 我们 -->
+<h2 id="背景">背景</h2>
+<p>[1] Hendricks, Dieter, et al. &ldquo;<a href="https://arxiv.org/pdf/1712.01137.pdf">Inferring agent objectives at different scales of a complex adaptive system</a>.&rdquo; arXiv preprint arXiv:1712.01137 (2017 NIPS).</p>
 
 
-<aside aria-label="note" class="note">
-  <div>
-    <svg class="sign" aria-hidden="true" viewBox="0 0 41.667306 41.66729" focusable="false">
-      <use xlink:href="#info"></use>
-    </svg>
+<blockquote class="blockquote">
+  <p>
+    <p><code>Investors</code> use their understanding of asset dynamics to time buying and selling decisions for financial gain, <code>traders</code> use their understanding of market dynamics to plan trades and minimize the cost of realising investment decisions and <code>market makers</code> use their understanding of investor demand to profit from liquidity provision.</p>
+<p>The field of <code>market microstructure</code> studies the dynamics of price formation in this system at intraday time scales, considering how mechanistic rules, regulatory oversight and social behaviors of participants interact to manifest the observed time series</p>
+<p>Given access to sample state-action space trajectories collected from observing an agent's behavior, the objective of <code>inverse reinforcement learning</code> is to find a reward function that induces agents to follow trajectories matching the expert trajectories.</p>
+<p>The <code>motivation</code> is that if the behavior at a certain (cluster) scale resulted in a positive (negative) price return, this could indicate net buying (selling) decisions for that cluster. We will thus use the sign of average price return to assign the action to one of three states, {BUY, SELL, NEUTRAL}.</p>
+
     
-怎样的f(s,a)是一个好的策略评价指标呢? 
-    <br>
-    <ul>
-<li>在<code>(monte carlo) vanilla reinforce</code>算法中，是收集整个<code>episode</code>的奖励(比如输赢)来评价<code>episode</code>回合中的每一个步骤的好坏，但其实整体奖励不高不一定代表没一个步骤都不好，因此出现了很多<code>heuristic</code>来直接评价f(s,a)，比如用<code>Q(s,a), V(s,a) 和 A(s,a)</code>等。A2C就是希望设计一个函数，直接对每一个步骤进行评价，来反馈给原策略函数</li>
-</ul>
-
-  </div>
-</aside>
-
-<h2 id="trust-region-policy-optimization">Trust Region Policy Optimization</h2>
-<blockquote>
-<p>为了解决一个问题：策略参数更新时选择多大的步长合适</p>
-<ul>
-<li>步长太大， 可能更新后策略变差，接着用这个差的策略去取样，导致后面的更新越来越差 (更恐怖的是山路急转弯，直接掉下去!)。步长太小，可能会收集重复/相似的经验，学习效率低下
-<ul>
-<li>思想一：如果要最大化某个目标，先去最大化这个目标的下界 (Minorize-Maximization)</li>
-<li>思想二：当我们确定了<code>gradient direction</code>后，要保证选取合适的步长，使得最后参数空间仍然在<code>trust region</code>里(measured by <strong>KL divergence between old and updated policy</strong>)</li>
-</ul>
-</li>
-</ul>
+  </p>
 </blockquote>
 
 <div class="expandable-section">
   
-    <h3>
-  
-    <button aria-expanded="false" data-expands="js-expandable-4112765b7cd1dca8aee1e053de1e8090">
-      <span class="expandable-label">详细算法证明</span>
+    <button aria-expanded="false" data-expands="js-expandable-5ae1f58986ca3486c867e0e7c9359690">
+      <span class="expandable-label">Detail</span>
       <svg aria-hidden="true" focusable="false" viewBox="0 0 70.866142 70.866141">
         <g transform="translate(0 -981.5)">
           <rect style="stroke-width:0;fill:currentColor" ry="5" height="60" width="9.8985" y="987.36" x="30.051" class="up-strut" />
@@ -421,68 +374,130 @@ $$\nabla_\theta\mathbb{E}_{(s,a)\sim\tau}[f(s,a)]\equiv \mathbb{E}_{(s,a)\sim\ta
       </svg>
     </button>
   
-    </h3>
-  
-  <div id="js-expandable-4112765b7cd1dca8aee1e053de1e8090" hidden>
-    <p>首先定义$\rho_\pi(s)$为<code>discounted visitation frequency</code>
-$$\rho_\pi(s) = \Pr(s_0=s)+\gamma \Pr(s_1=s) + \gamma^2 \Pr(s_2=s)+&hellip;$$
-我们希望更新后的策略，能够获得更大的<code>advantage value</code> $A_\pi(s, a) = Q_\pi(s, a) - V_\pi(s)$，即 (下面式子怎么证明的，为什么<code>advantage value</code>包含<code>old policy</code>)
-$$
-\begin{align}
-\eta(\pi&rsquo;)&amp;=\eta(\pi)+\mathbb{E}_{s_0, a_0, &hellip;\sim\color{red}{\pi&rsquo;}}[\sum_{t=0}^\infty\gamma^tA_\pi(s_t,a_t)]\cr
-&amp;= \eta(\pi)+\sum_s\color{red}{\rho_{\pi&rsquo;}(s)}\sum_a\pi&rsquo;(a|s)A_\pi(s, a)
-\end{align}
-$$
-根据上面的式子，只需要每个状态下的期望优势非负 $\sum_a\pi&rsquo;(a|s)A_\pi(s, a)&gt;0$ 就可以保证<code>new policy</code>产生更高的奖励 $\eta(\pi&rsquo;)=\mathbb{E}_{s_0, a_0, &hellip;\sim\pi&rsquo;}[\sum_{t=0}^\infty\gamma^tr(s_t)]$。但是最大的问题在于$\rho_{\pi&rsquo;}(s)$不好估计呀~(需要统计所有潜在新策略的访问频率)，因此退而求其次，引入<code>surrogate advantage</code> (可以被理解为<code>using importance sampling to est. the advantage function</code>)
-$$\begin{align}L_\pi(\pi&rsquo;)&amp;=\sum_s\color{red}{\rho_\pi(s)}\sum_a\pi&rsquo;(a|s)A_\pi(s, a)\cr
-&amp;= \mathbb{E}_{s,a\sim\pi}\left[\frac{\pi&rsquo;(a|s)}{\pi(a|s)}A_\pi(s,a)\right]
-\end{align}$$
-其中$a\sim \pi, s \sim d^\pi(s) = (1-\gamma)\sum_{t=0}^\infty \gamma^t \Pr(s_t=s|\pi)$, <code>the discounted state visitation frequency</code> 经过一系列推导，得到新策略目标的下界，即在新策略下，那些在老策略下奖励高的<code>(s,a)</code>访问概率更大，同时限制新旧策略的差距
-$$\eta(\pi&rsquo;)≥L_\pi(\pi&rsquo;)-C\cdot D_{KL}^\max(\pi, \pi&rsquo;), \text{ where } C=\frac{4\epsilon\gamma}{(1-\gamma)^2}$$
-<img src="https://i.postimg.cc/pd4gn8wT/image.png" alt="通过优化下界不断逼近最优" class="center"></p>
-<p>TRPO算法做了如下几点改变 (deep network 计算需要)</p>
-<ol>
-<li>首先是$D_{KL}^\max(\pi, \pi&rsquo;)$ relax成了期望距离 $\bar{D}_{KL}(\pi&rsquo; || \pi)=\mathbb{E}_{s\sim\pi}[D_{KL}(\pi&rsquo;(\cdot|s)||\pi(\cdot|s))]$</li>
-<li>即使是期望距离也不是很好求，因此用泰勒展开近似求解 (这里用$\pi_\theta$表征旧策略，用$\pi_{\theta&rsquo;}$表征新策略)</li>
-</ol>
+  <div id="js-expandable-5ae1f58986ca3486c867e0e7c9359690" hidden>
+    <ul>
+<li>
+<p>这篇文章以15年在<code>quant finance</code>上发表的<code>temporal clustering</code>为基础，为以后<code>hierarchical RL framework with multi-scale learning in finance</code>做探索研究</p>
 <ul>
-<li>$L(\theta, \theta&rsquo;) \approx g^T(\theta&rsquo;-\theta)$ 其中$g$就是<code>surrogate advantage</code>对$\theta'$的梯度在$\theta'=\theta$时的值 (i.e., $g = \triangledown_{\theta&rsquo;} J(\pi_{\theta&rsquo;})|_{\theta}$)</li>
-<li>$\bar{D}_{KL}(\theta'||\theta)\approx \frac{1}{2}(\theta&rsquo;-\theta)^TH(\theta&rsquo;-\theta)$, H是关于$\theta'$的二次<code>Hessian Matrix</code></li>
+<li><code>time scale</code>可以简单的理解为窗口，比如<code>5-minute scale</code>，计算前后5分钟窗口变量的变化
+$$\Delta f_t^{5 \min} = \frac{f_{t}^{5 \min}-f_{t-1}^{5 \min}}{f_{t-1}^{5 \min}}$$</li>
 </ul>
-<ol start="3">
-<li>用<code>hard constraint</code> $\bar{D}_{KL}(\theta'||\theta) \leq \delta$ 而不是 <code>KL penalized objective</code> 因为$\delta$ 相比 $C \propto \frac{\gamma}{(1-\gamma)^2}$ 更好调试</li>
-</ol>
-<p>于是我们通过解$\max L(\theta&rsquo;,\theta) \text{ s.t. } \bar{D}(\theta'||\theta) \leq \delta$，得到<code>Natural Policy Gradient (NPG)</code>的更新公式<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>
-$$\theta_{k+1}=\theta_k+\sqrt{\frac{2\delta}{g^TH^{-1}g}}H^{-1}g$$
-由于泰勒近似引入了误差，上式的解可能不满足约束$\bar{D}_{KL}(\theta'||\theta)≤\delta$，所以 TRPO 还增加了一个线性搜索(backtracking line search)
-$$\theta_{k+1}=\theta_k+\alpha^j\sqrt{\frac{2\delta}{g^TH^{-1}g}}H^{-1}g$$
-其中$\alpha \in (0,1)$是<code>backtracking coefficient</code><sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup>。另外为了避免存储$H^{-1}$，采用<code>conjugate gradient</code>来计算$g^TH^{-1}g$<sup id="fnref:3"><a href="#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup>，更新步骤为
-$$\theta_{k+1}=\theta_k+\alpha^j\sqrt{\frac{2\delta}{\hat{x}^TH\hat{x}}}\hat{x} \quad \text{ where } \hat{x}\approx H^{-1}g$$
-<img src="https://www.52coding.com.cn/images/trpo.svg" alt="算法: TRPO = NPG +Linesearch+monotonic improvement theorem!" class="center"></p>
-<section class="footnotes" role="doc-endnotes">
-<hr>
-<ol>
-<li id="fn:1" role="doc-endnote">
-<p><code>gradient descent</code>很受<code>parameter space</code>的影响， 当优化问题的两个变量坐标轴尺度差异大时，统一的学习率会因为震荡过大而收敛过慢，自然梯度由于考虑到了<code>curvature (2nd order derivative) of log-prob of policy</code>会对模型参数变化更友好? <br>1. 随机梯度下降 $m \leftarrow \eta \nabla_\theta J(\theta) \qquad \theta&rsquo; \leftarrow \theta - m$ <br>2. <code>Momentum</code>动量法 $m \leftarrow \gamma + \eta \nabla_\theta J(\theta) \qquad \theta&rsquo; \leftarrow \theta - m$, $\gamma$ 代表对历史梯度的记忆，$\gamma$越大越难修正梯度方向 <br>3. <code>Nesterov</code>牛顿动量法 $m \leftarrow \gamma m + \eta \nabla_\theta J(\theta + \beta m) \qquad \theta&rsquo; \leftarrow \theta - m$ 前瞻梯度更新 <br>4. <code>NGD</code>自然梯度法 $m \leftarrow \frac{1}{\lambda}F^{-1}_\theta\nabla_\theta J(\theta) \qquad \theta&rsquo; \leftarrow \theta - m$ 其中$F = \mathbb{E}_{J(\theta)}\left[\nabla_\theta \log J(\theta) (\nabla_\theta \log J(\theta))^T \right]$ 代表关于现有模型的<code>Fisher</code>信息矩阵，可以帮助理解新旧模型之间的距离: $$\bar{D}_{KL}(\theta'||\theta)\approx \frac{1}{2}(\theta&rsquo;-\theta)^TF(\theta&rsquo;-\theta)$$ <a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
 </li>
-<li id="fn:2" role="doc-endnote">
-<p>也就是说先尝试最激进的更新, 如果违反了<code>KL Constraint</code>的话，就把更新<code>step</code>再乘以一个$\alpha$，一直到约束条件满足为止 <a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+<li>
+<p>数据来自南非交易2012-11-01到2012-11-30的交易数据(Thomson Reuters Tick History)，变量包括<code>Change in trade price, quote spread, trade volume and quote volume imbalance</code>，计算<code>feature similarity</code>把所有state归纳成6个cluster(看图中数字)</p>
+<p><img src="https://i.postimg.cc/m2hWRgPX/image.png" alt="experiment result" title="`negative spread` = 买卖成本减小，`negative imbalance` = 买需求减小，比如`cluster 1`的解释，好像是矛盾的|||80"></p>
 </li>
-<li id="fn:3" role="doc-endnote">
-<p>普通<code>gradient descent</code>是遵循最大梯度原则，因此会由于噪音等因素往返重复，而<code>conjugate gradient</code>则要求当前梯度方向与之前所有梯度方向垂直 (见下图) <br><img src="https://i.postimg.cc/J7cpKvpZ/image.png" alt=""> <a href="#fnref:3" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
-</li>
-</ol>
-</section>
+</ul>
 
   </div>
 </div>
 
-<h2 id="proximal-policy-optimization">Proximal Policy Optimization</h2>
+<p>[2] Roa-Vicens, J., Chtourou, C., Filos, A., Rullan, F., Gal, Y., &amp; Silva, R. (2019). <a href="https://arxiv.org/pdf/1906.04813.pdf">Towards Inverse Reinforcement Learning for Limit Order Book Dynamics</a>. arXiv preprint arXiv:1906.04813.</p>
+
+
+<blockquote class="blockquote">
+  <p>
+    <p>Multi-agent learning is a promising method to <code>simulate aggregate competitive</code> behaviors in finance. Learning expert agents' reward functions through their external demonstrations is hence particularly relevant for subsequent design of realistic agent-based simulations</p>
+<p><code>Expert Agent</code> is unaware of the strategies of each of the other trading agents, but adapts to them through trial and error, as in reinforcement learning frameworks</p>
+
+    
+  </p>
+</blockquote>
+
+<div class="expandable-section">
+  
+    <button aria-expanded="false" data-expands="js-expandable-9731906aa0fd087431abe72254169c00">
+      <span class="expandable-label">Detail</span>
+      <svg aria-hidden="true" focusable="false" viewBox="0 0 70.866142 70.866141">
+        <g transform="translate(0 -981.5)">
+          <rect style="stroke-width:0;fill:currentColor" ry="5" height="60" width="9.8985" y="987.36" x="30.051" class="up-strut" />
+          <rect style="stroke-width:0;fill:currentColor" ry="5" height="10" width="60" y="1012.4" x="5"/>
+        </g>
+      </svg>
+    </button>
+  
+  <div id="js-expandable-9731906aa0fd087431abe72254169c00" hidden>
+    <p><del>希望MM下一个阶段的limit order总是能正好匹配N个trader的market order，每一个阶段market order重新生成，但是和上一阶段没有match的订单有关系</del></p>
+<ul>
+<li>
+<p>为什么<code>IRL</code>用于研究金融问题，因为环境<code>non-stationary</code>，<code>state-distribution</code>可能发生了改变，所以手动设置reward的假设可能在<code>real time test phase</code>不成立</p>
+</li>
+<li>
+<p>游戏环境：$N$ traders and $1$ expert $I_\max$ inventory control</p>
+<ul>
+<li>观测变量 $\langle v_b(t), v_a(t), i(t)\rangle$ LOB上的best bid/ask volume以及自己的inventory level</li>
+<li>行动变量 $v_b(t), v_a(t)$ 分别代表自己(专家)在bid/ask book上limit order的volume</li>
+<li>状态转移 第$n$个trader，会提交$1$个market order，至于是buy or sell ~ Bernoulli($(f_b)^{-1}(f_a + f_b)$) where $f_b = \exp(\tau^{-1}(v_b(t-1)))$，如果上一轮bid还有很多没match，即$v_b(t-1) \nearrow$，那么这一轮就更有可能提交<code>market sell to match the bid. </code></li>
+<li>奖励函数 <code>clear as much as possible</code> 如果你预计下一轮全<code>market buy</code>那么最好全部<code>limit sell</code>去match，得到最高奖励 $r(t) = N - v_b(t) - v_a(t)$，如果自己的inventory control $i(t) &gt; I_\max$ 则游戏结束</li>
+</ul>
+</li>
+<li>
+<p>所以这里面是有<code>ground truth reward function</code>的，他们是希望通过<code>IRL</code>去找到一个替代奖励，使得训练出来的策略和用<code>true reward</code>跑出来的策略成绩差不多<code> Expected Value Differences (EVD)</code>。他们的结论就是<code>max entropy</code>不能有效还原<code>non-linear reward function</code> ? 为什么，我得赶紧做一个IRL的总结</p>
+<p><img src="https://i.postimg.cc/MT6vc75k/image.png" alt="experiment result" title="EVD在真实奖励线性和非线性条件下，基于不同IRL的策略相对于true reward最优策略的表现差异|||80"></p>
+</li>
+</ul>
+
+  </div>
+</div>
+
+<p>[3] Wei, H., Wang, Y., Mangu, L., &amp; Decker, K. (2019). Model-based Reinforcement Learning for Predictions and Control for Limit Order Books. arXiv preprint arXiv:1910.03743.</p>
+
+
+<blockquote class="blockquote">
+  <p>
+    <p>Kaiser et al. (2019) builds a neural network <code>simulated environment</code> that not only shares an action space and reward space with the original environment env but also produces observations in the same format</p>
+<p>The <code>time series evolution of an LOB</code> can be seen as a 3-dimensional tensor: the first dimension represents <code>time</code>, the second dimension is <code>level</code>, and the third represents <code>prices and order quantities</code> on both the buy and sell sides(Gould et al. 2013).</p>
+<p><code>Mid Price</code> is the mean value of the first-level ask and bid price. <code>Trade prints</code> are the record of executed trades that contain information of direction (buy or sell), trading price, and
+quantity (e.g., 10 mkt buys @14$).</p>
+
+    
+  </p>
+</blockquote>
+
+<div class="expandable-section">
+  
+    <button aria-expanded="false" data-expands="js-expandable-4e1e1c3cce6f6188fa300350a23a4a1b">
+      <span class="expandable-label">Detail</span>
+      <svg aria-hidden="true" focusable="false" viewBox="0 0 70.866142 70.866141">
+        <g transform="translate(0 -981.5)">
+          <rect style="stroke-width:0;fill:currentColor" ry="5" height="60" width="9.8985" y="987.36" x="30.051" class="up-strut" />
+          <rect style="stroke-width:0;fill:currentColor" ry="5" height="10" width="60" y="1012.4" x="5"/>
+        </g>
+      </svg>
+    </button>
+  
+  <div id="js-expandable-4e1e1c3cce6f6188fa300350a23a4a1b" hidden>
+    <p><del>奖励函数有点意思，配合将LOB抽象化，model-based transition，似乎确实可以转换为较优的交易策略</del></p>
+<ul>
+<li>游戏环境：
+<ul>
+<li>状态变量： $\langle f(ob_{t-T:t}), u_t, po_t \rangle$ 其中$f$代表<code>auto encoder</code> $ob_{t-T:t}$代表整个LOB(本文用了3层)，$u_t$ 代表发生在这个<code>time window</code>里的<code>sequence of trade point</code> 然后 $po_t$ 代表<code>agent's position at time t</code></li>
+<li>行动变量：$a_t = \pm q$ 代表提交的market order 方向和数量，以<code>mid price</code>成交</li>
+<li>状态转移：针对每一个发生的交易，看成一个transition: $\mathcal{T}(s_{t+1:t+T} | s_{t-T:t-1}, a_t)$ 这样做的问题在于忽略<code>order arrival frequency</code>的影响，其中$s_{t-T:t-1} = \langle f(ob_{t-T:t-1}), u_{t-T:t-1} \rangle$代表观测量和交易信息</li>
+<li>奖励函数：<code>mark-to-market PnL</code> $R(t) = \Delta \text{mid}(t+1) \times po_t$ 感觉有点奇怪，只考虑了资产价格变化(不出售资产)，在Spooner, Thomas, et al., (2018) 的文章中，这部分叫做<code>change in cash holdings due to exposure to changes in price</code> 可是是$\Delta \text{mid}(t)$. 我不确定这个定义的合理性，有点像<code>greedy</code>算法，即如果下一个时刻价格会增加，则此时的position越大越好</li>
+</ul>
+</li>
+<li>data: LOB更新频率0.17s, 腾讯这只股票61天作为train/validate，19天作为测试集，600万个transitions for train, 200万 for testing. 在剔除异常值(交易量大于1000小于100的)后，用min-max-normalization规范数据。然后reward用sigmoid规范(这么做的合理性？)
+<ul>
+<li>将$T=40 \times 4 \times L=3$的LOB数据提取出$1 \times 16$的抽象<code>vector</code>
+<img src="auto_encode.png" alt="" title="T=40, L=3|||60"></li>
+<li>State由上面CNN-AE的抽象向量和交易信息组成，假设$T=32$的时间内最多只能发生$10$次交易，如果不满10次，用$0$填充</li>
+<li>Transition Model 用RNN-MDN 训练，$$p(s&rsquo;,s,a) = \sum_{k=1}^K w_k(s,a)\mathcal{D}(s'|\mu_k(s,a), \sigma_k^2(s,a))$$将<code>next state</code>的分布描述成若干个高斯叠加分布, State是一个<code>tuple</code> $(\mathbb{R}^{16}, \mathbb{R}^{10}, \mathbb{N}^{po_\max}), K=5$
+<img src="rnn_mdn.png" alt="" title="N=10, K=5|||60"></li>
+<li>Reward Model 就如同我所好奇的那样，当前状态下的<code>reward</code>取决于下一个状态的<code>mid-price</code>，即当前<code>position</code>在未来的价值（有点意思！！）所以作者需要预测下一个LOB observation（为啥不直接预测mid price?）我想是因为可以利用那个auto-encoder吧。<code>reward model</code>由128 LSTM units 和 40 Dense units 组成 $$r_t = \mathcal{R}(z_t, z_{t+1};\beta) \times po_t$$</li>
+<li>Action: 将trade quantity and direction 分成 21 份 $\langle -1000, -900, \cdots, 900, 1000\rangle$</li>
+<li>训练集总共包括 $T = 40 \times n = 500$ 即 500个<code>trade print</code>吗？所以一个epoch囊括了一个小时左右的市场订单信息
+<img src="transition_state.png" alt="" title="如何将LOB观测量和订单信息通过auto-encoder转换|||80"></li>
+</ul>
+</li>
+<li>对比：1. <code>momentum</code>: 通过比较$\text{mid}_{t-T}$和$\text{mid}_{t}$决定是否下一阶段direction, 至于quantity多少本文没有提及；2. <code>classifier</code>：通过$s_t$预测$\text{mid}_{t+1}$也没有说明action；3. <code>greedy</code>: 假设下一个阶段的LOB是已知的，只优化$ob_{t+1}$（而不是$ob_{t+1:t+T}$的所有信息都知道）已知条件下的策略，这样就只用优化<code>21 discretized actions</code>.</li>
+</ul>
+
+  </div>
+</div>
+
 <h2 id="reference">Reference</h2>
-<p><a href="https://www.youtube.com/watch?v=OAKAZhFmYoI">DRL Lecture 2: Proximal Policy Optimization (PPO)</a></p>
-<p><a href="https://www.youtube.com/watch?v=CKaN5PgkSBc">TRPO (Trust Region Policy Optimization): In depth Research Paper Review</a></p>
-<p><a href="https://stats.stackexchange.com/questions/341657/comaprsion-between-natural-gradient-descent-and-stochastic-gradient-descent">Comaprsion between Natural Gradient Descent and Stochastic Gradient Descent</a></p>
-<p><a href="https://www.52coding.com.cn/2018/11/25/RL%20-%20PPO/">RL - Proximal Policy Optimization (PPO)</a></p>
+<p>[1] Avellaneda, M., &amp; Stoikov, S. (2008). <a href="https://www.tandfonline.com/doi/full/10.1080/14697680701381228">High-frequency trading in a limit order book</a>. Quantitative Finance, 8(3), 217-224.</p>
 	
 
 <a href="#" id="back-to-top" class="back-to-top" style="display: inline;">Back to Top</a>

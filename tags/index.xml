@@ -6,10 +6,46 @@
     <description>Recent content in Tags on My Site Title</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 09 Jun 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 22 Jul 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://dennislblog.github.io/cnblog/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>IRL</title>
+      <link>https://dennislblog.github.io/cnblog/tags/irl/</link>
+      <pubDate>Wed, 22 Jul 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://dennislblog.github.io/cnblog/tags/irl/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Review</title>
+      <link>https://dennislblog.github.io/cnblog/tags/review/</link>
+      <pubDate>Wed, 22 Jul 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://dennislblog.github.io/cnblog/tags/review/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Computation</title>
+      <link>https://dennislblog.github.io/cnblog/tags/computation/</link>
+      <pubDate>Sun, 19 Jul 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://dennislblog.github.io/cnblog/tags/computation/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Environment</title>
+      <link>https://dennislblog.github.io/cnblog/tags/environment/</link>
+      <pubDate>Sun, 19 Jul 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://dennislblog.github.io/cnblog/tags/environment/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>RL</title>
@@ -57,38 +93,11 @@
     </item>
     
     <item>
-      <title>Fiance</title>
-      <link>https://dennislblog.github.io/cnblog/tags/fiance/</link>
-      <pubDate>Mon, 01 Jun 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://dennislblog.github.io/cnblog/tags/fiance/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Problem</title>
-      <link>https://dennislblog.github.io/cnblog/tags/problem/</link>
-      <pubDate>Mon, 01 Jun 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://dennislblog.github.io/cnblog/tags/problem/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>Market Making</title>
       <link>https://dennislblog.github.io/cnblog/tags/market-making/</link>
       <pubDate>Sun, 31 May 2020 00:00:00 +0000</pubDate>
       
       <guid>https://dennislblog.github.io/cnblog/tags/market-making/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Review</title>
-      <link>https://dennislblog.github.io/cnblog/tags/review/</link>
-      <pubDate>Sun, 31 May 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://dennislblog.github.io/cnblog/tags/review/</guid>
       <description></description>
     </item>
     

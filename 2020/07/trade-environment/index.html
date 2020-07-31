@@ -6,10 +6,8 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
   <meta name="generator" content="Hugo 0.69.0" />
-  <link rel="canonical" href="https://dennislblog.github.io/cnblog/">
+  <link rel="canonical" href="https://dennislblog.github.io/cnblog/2020/07/trade-environment/">
 
-  
-    
   
 
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
@@ -36,9 +34,7 @@
 
   
   
-    
-  
-  <title>My Site Title</title>
+  <title>Trade Environment Analysis | My Site Title</title>
   
 
 <script type="text/javascript" async
@@ -196,7 +192,7 @@
       
       
       
-      <a href="/cnblog/post/" >
+      <a href="/cnblog/post/" aria-current="page">
         <svg class="bookmark-icon" aria-hidden="true" focusable="false" viewBox="0 0 40 50">
           <use xlink:href="#bookmark"></use>
         </svg>
@@ -224,6 +220,47 @@
 
 
 
+  <hr>
+  <nav class="patterns" aria-labelledby="toc-heading">
+    <h4 id="toc-heading" style="margin-bottom: 1em">Table of contents</h4> 
+    <ol>
+      
+        
+        <li class="toc-h2">
+          
+          
+          
+          
+          <a href="#data" style="padding-left: 0rem">
+            data
+          </a>
+        </li>
+      
+        
+        <li class="toc-h2">
+          
+          
+          
+          
+          <a href="#config" style="padding-left: 0rem">
+            config
+          </a>
+        </li>
+      
+        
+        <li class="toc-h2">
+          
+          
+          
+          
+          <a href="#reference" style="padding-left: 0rem">
+            Reference
+          </a>
+        </li>
+      
+    </ol>
+  </nav>
+
 
 
 
@@ -235,69 +272,260 @@
         <div>
           
   <main id="main">
-    <h1>Home</h1>
-    <ul class="patterns-list">
-      
-        
-      
-      
-        <article class="post-preview">
-  <a href="https://dennislblog.github.io/cnblog/2020/05/tensorboard-learn/">
-    <h2 class="post-title">
-      <svg class="bookmark" aria-hidden="true" viewBox="0 0 40 50" focusable="false">
-          <use xlink:href="#bookmark"></use>
+    <h1>
+      <svg class="bookmark-icon" aria-hidden="true" viewBox="0 0 40 50" focusable="false">
+        <use xlink:href="#bookmark"></use>
       </svg>
-      Learning Tensorboard
-    </h2>
-  </a>
-  <div class="post-entry">
-    
-      <p><p>tutorial on how to use tensorboard to keep track of learning process</p></p>
-    
-  </div>
-  <div class="postmeta">
-    <span class="meta-post">
-  <i class="far fa-calendar-alt"></i>&nbsp;Wednesday, May 20, 2020
-</span>
-    <a href="https://dennislblog.github.io/cnblog/2020/05/tensorboard-learn/" class="post-read-more">Read More</a>
-  </div>
-</article>
-      
-        <article class="post-preview">
-  <a href="https://dennislblog.github.io/cnblog/2019/02/cupper-shortcodes/">
-    <h2 class="post-title">
-      <svg class="bookmark" aria-hidden="true" viewBox="0 0 40 50" focusable="false">
-          <use xlink:href="#bookmark"></use>
-      </svg>
-      Cupper Shortcodes
-    </h2>
-  </a>
-  <div class="post-entry">
-    
-      <p><p>some useful partials in writing Cupper blogs</p></p>
-    
-  </div>
-  <div class="postmeta">
-    <span class="meta-post">
-  <i class="far fa-calendar-alt"></i>&nbsp;Tuesday, February 12, 2019
-</span>
-    <a href="https://dennislblog.github.io/cnblog/2019/02/cupper-shortcodes/" class="post-read-more">Read More</a>
-  </div>
-</article>
-      
-    </ul>
+      Trade Environment Analysis
+    </h1>
 
+    <div class="date">
       
-      <div class="pattern-list">
+      
+      <strong aria-hidden="true">Publish date: </strong>Sunday, July 19, 2020
+      
         
-          <span class="previous">
-            <a href="https://dennislblog.github.io/cnblog/page/1/">&larr; Newer</a>
-          </span>
-        
-        
+      
+    </div>
+
+    
+      <div class="tags">
+        <strong aria-hidden="true">Tags: </strong>
+        <ul aria-label="tags">
+          
+            <li>
+              <svg class="tag-icon" aria-hidden="true" viewBox="0 0 177.16535 177.16535" focusable="false">
+                <use xlink:href="#tag"></use>
+              </svg>
+              
+              <a href="https://dennislblog.github.io/cnblog/tags/environment/">Environment</a>
+            </li>
+          
+            <li>
+              <svg class="tag-icon" aria-hidden="true" viewBox="0 0 177.16535 177.16535" focusable="false">
+                <use xlink:href="#tag"></use>
+              </svg>
+              
+              <a href="https://dennislblog.github.io/cnblog/tags/computation/">Computation</a>
+            </li>
+          
+        </ul>
       </div>
+    
+    <p>review some repositories involving trading environment</p>
+<h1 id="rltrader">RLTrader</h1>
+<!-- https://github.com/notadamking/RLTrader/raw/master/visualization.gif -->
+<h2 id="data">data</h2>
+<p>daily和hourly数据都存储在 <code>data/input</code>. 通过 <code>lib/cli/functions/update_data</code> 从<a href="https://www.cryptodatadownload.com/">网站</a>更新</p>
+<p>
+
+
+
+
+<figure role="group">
+    <a href=" daily.png" class="img-link">
+        <img src="daily.png" width=90% title="数据-以天为单位">
+    </a>
+    <figcaption>
+        daily bitcoin data
+    </figcaption>
+</figure></p>
+<h2 id="config">config</h2>
+<p>参数代码在 <code>lib/cli/RLTraderCLI</code>, 默认参数为 (<code>vars()</code>将object字典化)</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+<th>例子</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>data_provider</td>
+<td><code>static</code></td>
+<td><code>lib/data/providers/StaticDataProvider</code></td>
+</tr>
+<tr>
+<td>input_data_path</td>
+<td><code>data/input/coinbase-1h-btc-usd.csv</code></td>
+<td>数据存放位置</td>
+</tr>
+<tr>
+<td>reward_strat</td>
+<td><code>incremental-profit</code></td>
+<td><code>lib/env/reward/IncrementalProfit</code></td>
+</tr>
+<tr>
+<td>pair</td>
+<td><code>BTC/USD</code></td>
+<td>货币</td>
+</tr>
+<tr>
+<td>debug</td>
+<td><code>True</code></td>
+<td><code>lib/util/logger</code>的<code>DEBUG</code>或者<code>INFO</code>模式</td>
+</tr>
+<tr>
+<td>n_minibatches</td>
+<td><code>1</code></td>
+<td><code>stable_baselines</code>里<code>PPO2</code>的参数，每多少个batch更新一次<a href="https://stable-baselines.readthedocs.io/en/master/modules/ppo2.html">模型</a></td>
+</tr>
+<tr>
+<td>model_verbose</td>
+<td><code>1</code></td>
+<td>1代表输出训练信息，2代表输出tensorflow debug信息</td>
+</tr>
+<tr>
+<td>params_db_path</td>
+<td><code>sqlite:///data/params.db</code></td>
+<td>Optuna一个自动调参软件存储本地数据</td>
+</tr>
+<tr>
+<td>parallel_jobs</td>
+<td><code>8</code></td>
+<td>多进程训练<code>RLTrader.optimize</code> 见 <code>run_optimize</code>方法</td>
+</tr>
+</tbody>
+</table>
+<p>取决于<code>cli.py</code>后面跟的参数: <code>optimize</code>, <code>train</code>, <code>test</code>, <code>update-static-data</code>, 分别对应一个<code>subparser</code></p>
+<p><code>optimize</code>：对应<code>RLTrader.optimize()</code>方法</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>trails</td>
+<td><code>optuna_study.optimize(param, n_trails, n_jobs)</code></td>
+</tr>
+<tr>
+<td>prune-evals</td>
+<td><code>n_prune_evals_per_trial</code> =&gt; <code>optuna.structs.TrialPruned()</code></td>
+</tr>
+<tr>
+<td>eval-tests</td>
+<td><code>n_tests_per_eval</code> =&gt; 每次测试跑多少个episode</td>
+</tr>
+</tbody>
+</table>
+<p><code>train</code>：对应<code>RLTrader.train()</code>方法</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>epochs</td>
+<td><code>n_epochs</code></td>
+</tr>
+<tr>
+<td>save-every</td>
+<td>每多少epoch存一次model</td>
+</tr>
+<tr>
+<td>no-test/test_trained</td>
+<td>是否在存储时计算被存的模型</td>
+</tr>
+<tr>
+<td>render-test</td>
+<td>是否演示训练结果  <code>render_env</code> in <code>RLTrader.test()</code></td>
+</tr>
+<tr>
+<td>no-report/render_report</td>
+<td>使用<code>quantstats</code> 记录金融数据，很值得学习的一个集成包 <br> <code>qs.plots.snapshot(returns.Balance, title='RL Trader Performance')</code></td>
+</tr>
+<tr>
+<td>save-report</td>
+<td><code>qs.reports.html(returns.Balance, file=reports_path)</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="reference">Reference</h2>
+<p>[1] @sadighian for <a href="https://github.com/sadighian/crypto-rl">cryptocurrencies reinforcement learning</a></p>
+<p>[2] @notadamking for [reinforcement learning trader]</p>
+	
+
+<a href="#" id="back-to-top" class="back-to-top" style="display: inline;">Back to Top</a>
+
+<script>
+  var link = document.getElementById("back-to-top");
+  var amountScrolled = 1000;
+
+  window.addEventListener('scroll', function(e) {
+      if ( window.pageYOffset > amountScrolled ) {
+          link.classList.add('show');
+      } else {
+          link.className = 'back-to-top';
+      }
+  });
+
+<!-- Scrolls to Top -->
+  link.addEventListener('click', function(e) {
+      e.preventDefault();
+
+      var distance = 0 - window.pageYOffset;
+      var increments = distance/(500/16);
+      function animateScroll() {
+          window.scrollBy(0, increments);
+          if (window.pageYOffset <= document.body.offsetTop) {
+              clearInterval(runAnimation);
+          }
+      };
       
+      var runAnimation = setInterval(animateScroll, 16);
+  });
+</script>
+
+<style>
+  .back-to-top {
+    background: #111;
+    color: #fefefe;
+    opacity: 0;
+    transition: opacity .6s ease-in-out;
+    z-index: 999;
+    position: fixed;
+    right: 30px;
+    bottom: 30px;
+    width: auto;
+    height: auto;
+    box-sizing: border-box;
+    border-radius: 0.4em;
+    word-wrap: normal !important;
+  }
+
+  a.back-to-top {
+    font-weight: bold;
+    letter-spacing: 0px;
+    font-size: 0.75rem;
+    font-family: inherit;
+    text-transform: uppercase;
+    text-align: center;
+    padding: 0.65em 0.55em;
+  }
+
+  .back-to-top:hover, .back-to-top:focus, .back-to-top:visited {
+    color: #fefefe;
+    border-bottom: none;
+  }
+
+  .back-to-top.show {
+    opacity: 1;
+  }
+</style>
+
+
   </main>
+  <div id="disqus-container">
+  
+</div>
+
 
           <footer role="contentinfo">
   <div>

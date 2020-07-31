@@ -739,6 +739,7 @@ RuntimeError: grad can be implicitly created only for scalar outputs 当我的ou
         模拟数据, $y = 2x_1 -3.4x_2 + 4.2 + \eta(0,0.01)$
     </figcaption>
 </figure></p>
+
 <div class="expandable-section">
   
     <h3>
@@ -923,6 +924,7 @@ $$\exp(-n\ell(\boldsymbol{\Theta}))=\exp\left(-n \times -\frac{1}{n}  \times \su
     </figcaption>
 </figure></li>
 </ol>
+
 <div class="expandable-section">
   
     <h3>
@@ -1150,6 +1152,7 @@ Lightning提供了很多接口和可重写的函数，以获得最大的灵活�
 <li>智能体：智能体本身就是与环境和重播缓冲区交互的东西 (定义 <code>get_action</code>, <code>play_step</code> 和 <code>reset</code> 三种方法)</li>
 <li>Lightning模块：处理智能体的所有训练；我们需要定义<code>forward</code>, <code>optimizer</code>, <code>train_dataloader</code> 和 <code>train_step</code> 四个关键方法</li>
 </ul>
+
 <div class="expandable-section">
   
     <h3>
