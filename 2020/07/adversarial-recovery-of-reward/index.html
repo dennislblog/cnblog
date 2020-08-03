@@ -318,7 +318,14 @@
 <li>金融问题通常 non-stationary 利用对抗学习来适应复杂多变的环境，以及是否可以迁移到新的环境</li>
 <li>先对真实交易数据LOB抽象化<code>Mixture-Density Recurrent Network (RNN-MDN) architecture</code> 然后训练3个强化学习<code>model-based? agent: A2C, DQN, PG</code> 把他们的<code>state-action trajectories</code>当做逆强化学习的输入，最后测试&hellip;.</li>
 </ol>
-<hr>
+<br>
+<blockquote>
+<p>The reward signal provides feedback to the agent, affirming its behavior on actions that help further the goal of the task at hand, and punishing it on actions that are counter-productive to this goal. Inverse Reinforcement Learning aims to recover this underlying reward function which explains the behavior of the expert</p>
+<blockquote>
+<p><del>有点像金融里的通过观测一个金融现象（比如small firm effect），理解背后造成这一现象的原因/动机</del>
+A linear mapping is optimized from the feature of each state to a state reward value representing agent's utility for visiting that state.</p>
+</blockquote>
+</blockquote>
 
 
 <aside aria-label="note" class="note">
@@ -346,6 +353,166 @@
     在开发交易策略时，往往先通过统计建模(例如Auto Regression)来拟合时间序列，然后进行预测，基于模型给出的预测，结合个人风险偏好和启发性/专业知识来做出决策。然后在回测中检验效果。<code>Vector Auto-Regressive model (VAR)</code>可以拟合<code>the non-stationary aspect of financial time-series and can forecast with multiple variances</code>，但这些建模都需要满足一定的假设和对数据的理解，在<code>real time</code>运行中可能条件不满足，错误的统计假设可能导致<code>error compounding</code>&ndash; RL也有这个问题耶，这个和<code>manual labeled deep learning</code>有什么区别？在deep learning里，行为是不改变环境和后续奖励的
   </div>
 </aside>
+
+
+
+<aside aria-label="note" class="note">
+  <div>
+    <svg class="sign" aria-hidden="true" viewBox="0 0 41.667306 41.66729" focusable="false">
+      <use xlink:href="#info"></use>
+    </svg>
+    
+为何要使用AIRL(adversarial inverse reinforcement learning)
+    <br>
+    <p>同一个<code>trajectories</code>可以由不同的<code>policy</code>或者<code>reward</code>得到</p>
+<p>~~Inverse MDP的问题类似SVM，找到一个分割超平面把专家策略下的期望收益和其他所有策略期望收益区分开来：（1）策略在当前这个Reward里是最优的（2）两个平面距离越大越好</p>
+<ul>
+<li>在Abbel and Ng (2004)的文章中假设<code>奖励函数是一个关于expected feature vector of visited state的线性函数</code>，即 $$R(\zeta) = w^T \mathbf{f}_{\zeta} = \sum_{s\in \zeta} w^T \mathbf{f}_s$$ 其中$\zeta = {(s, a)}$是<code>trajectory</code>，$\mathbf{f}_s = \langle \mu_1, \cdots, \mu_d \rangle$ 其中每一个$\mu_i = \sum_k \gamma^k \phi_i(s_k)$代表一个<code>basis function</code>$\phi_i: s \rightarrow [0,1]^K$在这个<code>trajectory</code>上得到的回报（或者叫<code>feature expectations</code>）这个值与策略跑出来的trajectory和discounted factor有关。IRL算法的目的就是找到一个<code>reward function</code>使得在这个<code>reward</code>指导下跑出来的运动轨迹计算的<code>feature expectations</code>与专家策略相近($\epsilon$ close)
+$$\begin{align*}
+\max_{t,w} \qquad  &amp; t \cr
+\text{s.t. } \qquad &amp; \mathbf{w}^T\mathbf{\mu}^e \geq \mathbf{w}^T\mathbf{\mu}^{(j)} + t \forall j\in{0\cdots(i-1)} \cr
+&amp; \mathbf{w}:\lVert w\rVert_2\le 1
+\end{align*}$$
+具体步骤是（1）用<code>expert policy</code>跑出来一个<code>expert feature expectations</code>$\langle \mu_1^e, \cdots, \mu_d^e \rangle$ （2）针对每一个$w$假设(一开始随机)，用上一个<code>reward function</code>优化的策略估算<code>policy feature expectations</code>$\langle \mu_1, \cdots, \mu_d \rangle$，优化$w$来<code>减小</code>两个<code>feature expectations</code>的差距（如果策略一样，那么跑出来的trajectory相似，value basis也会相似）新的$w$线性构造了一个新的<code>reward function</code>，然后重复（2）直到<code>number of epoch</code>跑完</li>
+</ul>
+<p><del>同一个<code>linear reward</code>可能有几个最优策略，可能有好几组$w$都能够最小化当前两个策略的<code>value basis</code>,所以Ziebart et al (2008)希望通过减小<code>bias</code>来缩小最优策略选取范围，他的假设就是<code>奖励越高的traj发生的概率也越大</code>这个符合客观直觉</del></p>
+<ul>
+<li>同样是<code>match expected visitation-frequency of features</code> 由于$$R(\zeta)=w^T \mathbb{E}_{\pi} [\phi(\zeta)] = w^T \sum_{\zeta} \Pr_{\pi}(\zeta)\phi(\zeta)$$ 因为点估计准确可能会带来很大的<code>bias</code>因此在期望值相等的情况下，我们希望通过约束<code>trajectories</code>的分布，进一步限制最优策略。</li>
+<li><code>entropy</code> $H(p) = -\sum_x p(x)\log_2p(x)$, $p(x) \searrow \text{ leads to } H(p) \nearrow$. 所以<code>uniform</code>分布的不确定性是最大的，由于我们只有一个关于<code>expected visitation-frequency match</code>的约束，那么<code>entropy</code>越小的解一定是包含了其他额外信息<code>exhibit additional preferences beyond matching expectations</code>所以才是选一个<code>largest entropy, minimum bias solution</code></li>
+<li>由于 <code>Maximizing entropy subject to constraints is dual of maximizing likelihood given structural constraints</code> (see <a href="https://www.cs.huji.ac.il/~shashua/papers/class3-ML-MaxEnt.pdf">source</a>)<br>
+$$\begin{align*}
+w^* &amp;= \arg\max_w \frac{1}{M}\log \Pr({\zeta} | w)\cr
+&amp;= \arg\max_w \frac{1}{M}\log\prod_{\zeta} \Pr(\zeta|w) \cr
+&amp;= \arg\max_w \frac{1}{M}\log\sum_{\zeta} \text{log} \Pr(\zeta|w) \cr
+&amp;= \arg\max_w \frac{1}{M}\sum_{\zeta} \text{log} \left(\sum_{\zeta} e^{R(\zeta)}(e^{R(\zeta)}
+)^{-1}\right) \cr
+&amp;= \arg\max_w \frac{1}{M} \left( \sum_\zeta w^T\mathbf{f}_{\zeta} -\log\sum_{\zeta} e^{R(\zeta)} \right)
+\end{align*}$$
+其中$Z = \sum_{\zeta} e^{R(\zeta)}$被称为<code>partition function</code>用<code>gradient descent</code>来解这个最优，$$\nabla_w \mathcal{L} = \frac{1}{M}\sum_\zeta \mathbf{f}_{\zeta} - \sum_{\zeta} \Pr(\zeta | w) \mathbf{f}_{\zeta} = \frac{1}{M}\sum_s \mathbf{f}_{s} - \sum_{s} \Pr(s | w) \mathbf{f}_{s}$$ 最后一步是因为$\mathbf{f}_{\zeta} = \sum_{s\in\zeta} \mathbf{f}_{s}$，而$\mathbf{f}_{s}$只是关于<code>state</code>的特征提取，那么未知量只有$\Pr(s | w)$这个<code>state visitation frequency</code>
+<br>
+具体步骤是先假设一个<code>reward</code>，解这个MDP得到<code>state value function</code>和根据<code>value function</code>推出的$\Pr(a | s)$，根据专家跑出来的<code>trajectories</code>算<code>feature expectation</code>$\mathbb{E}[\phi(\zeta)] = (\mathcal{D})^{-1}\sum_{\zeta \in \mathcal{D}}\sum_{s\in \zeta}\phi(s)$。（2）针对每一个$w$假设(一开始随机)算<code>gradient descent = feature expectation - fs x state visitation frequency (SVF)</code>假设SVF计算出来了，那么<code>gradient</code>也算出来了，更新$w$并重复（2）直到$w$没有变化了
+<br>
+<code>SVF</code>的计算包含两个步骤：（1）先通过<code>backward pass</code>得到当前奖励下最优策略$\pi(a | s, w)$ （2）通过<code>forward pass</code>统计访问频率，并累加起来 $\Pr(s | w) = \sum_t \mu_t(s)$
+<ul>
+<li>(1) 由于Jaynes(1957)提出的<code>principle of maximum entropy</code> $\Pr(\zeta) \propto \exp(R(\zeta))$ 我不是很了解这一步怎么推出来的，类似于<code>value iteration</code>吧，通过不断迭代更新<code>state partition function</code>$Z(s)$ 根据 $$\begin{align*} Z_0(s) &amp;=1 \cr Z_{t+1}(s) &amp;= \sum_a \sum_{s&rsquo;}\Pr(s'|s,a)\exp(w^T\phi(s))Z_t(s&rsquo;)\end{align*}$$ 最后根据定义导出策略$\pi(a|s) = \frac{Z(a,s)}{Z(s)}$，详细见下面代码</li>
+<li>(2) 假设$\mu_t(s)$代表$t$时刻访问$s$的概率，那么
+$$\begin{align*} \mu_0(s) &amp;= \Pr(s_0=s)$ \cr \mu_{t+1}(s&rsquo;) &amp;= \sum_a \sum_s \mu_t(s)\pi(a|s)\Pr(s'|s,a) \end{align*}$$ 最后把访问频率累加起来$\Pr(s | w) = \sum_t \mu_t(s)$</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+</aside>
+
+
+<div class="expandable-section">
+  
+    <button aria-expanded="false" data-expands="js-expandable-22e2a392636a4a607c168c1fa61dda5f">
+      <span class="expandable-label">Reference Code</span>
+      <svg aria-hidden="true" focusable="false" viewBox="0 0 70.866142 70.866141">
+        <g transform="translate(0 -981.5)">
+          <rect style="stroke-width:0;fill:currentColor" ry="5" height="60" width="9.8985" y="987.36" x="30.051" class="up-strut" />
+          <rect style="stroke-width:0;fill:currentColor" ry="5" height="10" width="60" y="1012.4" x="5"/>
+        </g>
+      </svg>
+    </button>
+  
+  <div id="js-expandable-22e2a392636a4a607c168c1fa61dda5f" hidden>
+    <div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">compute_expected_svf</span><span class="p">(</span><span class="n">p_transition</span><span class="p">,</span> <span class="n">p_initial</span><span class="p">,</span> <span class="n">terminal</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">):</span>
+    <span class="n">n_states</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">n_actions</span> <span class="o">=</span> <span class="n">p_transition</span><span class="o">.</span><span class="n">shape</span>
+    <span class="n">nonterminal</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">n_states</span><span class="p">))</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">terminal</span><span class="p">)</span>  <span class="o">//</span> <span class="n">nonterminal</span> <span class="n">states</span>
+    <span class="o">//</span> <span class="n">Backward</span> <span class="n">Pass</span>
+    <span class="o">//</span> <span class="mf">1.</span> <span class="n">initialize</span> <span class="n">at</span> <span class="n">terminal</span> <span class="n">states</span>
+    <span class="n">zs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_states</span><span class="p">)</span>                             <span class="o">//</span> <span class="n">zs</span><span class="p">:</span> <span class="n">state</span> <span class="n">partition</span> <span class="n">function</span>
+    <span class="n">zs</span><span class="p">[</span><span class="n">terminal</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
+
+    <span class="o">//</span> <span class="mf">2.</span> <span class="n">perform</span> <span class="n">backward</span> <span class="k">pass</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">n_states</span><span class="p">):</span>                       <span class="o">//</span> <span class="n">run</span> <span class="n">T</span> <span class="o">=</span> <span class="mi">2</span><span class="o">|</span><span class="n">S</span><span class="o">|</span> <span class="n">iterations</span>
+        <span class="o">//</span> <span class="n">reset</span> <span class="n">action</span> <span class="n">values</span> <span class="n">to</span> <span class="n">zero</span>
+        <span class="n">za</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_states</span><span class="p">,</span> <span class="n">n_actions</span><span class="p">))</span>            <span class="o">//</span> <span class="n">za</span><span class="p">:</span> <span class="n">action</span> <span class="n">partition</span> <span class="n">function</span>
+
+        <span class="o">//</span> <span class="k">for</span> <span class="n">each</span> <span class="n">state</span><span class="o">-</span><span class="n">action</span> <span class="n">pair</span>
+        <span class="k">for</span> <span class="n">s_from</span><span class="p">,</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">product</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">n_states</span><span class="p">),</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_actions</span><span class="p">)):</span>
+
+            <span class="o">//</span> <span class="nb">sum</span> <span class="n">over</span> <span class="n">s_to</span>
+            <span class="k">for</span> <span class="n">s_to</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_states</span><span class="p">):</span>
+                <span class="n">za</span><span class="p">[</span><span class="n">s_from</span><span class="p">,</span> <span class="n">a</span><span class="p">]</span> <span class="o">+=</span> <span class="n">p_transition</span><span class="p">[</span><span class="n">s_from</span><span class="p">,</span> <span class="n">s_to</span><span class="p">,</span> <span class="n">a</span><span class="p">]</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">reward</span><span class="p">[</span><span class="n">s_from</span><span class="p">])</span> <span class="o">*</span> <span class="n">zs</span><span class="p">[</span><span class="n">s_to</span><span class="p">]</span>
+        
+        <span class="o">//</span> <span class="nb">sum</span> <span class="n">over</span> <span class="nb">all</span> <span class="n">actions</span>
+        <span class="n">zs</span> <span class="o">=</span> <span class="n">za</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="o">//</span> <span class="mf">3.</span> <span class="n">compute</span> <span class="n">local</span> <span class="n">action</span> <span class="n">probabilities</span>
+    <span class="n">p_action</span> <span class="o">=</span> <span class="n">za</span> <span class="o">/</span> <span class="n">zs</span><span class="p">[:,</span> <span class="bp">None</span><span class="p">]</span>
+
+    <span class="o">//</span> <span class="n">Forward</span> <span class="n">Pass</span>
+    <span class="o">//</span> <span class="mf">4.</span> <span class="n">initialize</span> <span class="k">with</span> <span class="n">starting</span> <span class="n">probability</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_states</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">n_states</span><span class="p">))</span>              <span class="o">//</span> <span class="n">d</span><span class="p">:</span> <span class="n">state</span><span class="o">-</span><span class="n">visitation</span> <span class="n">frequencies</span>
+    <span class="n">d</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">p_initial</span>
+
+    <span class="o">//</span> <span class="mf">5.</span> <span class="n">iterate</span> <span class="k">for</span> <span class="n">N</span> <span class="n">steps</span>
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">n_states</span><span class="p">):</span>                    <span class="o">//</span> <span class="n">run</span> <span class="n">T</span> <span class="o">=</span> <span class="mi">2</span><span class="o">|</span><span class="n">S</span><span class="o">|</span> <span class="n">iterations</span>
+        
+        <span class="o">//</span> <span class="k">for</span> <span class="nb">all</span> <span class="n">states</span>
+        <span class="k">for</span> <span class="n">s_to</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_states</span><span class="p">):</span>
+            
+            <span class="o">//</span> <span class="nb">sum</span> <span class="n">over</span> <span class="n">nonterminal</span> <span class="n">state</span><span class="o">-</span><span class="n">action</span> <span class="n">pairs</span>
+            <span class="k">for</span> <span class="n">s_from</span><span class="p">,</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">product</span><span class="p">(</span><span class="n">nonterminal</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_actions</span><span class="p">)):</span>
+                <span class="n">d</span><span class="p">[</span><span class="n">s_to</span><span class="p">,</span> <span class="n">t</span><span class="p">]</span> <span class="o">+=</span> <span class="n">d</span><span class="p">[</span><span class="n">s_from</span><span class="p">,</span> <span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">p_action</span><span class="p">[</span><span class="n">s_from</span><span class="p">,</span> <span class="n">a</span><span class="p">]</span> <span class="o">*</span> <span class="n">p_transition</span><span class="p">[</span><span class="n">s_from</span><span class="p">,</span> <span class="n">s_to</span><span class="p">,</span> <span class="n">a</span><span class="p">]</span>
+
+    <span class="o">//</span> <span class="mf">6.</span> <span class="nb">sum</span><span class="o">-</span><span class="n">up</span> <span class="n">frequencies</span>
+    <span class="k">return</span> <span class="n">d</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</code></pre></td></tr></table>
+</div>
+</div>
+  </div>
+</div>
 
 <h2 id="背景">背景</h2>
 <p>[1] Hendricks, Dieter, et al. &ldquo;<a href="https://arxiv.org/pdf/1712.01137.pdf">Inferring agent objectives at different scales of a complex adaptive system</a>.&rdquo; arXiv preprint arXiv:1712.01137 (2017 NIPS).</p>
@@ -498,6 +665,7 @@ quantity (e.g., 10 mkt buys @14$).</p>
 
 <h2 id="reference">Reference</h2>
 <p>[1] Avellaneda, M., &amp; Stoikov, S. (2008). <a href="https://www.tandfonline.com/doi/full/10.1080/14697680701381228">High-frequency trading in a limit order book</a>. Quantitative Finance, 8(3), 217-224.</p>
+<p>[2] Ziebart, B. D., Maas, A. L., Bagnell, J. A., &amp; Dey, A. K. (2008, July). <a href="https://www.aaai.org/Papers/AAAI/2008/AAAI08-227.pdf?source=post_page">Maximum entropy inverse reinforcement learning</a>. In Aaai (Vol. 8, pp. 1433-1438).</p>
 	
 
 <a href="#" id="back-to-top" class="back-to-top" style="display: inline;">Back to Top</a>
