@@ -242,6 +242,28 @@
           
           
           
+          <a href="#apprenticeship-learning" style="padding-left: 0rem">
+            Apprenticeship Learning
+          </a>
+        </li>
+      
+        
+        <li class="toc-h2">
+          
+          
+          
+          
+          <a href="#max-entropy-feature-matching" style="padding-left: 0rem">
+            Max Entropy Feature Matching
+          </a>
+        </li>
+      
+        
+        <li class="toc-h2">
+          
+          
+          
+          
           <a href="#%e8%83%8c%e6%99%af" style="padding-left: 0rem">
             背景
           </a>
@@ -354,18 +376,8 @@ A linear mapping is optimized from the feature of each state to a state reward v
   </div>
 </aside>
 
-
-
-<aside aria-label="note" class="note">
-  <div>
-    <svg class="sign" aria-hidden="true" viewBox="0 0 41.667306 41.66729" focusable="false">
-      <use xlink:href="#info"></use>
-    </svg>
-    
-为何要使用AIRL(adversarial inverse reinforcement learning)
-    <br>
-    <p>同一个<code>trajectories</code>可以由不同的<code>policy</code>或者<code>reward</code>得到</p>
-<p>~~Inverse MDP的问题类似SVM，找到一个分割超平面把专家策略下的期望收益和其他所有策略期望收益区分开来：（1）策略在当前这个Reward里是最优的（2）两个平面距离越大越好</p>
+<h2 id="apprenticeship-learning">Apprenticeship Learning</h2>
+<p><del>Inverse MDP的问题类似SVM，找到一个分割超平面把专家策略下的期望收益和其他所有策略期望收益区分开来：（1）策略在当前这个Reward里是最优的（2）两个平面距离越大越好</del></p>
 <ul>
 <li>在Abbel and Ng (2004)的文章中假设<code>奖励函数是一个关于expected feature vector of visited state的线性函数</code>，即 $$R(\zeta) = w^T \mathbf{f}_{\zeta} = \sum_{s\in \zeta} w^T \mathbf{f}_s$$ 其中$\zeta = {(s, a)}$是<code>trajectory</code>，$\mathbf{f}_s = \langle \mu_1, \cdots, \mu_d \rangle$ 其中每一个$\mu_i = \sum_k \gamma^k \phi_i(s_k)$代表一个<code>basis function</code>$\phi_i: s \rightarrow [0,1]^K$在这个<code>trajectory</code>上得到的回报（或者叫<code>feature expectations</code>）这个值与策略跑出来的trajectory和discounted factor有关。IRL算法的目的就是找到一个<code>reward function</code>使得在这个<code>reward</code>指导下跑出来的运动轨迹计算的<code>feature expectations</code>与专家策略相近($\epsilon$ close)
 $$\begin{align*}
@@ -375,7 +387,8 @@ $$\begin{align*}
 \end{align*}$$
 具体步骤是（1）用<code>expert policy</code>跑出来一个<code>expert feature expectations</code>$\langle \mu_1^e, \cdots, \mu_d^e \rangle$ （2）针对每一个$w$假设(一开始随机)，用上一个<code>reward function</code>优化的策略估算<code>policy feature expectations</code>$\langle \mu_1, \cdots, \mu_d \rangle$，优化$w$来<code>减小</code>两个<code>feature expectations</code>的差距（如果策略一样，那么跑出来的trajectory相似，value basis也会相似）新的$w$线性构造了一个新的<code>reward function</code>，然后重复（2）直到<code>number of epoch</code>跑完</li>
 </ul>
-<p><del>同一个<code>linear reward</code>可能有几个最优策略，可能有好几组$w$都能够最小化当前两个策略的<code>value basis</code>,所以Ziebart et al (2008)希望通过减小<code>bias</code>来缩小最优策略选取范围，他的假设就是<code>奖励越高的traj发生的概率也越大</code>这个符合客观直觉</del></p>
+<h2 id="max-entropy-feature-matching">Max Entropy Feature Matching</h2>
+<p><del>同一个<code>linear reward</code>可能有几个最优策略，另外对策略的约束条件只需要<code>same feature count expectancy</code>这个点估计，所以Ziebart et al (2008)希望通过减小<code>bias</code>来缩小最优策略选取范围，他的假设就是<code>奖励越高的traj发生的概率也越大</code>这个符合客观直觉</del></p>
 <ul>
 <li>同样是<code>match expected visitation-frequency of features</code> 由于$$R(\zeta)=w^T \mathbb{E}_{\pi} [\phi(\zeta)] = w^T \sum_{\zeta} \Pr_{\pi}(\zeta)\phi(\zeta)$$ 因为点估计准确可能会带来很大的<code>bias</code>因此在期望值相等的情况下，我们希望通过约束<code>trajectories</code>的分布，进一步限制最优策略。</li>
 <li><code>entropy</code> $H(p) = -\sum_x p(x)\log_2p(x)$, $p(x) \searrow \text{ leads to } H(p) \nearrow$. 所以<code>uniform</code>分布的不确定性是最大的，由于我们只有一个关于<code>expected visitation-frequency match</code>的约束，那么<code>entropy</code>越小的解一定是包含了其他额外信息<code>exhibit additional preferences beyond matching expectations</code>所以才是选一个<code>largest entropy, minimum bias solution</code></li>
@@ -383,9 +396,8 @@ $$\begin{align*}
 $$\begin{align*}
 w^* &amp;= \arg\max_w \frac{1}{M}\log \Pr({\zeta} | w)\cr
 &amp;= \arg\max_w \frac{1}{M}\log\prod_{\zeta} \Pr(\zeta|w) \cr
-&amp;= \arg\max_w \frac{1}{M}\log\sum_{\zeta} \text{log} \Pr(\zeta|w) \cr
-&amp;= \arg\max_w \frac{1}{M}\sum_{\zeta} \text{log} \left(\sum_{\zeta} e^{R(\zeta)}(e^{R(\zeta)}
-)^{-1}\right) \cr
+&amp;= \arg\max_w \frac{1}{M}\log\sum_{\zeta} \log \Pr(\zeta|w) \cr
+&amp;= \arg\max_w \frac{1}{M}\sum_{\zeta} \log \left(\frac{e^{R(\zeta)}}{\sum_{\zeta} e^{R(\zeta)}}\right) \cr
 &amp;= \arg\max_w \frac{1}{M} \left( \sum_\zeta w^T\mathbf{f}_{\zeta} -\log\sum_{\zeta} e^{R(\zeta)} \right)
 \end{align*}$$
 其中$Z = \sum_{\zeta} e^{R(\zeta)}$被称为<code>partition function</code>用<code>gradient descent</code>来解这个最优，$$\nabla_w \mathcal{L} = \frac{1}{M}\sum_\zeta \mathbf{f}_{\zeta} - \sum_{\zeta} \Pr(\zeta | w) \mathbf{f}_{\zeta} = \frac{1}{M}\sum_s \mathbf{f}_{s} - \sum_{s} \Pr(s | w) \mathbf{f}_{s}$$ 最后一步是因为$\mathbf{f}_{\zeta} = \sum_{s\in\zeta} \mathbf{f}_{s}$，而$\mathbf{f}_{s}$只是关于<code>state</code>的特征提取，那么未知量只有$\Pr(s | w)$这个<code>state visitation frequency</code>
@@ -400,15 +412,13 @@ $$\begin{align*} \mu_0(s) &amp;= \Pr(s_0=s)$ \cr \mu_{t+1}(s&rsquo;) &amp;= \sum
 </ul>
 </li>
 </ul>
-
-  </div>
-</aside>
-
+<p><del>这个方法最被诟病的就是<code>gradient</code>的求解繁琐（递推+枚举）当state-action空间大以至于连续时，不好用，而且这个算法假设状态转移概率是已知的，当state-action空间大的时候，需要一个更有效率的采样估计</del></p>
+<br>
 
 <div class="expandable-section">
   
     <button aria-expanded="false" data-expands="js-expandable-22e2a392636a4a607c168c1fa61dda5f">
-      <span class="expandable-label">Reference Code</span>
+      <span class="expandable-label">Max Ent Reference Code</span>
       <svg aria-hidden="true" focusable="false" viewBox="0 0 70.866142 70.866141">
         <g transform="translate(0 -981.5)">
           <rect style="stroke-width:0;fill:currentColor" ry="5" height="60" width="9.8985" y="987.36" x="30.051" class="up-strut" />
@@ -514,6 +524,25 @@ $$\begin{align*} \mu_0(s) &amp;= \Pr(s_0=s)$ \cr \mu_{t+1}(s&rsquo;) &amp;= \sum
   </div>
 </div>
 
+
+
+<aside aria-label="note" class="note">
+  <div>
+    <svg class="sign" aria-hidden="true" viewBox="0 0 41.667306 41.66729" focusable="false">
+      <use xlink:href="#info"></use>
+    </svg>
+    
+总的来说逆强化学习问题存在的挑战是 
+    <br>
+    <ol>
+<li>in practice, expert's demonstrations might be suboptimal, noisy and incomplete</li>
+<li>in practice, expert might act based on non-linear reward functions (or some other features) and infinitely many rewards can explain expert's behaviors <code>this is what AIRL aspires to solve</code>.</li>
+<li>in practice, we may have continuous, high-dimensional tasks with unknown transition models (e.g., POMDP) <code>this is what GAIL aspires to achieve</code></li>
+</ol>
+
+  </div>
+</aside>
+
 <h2 id="背景">背景</h2>
 <p>[1] Hendricks, Dieter, et al. &ldquo;<a href="https://arxiv.org/pdf/1712.01137.pdf">Inferring agent objectives at different scales of a complex adaptive system</a>.&rdquo; arXiv preprint arXiv:1712.01137 (2017 NIPS).</p>
 
@@ -531,7 +560,7 @@ $$\begin{align*} \mu_0(s) &amp;= \Pr(s_0=s)$ \cr \mu_{t+1}(s&rsquo;) &amp;= \sum
 
 <div class="expandable-section">
   
-    <button aria-expanded="false" data-expands="js-expandable-5ae1f58986ca3486c867e0e7c9359690">
+    <button aria-expanded="false" data-expands="js-expandable-e43ee49bf3fa8e0df2ecf0b51b494d6e">
       <span class="expandable-label">Detail</span>
       <svg aria-hidden="true" focusable="false" viewBox="0 0 70.866142 70.866141">
         <g transform="translate(0 -981.5)">
@@ -541,7 +570,7 @@ $$\begin{align*} \mu_0(s) &amp;= \Pr(s_0=s)$ \cr \mu_{t+1}(s&rsquo;) &amp;= \sum
       </svg>
     </button>
   
-  <div id="js-expandable-5ae1f58986ca3486c867e0e7c9359690" hidden>
+  <div id="js-expandable-e43ee49bf3fa8e0df2ecf0b51b494d6e" hidden>
     <ul>
 <li>
 <p>这篇文章以15年在<code>quant finance</code>上发表的<code>temporal clustering</code>为基础，为以后<code>hierarchical RL framework with multi-scale learning in finance</code>做探索研究</p>
@@ -552,7 +581,7 @@ $$\Delta f_t^{5 \min} = \frac{f_{t}^{5 \min}-f_{t-1}^{5 \min}}{f_{t-1}^{5 \min}}
 </li>
 <li>
 <p>数据来自南非交易2012-11-01到2012-11-30的交易数据(Thomson Reuters Tick History)，变量包括<code>Change in trade price, quote spread, trade volume and quote volume imbalance</code>，计算<code>feature similarity</code>把所有state归纳成6个cluster(看图中数字)</p>
-<p><img src="https://i.postimg.cc/m2hWRgPX/image.png" alt="experiment result" title="`negative spread` = 买卖成本减小，`negative imbalance` = 买需求减小，比如`cluster 1`的解释，好像是矛盾的|||80"></p>
+  <img src="https://i.postimg.cc/m2hWRgPX/image.png" alt="`negative spread` = 买卖成本减小，`negative imbalance` = 买需求减小，比如`cluster 1`的解释，好像是矛盾的" style="width:80%">
 </li>
 </ul>
 
@@ -573,7 +602,7 @@ $$\Delta f_t^{5 \min} = \frac{f_{t}^{5 \min}-f_{t-1}^{5 \min}}{f_{t-1}^{5 \min}}
 
 <div class="expandable-section">
   
-    <button aria-expanded="false" data-expands="js-expandable-9731906aa0fd087431abe72254169c00">
+    <button aria-expanded="false" data-expands="js-expandable-f4c5ced36d961570d3b962c95ec949f7">
       <span class="expandable-label">Detail</span>
       <svg aria-hidden="true" focusable="false" viewBox="0 0 70.866142 70.866141">
         <g transform="translate(0 -981.5)">
@@ -583,7 +612,7 @@ $$\Delta f_t^{5 \min} = \frac{f_{t}^{5 \min}-f_{t-1}^{5 \min}}{f_{t-1}^{5 \min}}
       </svg>
     </button>
   
-  <div id="js-expandable-9731906aa0fd087431abe72254169c00" hidden>
+  <div id="js-expandable-f4c5ced36d961570d3b962c95ec949f7" hidden>
     <p><del>希望MM下一个阶段的limit order总是能正好匹配N个trader的market order，每一个阶段market order重新生成，但是和上一阶段没有match的订单有关系</del></p>
 <ul>
 <li>
@@ -600,7 +629,7 @@ $$\Delta f_t^{5 \min} = \frac{f_{t}^{5 \min}-f_{t-1}^{5 \min}}{f_{t-1}^{5 \min}}
 </li>
 <li>
 <p>所以这里面是有<code>ground truth reward function</code>的，他们是希望通过<code>IRL</code>去找到一个替代奖励，使得训练出来的策略和用<code>true reward</code>跑出来的策略成绩差不多<code> Expected Value Differences (EVD)</code>。他们的结论就是<code>max entropy</code>不能有效还原<code>non-linear reward function</code> ? 为什么，我得赶紧做一个IRL的总结</p>
-<p><img src="https://i.postimg.cc/MT6vc75k/image.png" alt="experiment result" title="EVD在真实奖励线性和非线性条件下，基于不同IRL的策略相对于true reward最优策略的表现差异|||80"></p>
+  <img src="https://i.postimg.cc/MT6vc75k/image.png" alt="`EVD在真实奖励线性和非线性条件下，基于不同IRL的策略相对于true reward最优策略的表现差异" style="width:80%">
 </li>
 </ul>
 
@@ -623,7 +652,7 @@ quantity (e.g., 10 mkt buys @14$).</p>
 
 <div class="expandable-section">
   
-    <button aria-expanded="false" data-expands="js-expandable-4e1e1c3cce6f6188fa300350a23a4a1b">
+    <button aria-expanded="false" data-expands="js-expandable-a48283bc5910dc7e804aa80c21f78e93">
       <span class="expandable-label">Detail</span>
       <svg aria-hidden="true" focusable="false" viewBox="0 0 70.866142 70.866141">
         <g transform="translate(0 -981.5)">
@@ -633,7 +662,7 @@ quantity (e.g., 10 mkt buys @14$).</p>
       </svg>
     </button>
   
-  <div id="js-expandable-4e1e1c3cce6f6188fa300350a23a4a1b" hidden>
+  <div id="js-expandable-a48283bc5910dc7e804aa80c21f78e93" hidden>
     <p><del>奖励函数有点意思，配合将LOB抽象化，model-based transition，似乎确实可以转换为较优的交易策略</del></p>
 <ul>
 <li>游戏环境：
@@ -647,14 +676,14 @@ quantity (e.g., 10 mkt buys @14$).</p>
 <li>data: LOB更新频率0.17s, 腾讯这只股票61天作为train/validate，19天作为测试集，600万个transitions for train, 200万 for testing. 在剔除异常值(交易量大于1000小于100的)后，用min-max-normalization规范数据。然后reward用sigmoid规范(这么做的合理性？)
 <ul>
 <li>将$T=40 \times 4 \times L=3$的LOB数据提取出$1 \times 16$的抽象<code>vector</code>
-<img src="auto_encode.png" alt="" title="T=40, L=3|||60"></li>
+<img src="auto_encode.png" alt="T=40, L=3" style="width:60%"></li>
 <li>State由上面CNN-AE的抽象向量和交易信息组成，假设$T=32$的时间内最多只能发生$10$次交易，如果不满10次，用$0$填充</li>
 <li>Transition Model 用RNN-MDN 训练，$$p(s&rsquo;,s,a) = \sum_{k=1}^K w_k(s,a)\mathcal{D}(s'|\mu_k(s,a), \sigma_k^2(s,a))$$将<code>next state</code>的分布描述成若干个高斯叠加分布, State是一个<code>tuple</code> $(\mathbb{R}^{16}, \mathbb{R}^{10}, \mathbb{N}^{po_\max}), K=5$
-<img src="rnn_mdn.png" alt="" title="N=10, K=5|||60"></li>
+<img src="rnn_mdn.png" alt="N=10, K=5" style="width:60%"></li>
 <li>Reward Model 就如同我所好奇的那样，当前状态下的<code>reward</code>取决于下一个状态的<code>mid-price</code>，即当前<code>position</code>在未来的价值（有点意思！！）所以作者需要预测下一个LOB observation（为啥不直接预测mid price?）我想是因为可以利用那个auto-encoder吧。<code>reward model</code>由128 LSTM units 和 40 Dense units 组成 $$r_t = \mathcal{R}(z_t, z_{t+1};\beta) \times po_t$$</li>
 <li>Action: 将trade quantity and direction 分成 21 份 $\langle -1000, -900, \cdots, 900, 1000\rangle$</li>
 <li>训练集总共包括 $T = 40 \times n = 500$ 即 500个<code>trade print</code>吗？所以一个epoch囊括了一个小时左右的市场订单信息
-<img src="transition_state.png" alt="" title="如何将LOB观测量和订单信息通过auto-encoder转换|||80"></li>
+<img src="transition_state.png" alt="如何将LOB观测量和订单信息通过auto-encoder转换" style="width:80%"></li>
 </ul>
 </li>
 <li>对比：1. <code>momentum</code>: 通过比较$\text{mid}_{t-T}$和$\text{mid}_{t}$决定是否下一阶段direction, 至于quantity多少本文没有提及；2. <code>classifier</code>：通过$s_t$预测$\text{mid}_{t+1}$也没有说明action；3. <code>greedy</code>: 假设下一个阶段的LOB是已知的，只优化$ob_{t+1}$（而不是$ob_{t+1:t+T}$的所有信息都知道）已知条件下的策略，这样就只用优化<code>21 discretized actions</code>.</li>
